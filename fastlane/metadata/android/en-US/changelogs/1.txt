@@ -1,0 +1,1 @@
+First public version: dashboard, map, repeaters, DMR, bands, digital modes, propagation, offline mode and settings.

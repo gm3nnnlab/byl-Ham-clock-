@@ -1,0 +1,18 @@
+Chornobyl HamDash is a dashboard for licensed radio amateurs, in the spirit of HamClock and adapted for a phone. It collects public amateur radio information in one place and keeps working offline.
+
+Features:
+* Dashboard with UTC and local clocks, date, sunrise, sunset and daylight length
+* Map of repeaters (OpenStreetMap) with your position, mode filter and details sheet
+* Repeater list with RX/TX frequencies, offset, CTCSS, DMR color code, timeslot, talkgroups, coordinates, source and last update, plus search, filters and favorites
+* DMR screen with frequency, mode, color code, slot and a searchable talkgroup list
+* Reference of amateur bands and digital modes (DMR, D-STAR, C4FM, APRS, FT8, JS8Call, M17, Winlink)
+* Propagation: solar flux, K and A index and the latest X-ray flare from NOAA SWPC. Missing values are shown as NO DATA, never guessed
+* Offline first: data is stored locally, with an ONLINE/OFFLINE indicator and the time of the last update
+* Optional https data source for your own repeater catalog (JSON), validated before it is stored
+* Dark theme by default, readable outdoors
+
+Privacy: your position is used only on the device to show you on the map, sort distances and compute sun times. It is never uploaded. There is no analytics, advertising or tracking.
+
+Data: the bundled repeater catalog contains fictional demo entries labeled DEMO DATA. Replace them with a real public source. Band ranges are a general IARU Region 1 reference; always check your national allocation plan.
+
+Safety: for civilian amateur radio use only. The app has no function to intercept or decode private communications, search for military frequencies, locate military sites or track people.

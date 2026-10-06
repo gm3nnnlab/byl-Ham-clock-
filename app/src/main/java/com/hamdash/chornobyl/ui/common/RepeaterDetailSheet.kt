@@ -1,0 +1,119 @@
+package com.hamdash.chornobyl.ui.common
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.hamdash.chornobyl.domain.DistanceUnit
+import com.hamdash.chornobyl.domain.RadioMode
+import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.formatDistance
+import com.hamdash.chornobyl.domain.formatMHz
+import com.hamdash.chornobyl.domain.formatOffset
+import com.hamdash.chornobyl.domain.haversineKm
+import com.hamdash.chornobyl.location.LocationState
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RepeaterDetailSheet(
+    repeater: Repeater,
+    location: LocationState,
+    unit: DistanceUnit,
+    isFavorite: Boolean,
+    onToggleFavorite: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).navigationBarsPadding(),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(repeater.callsign, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                    Text(repeater.name, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                ModeChip(repeater.mode)
+                IconButton(onClick = onToggleFavorite) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
+                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            HorizontalDivider()
+            Spacer(Modifier.height(8.dp))
+
+            DetailSection("FREQUENCY")
+            LabeledRow("RX (you listen)", "${formatMHz(repeater.rxMHz)} MHz", mono = true)
+            LabeledRow("TX (you send)", "${formatMHz(repeater.txMHz)} MHz", mono = true)
+            LabeledRow("Offset", formatOffset(repeater.offsetMHz), mono = true)
+            repeater.bandName?.let { LabeledRow("Band", it) }
+
+            DetailSection("PARAMETERS")
+            LabeledRow("Mode", repeater.mode.label)
+            repeater.ctcssHz?.let { LabeledRow("CTCSS", "${trimTone(it)} Hz", mono = true) }
+            if (repeater.mode == RadioMode.DMR) {
+                LabeledRow("Color code", repeater.colorCode?.let { "CC $it" } ?: "NO DATA")
+                LabeledRow("Timeslot", repeater.timeslot?.let { "TS $it" } ?: "NO DATA")
+                LabeledRow("Talkgroups", repeater.talkgroupIds.takeIf { it.isNotEmpty() }?.joinToString(", ") { "TG $it" } ?: "NO DATA")
+            }
+
+            DetailSection("LOCATION")
+            LabeledRow(
+                "Coordinates",
+                String.format(Locale.US, "%.4f, %.4f", repeater.latitude, repeater.longitude),
+                mono = true,
+            )
+            LabeledRow("Elevation", repeater.elevationM?.let { "$it m" } ?: "NO DATA")
+            (location as? LocationState.Fix)?.let { fix ->
+                LabeledRow(
+                    "Distance",
+                    formatDistance(haversineKm(fix.latitude, fix.longitude, repeater.latitude, repeater.longitude), unit),
+                )
+            }
+
+            DetailSection("SOURCE")
+            LabeledRow("Source", repeater.source)
+            LabeledRow("Last updated", repeater.lastUpdated.ifEmpty { "NO DATA" })
+            Spacer(Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+private fun DetailSection(title: String) {
+    Spacer(Modifier.height(10.dp))
+    Text(
+        title,
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(bottom = 4.dp),
+    )
+}
+
+private fun trimTone(hz: Double): String = if (hz % 1.0 == 0.0) hz.toInt().toString() else String.format(Locale.US, "%.1f", hz)

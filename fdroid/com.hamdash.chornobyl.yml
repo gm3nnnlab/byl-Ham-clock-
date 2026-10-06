@@ -1,0 +1,24 @@
+# Draft for gitlab.com/fdroid/fdroiddata: copy to metadata/com.hamdash.chornobyl.yml
+# and replace <your-account> with the real repository owner before opening a merge request.
+Categories:
+  - Ham Radio
+License: GPL-3.0-or-later
+AuthorName: Yevhen "CUBE" Honchar
+SourceCode: https://github.com/<your-account>/chornobyl-hamdash
+IssueTracker: https://github.com/<your-account>/chornobyl-hamdash/issues
+
+RepoType: git
+Repo: https://github.com/<your-account>/chornobyl-hamdash
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1

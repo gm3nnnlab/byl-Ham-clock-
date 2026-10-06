@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Radio waves around an antenna mast -->
+    <path
+        android:fillColor="#4DE8A0"
+        android:pathData="M52,34h4v36h-4z" />
+    <path
+        android:fillColor="#4DE8A0"
+        android:pathData="M54,30m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0" />
+    <path
+        android:fillColor="#4DE8A0"
+        android:pathData="M54,70l-14,16h4l10,-11l10,11h4z" />
+    <path
+        android:strokeColor="#4DE8A0"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M42,22Q36,30 42,38" />
+    <path
+        android:strokeColor="#4DE8A0"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M66,22Q72,30 66,38" />
+    <path
+        android:strokeColor="#4DE8A0"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M35,16Q25,30 35,44" />
+    <path
+        android:strokeColor="#4DE8A0"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M73,16Q83,30 73,44" />
+</vector>

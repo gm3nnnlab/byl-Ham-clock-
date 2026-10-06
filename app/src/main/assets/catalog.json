@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-06",
+  "repeaters": [
+    {
+      "id": "demo-dmr-1", "name": "Demo DMR Kyiv", "callsign": "DEMO-D1",
+      "rxMHz": 438.4000, "txMHz": 430.8000, "mode": "DMR",
+      "colorCode": 1, "timeslot": 2, "talkgroups": [255, 91, 9],
+      "lat": 50.4501, "lon": 30.5234, "elevationM": 180,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-dmr-2", "name": "Demo DMR Ivankiv", "callsign": "DEMO-D2",
+      "rxMHz": 438.5250, "txMHz": 430.9250, "mode": "DMR",
+      "colorCode": 1, "timeslot": 1, "talkgroups": [255, 9],
+      "lat": 50.9333, "lon": 29.9000, "elevationM": 140,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-dmr-3", "name": "Demo DMR Chernihiv", "callsign": "DEMO-D3",
+      "rxMHz": 438.6500, "txMHz": 431.0500, "mode": "DMR",
+      "colorCode": 2, "timeslot": 2, "talkgroups": [255, 92],
+      "lat": 51.4982, "lon": 31.2893, "elevationM": 150,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-fm-1", "name": "Demo FM Zhytomyr", "callsign": "DEMO-F1",
+      "rxMHz": 145.6125, "txMHz": 145.0125, "mode": "FM", "ctcssHz": 88.5,
+      "lat": 50.2547, "lon": 28.6587, "elevationM": 220,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-fm-2", "name": "Demo FM Bila Tserkva", "callsign": "DEMO-F2",
+      "rxMHz": 145.7000, "txMHz": 145.1000, "mode": "FM", "ctcssHz": 71.9,
+      "lat": 49.8089, "lon": 30.1122, "elevationM": 190,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-dstar-1", "name": "Demo D-STAR Slavutych", "callsign": "DEMO-S1",
+      "rxMHz": 439.4625, "txMHz": 431.8625, "mode": "D-STAR",
+      "lat": 51.5217, "lon": 30.7469, "elevationM": 130,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    },
+    {
+      "id": "demo-c4fm-1", "name": "Demo C4FM Fastiv", "callsign": "DEMO-Y1",
+      "rxMHz": 145.6375, "txMHz": 145.0375, "mode": "C4FM",
+      "lat": 50.0761, "lon": 29.9181, "elevationM": 200,
+      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+    }
+  ],
+  "talkgroups": [
+    {
+      "id": 9, "name": "Local",
+      "description": "Local-only talkgroup on a single repeater; not routed to the network.",
+      "source": "BrandMeister public documentation (verify before use)"
+    },
+    {
+      "id": 91, "name": "Worldwide",
+      "description": "Worldwide calling talkgroup.",
+      "source": "BrandMeister public talkgroup list (verify before use)"
+    },
+    {
+      "id": 92, "name": "Europe",
+      "description": "Europe-wide talkgroup.",
+      "source": "BrandMeister public talkgroup list (verify before use)"
+    },
+    {
+      "id": 255, "name": "Ukraine",
+      "description": "Ukraine national talkgroup.",
+      "source": "BrandMeister public talkgroup list (verify before use)"
+    }
+  ],
+  "bands": [
+    {
+      "name": "160 m", "startMHz": 1.810, "endMHz": 2.000,
+      "typicalModes": "CW, SSB, digital",
+      "purpose": "Long-range night-time contacts and regional nets.",
+      "notes": "MF band. Strong atmospheric noise in summer; large antennas needed."
+    },
+    {
+      "name": "80 m", "startMHz": 3.500, "endMHz": 3.800,
+      "typicalModes": "CW, SSB, digital",
+      "purpose": "Regional contacts at night, emergency and club nets.",
+      "notes": "Daytime absorption is high; useful in the evening and at night."
+    },
+    {
+      "name": "40 m", "startMHz": 7.000, "endMHz": 7.200,
+      "typicalModes": "CW, SSB, FT8, digital",
+      "purpose": "All-round DX and regional band, open day and night.",
+      "notes": "Shares spectrum with broadcast stations in parts of the world."
+    },
+    {
+      "name": "30 m", "startMHz": 10.100, "endMHz": 10.150,
+      "typicalModes": "CW, narrow digital (no phone)",
+      "purpose": "Reliable DX band with low power-friendly conditions.",
+      "notes": "Narrow band; telephony is not used here."
+    },
+    {
+      "name": "20 m", "startMHz": 14.000, "endMHz": 14.350,
+      "typicalModes": "CW, SSB, FT8, JS8Call, digital",
+      "purpose": "Main daytime DX band.",
+      "notes": "Often open worldwide in daylight when solar activity is moderate."
+    },
+    {
+      "name": "17 m", "startMHz": 18.068, "endMHz": 18.168,
+      "typicalModes": "CW, SSB, digital",
+      "purpose": "Quieter DX band between 20 m and 15 m.",
+      "notes": "Opens with higher solar flux."
+    },
+    {
+      "name": "15 m", "startMHz": 21.000, "endMHz": 21.450,
+      "typicalModes": "CW, SSB, FT8, digital",
+      "purpose": "Daytime DX when solar activity is good.",
+      "notes": "Can be dead at solar minimum."
+    },
+    {
+      "name": "12 m", "startMHz": 24.890, "endMHz": 24.990,
+      "typicalModes": "CW, SSB, digital",
+      "purpose": "Daytime DX during good solar conditions.",
+      "notes": "Often empty; opens briefly with strong propagation."
+    },
+    {
+      "name": "10 m", "startMHz": 28.000, "endMHz": 29.700,
+      "typicalModes": "CW, SSB, FM, FT8, beacons",
+      "purpose": "DX at solar maximum; local FM and repeaters in some regions.",
+      "notes": "Sporadic-E openings are possible in summer."
+    },
+    {
+      "name": "6 m", "startMHz": 50.000, "endMHz": 52.000,
+      "typicalModes": "SSB, CW, FM, FT8",
+      "purpose": "The 'magic band': sporadic-E and occasional long-distance openings.",
+      "notes": "Allocation differs a lot between countries; the range shown is only a reference."
+    },
+    {
+      "name": "2 m", "startMHz": 144.000, "endMHz": 146.000,
+      "typicalModes": "FM, SSB, CW, DMR, C4FM, D-STAR, APRS",
+      "purpose": "Local communication, repeaters, satellites, weak-signal work.",
+      "notes": "IARU Region 1 reference range. APRS and repeater sub-bands are defined by the band plan."
+    },
+    {
+      "name": "70 cm", "startMHz": 430.000, "endMHz": 440.000,
+      "typicalModes": "FM, DMR, D-STAR, C4FM, SSB, ATV",
+      "purpose": "Local communication, digital voice repeaters and hotspots, satellites.",
+      "notes": "IARU Region 1 reference range. Repeater offsets and digital sub-bands depend on the national plan."
+    }
+  ],
+  "digitalModes": [
+    {
+      "id": "dmr", "name": "DMR",
+      "summary": "Digital Mobile Radio: a two-slot TDMA digital voice standard used on many amateur repeaters.",
+      "principle": "Two voice or data channels share one 12.5 kHz carrier by time slots. Each repeater has a color code; networks route traffic by talkgroup ID.",
+      "uses": "Local and worldwide voice via repeaters and hotspots, SMS-style text, GPS position reports.",
+      "equipment": "A DMR handheld or mobile (codeplug with correct frequencies, color code, slot and talkgroups) or a hotspot connected to the internet.",
+      "links": [
+        { "title": "ETSI (DMR standard, TS 102 361)", "url": "https://www.etsi.org/" },
+        { "title": "BrandMeister network", "url": "https://brandmeister.network/" }
+      ]
+    },
+    {
+      "id": "dstar", "name": "D-STAR",
+      "summary": "Digital Smart Technologies for Amateur Radio: digital voice and data developed in Japan.",
+      "principle": "Uses GMSK modulation with AMBE voice coding. Callsign routing is built into the protocol header.",
+      "uses": "Repeater voice, reflectors, low-speed data.",
+      "equipment": "A D-STAR capable radio, or a hotspot with an adapter.",
+      "links": [
+        { "title": "JARL D-STAR information", "url": "https://www.jarl.com/d-star/" }
+      ]
+    },
+    {
+      "id": "c4fm", "name": "C4FM / System Fusion",
+      "summary": "Yaesu System Fusion: digital voice using 4-level FSK (C4FM) in a 12.5 kHz channel.",
+      "principle": "Voice and data are sent together; radios fall back to analog FM automatically on analog repeaters.",
+      "uses": "Local repeater voice, WIRES-X internet linking, group rooms.",
+      "equipment": "A System Fusion radio (digital and analog capable) or a hotspot.",
+      "links": [
+        { "title": "Yaesu System Fusion", "url": "https://www.yaesu.com/" }
+      ]
+    },
+    {
+      "id": "aprs", "name": "APRS",
+      "summary": "Automatic Packet Reporting System: position, weather and short messages over AX.25 packet radio.",
+      "principle": "1200 baud AFSK packets on a shared frequency, relayed by digipeaters and gated to the internet by iGates.",
+      "uses": "Tracking vehicles and balloons, weather stations, short messages, emergency communication.",
+      "equipment": "A radio with a tracker or TNC, a smartphone with a sound-card modem, or an APRS-capable handheld. A receiver is enough for monitoring.",
+      "links": [
+        { "title": "aprs.org", "url": "https://www.aprs.org/" }
+      ]
+    },
+    {
+      "id": "ft8", "name": "FT8",
+      "summary": "Weak-signal digital mode from the WSJT-X suite with 15-second transmit slots.",
+      "principle": "Short, forward-error-corrected messages use 8-FSK; decoding works well below the noise floor. Accurate time sync is required.",
+      "uses": "HF and 6 m DX with low power, band-condition checks.",
+      "equipment": "An SSB transceiver, a computer with a sound interface, WSJT-X and accurate time (NTP or GPS).",
+      "links": [
+        { "title": "WSJT-X (official site)", "url": "https://wsjt.sourceforge.io/" }
+      ]
+    },
+    {
+      "id": "js8call", "name": "JS8Call",
+      "summary": "Keyboard-to-keyboard messaging built on the FT8 modulation, with store-and-forward relay.",
+      "principle": "Uses FT8-like transmissions with slower speed options and a messaging layer on top.",
+      "uses": "Low-power HF messaging and relays when the internet is unavailable.",
+      "equipment": "An SSB transceiver, a computer with a sound interface and the JS8Call software.",
+      "links": [
+        { "title": "JS8Call", "url": "https://js8call.com/" }
+      ]
+    },
+    {
+      "id": "m17", "name": "M17",
+      "summary": "Open-source digital voice and data protocol with no proprietary vocoder.",
+      "principle": "4FSK modulation, open Codec2 voice coding and an open specification.",
+      "uses": "Experimental repeaters, hotspots and homebrew radios.",
+      "equipment": "An M17-capable radio or hotspot firmware.",
+      "links": [
+        { "title": "M17 Project", "url": "https://m17project.org/" }
+      ]
+    },
+    {
+      "id": "winlink", "name": "Winlink",
+      "summary": "Global radio email system used for emergency and off-grid communication.",
+      "principle": "Messages are exchanged with gateway stations using packet, VARA, ARDOP or Pactor links.",
+      "uses": "Email over radio, emergency communications, maritime and remote operation.",
+      "equipment": "A transceiver, a computer or smartphone with a modem and the Winlink Express or compatible client.",
+      "links": [
+        { "title": "Winlink", "url": "https://winlink.org/" }
+      ]
+    }
+  ]
+}
