@@ -43,6 +43,23 @@ jobs:
         with:
           name: chornobyl-hamdash-debug
           path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Check the release key secrets
+        if: env.IS_RELEASE == 'true'
+        env:
+          S1: ${{ secrets.RELEASE_KEYSTORE_BASE64 != '' }}
+          S2: ${{ secrets.RELEASE_KEYSTORE_PASSWORD != '' }}
+          S3: ${{ secrets.RELEASE_KEY_ALIAS != '' }}
+          S4: ${{ secrets.RELEASE_KEY_PASSWORD != '' }}
+        run: |
+          missing=0
+          for pair in "RELEASE_KEYSTORE_BASE64:$S1" "RELEASE_KEYSTORE_PASSWORD:$S2" "RELEASE_KEY_ALIAS:$S3" "RELEASE_KEY_PASSWORD:$S4"; do
+            name=${pair%%:*}; set=${pair##*:}
+            if [ "$set" = "true" ]; then echo "$name: set"; else echo "$name: MISSING"; missing=1; fi
+          done
+          if [ "$missing" = 1 ]; then
+            echo "::error::A release needs all four repository secrets under Settings > Secrets and variables > Actions > Repository secrets (not Variables, not an Environment). Without them the release would carry only the debug APK."
+            exit 1
+          fi
       - name: Build signed release APK and App Bundle
         if: env.HAS_RELEASE_KEY == 'true'
         env:
