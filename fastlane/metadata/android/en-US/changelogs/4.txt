@@ -1,0 +1,2 @@
+* Every repeater shows its status: on air, off air or unknown
+* Notice that amateur transmitting is banned in Ukraine under martial law
