@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Tag to create and publish as a release, for example v0.1.0. Leave empty for a plain build.
+        required: false
+        default: ""
 
 jobs:
   build:
@@ -25,15 +30,19 @@ jobs:
         with:
           name: chornobyl-hamdash-debug
           path: app/build/outputs/apk/debug/app-debug.apk
-      - name: Name the APK after the tag
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: cp app/build/outputs/apk/debug/app-debug.apk "chornobyl-hamdash-${GITHUB_REF_NAME}-debug.apk"
+      - name: Name the APK after the release tag
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: cp app/build/outputs/apk/debug/app-debug.apk "chornobyl-hamdash-${RELEASE_TAG}-debug.apk"
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
         uses: softprops/action-gh-release@v2
         with:
-          files: chornobyl-hamdash-${{ github.ref_name }}-debug.apk
+          tag_name: ${{ inputs.release_tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          files: chornobyl-hamdash-${{ inputs.release_tag || github.ref_name }}-debug.apk
           prerelease: true
           body: |
-            Debug build of Chornobyl HamDash ${{ github.ref_name }}.
+            Debug build of Chornobyl HamDash ${{ inputs.release_tag || github.ref_name }}.
             Signed with the debug key, intended for testing. Install it by allowing installs from unknown sources.
