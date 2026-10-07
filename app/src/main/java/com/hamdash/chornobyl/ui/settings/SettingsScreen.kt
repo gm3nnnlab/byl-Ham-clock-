@@ -27,15 +27,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.DistanceUnit
 import com.hamdash.chornobyl.domain.TimeZoneOptions
+import com.hamdash.chornobyl.settings.AppLanguage
 import com.hamdash.chornobyl.settings.AppSettings
 import com.hamdash.chornobyl.settings.ThemeMode
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
+import com.hamdash.chornobyl.ui.common.asString
+import com.hamdash.chornobyl.ui.common.displayName
+import com.hamdash.chornobyl.ui.common.intervalLabel
+import com.hamdash.chornobyl.ui.common.timeZoneLabel
+import com.hamdash.chornobyl.ui.common.toUiText
 import com.hamdash.chornobyl.ui.common.SectionCard
 import com.hamdash.chornobyl.ui.common.syncSummary
 
@@ -47,103 +55,131 @@ fun SettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel(
     var urlDraft by remember(settings.catalogUrl) { mutableStateOf(settings.catalogUrl) }
     var tileDraft by remember(settings.tileUrl) { mutableStateOf(settings.tileUrl) }
 
-    ScreenScaffold(title = "Settings", onBack = onBack) { padding ->
+    ScreenScaffold(title = stringResource(R.string.set_title), onBack = onBack) { padding ->
         Column(
             Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            state.message?.let { message ->
+            state.message?.let { messageText ->
                 Surface(color = MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.small) {
                     Row(Modifier.padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
-                        TextButton(onClick = viewModel::dismissMessage) { Text("OK") }
+                        Text(messageText.asString(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+                        TextButton(onClick = viewModel::dismissMessage) { Text(stringResource(R.string.action_ok)) }
                     }
                 }
             }
 
-            SectionCard("DISPLAY") {
-                ChoiceSetting("Theme", settings.themeMode, ThemeMode.entries, { it.label }, viewModel::setTheme)
+            SectionCard(stringResource(R.string.set_sec_display)) {
                 ChoiceSetting(
-                    "Local time zone",
+                    stringResource(R.string.set_language),
+                    settings.language,
+                    AppLanguage.entries,
+                    { it.nativeName },
+                    viewModel::setLanguage,
+                )
+                ChoiceSetting(stringResource(R.string.set_theme), settings.themeMode, ThemeMode.entries, { it.displayName() }, viewModel::setTheme)
+                ChoiceSetting(
+                    stringResource(R.string.set_timezone),
                     settings.timeZoneId,
                     TimeZoneOptions.ids,
-                    { TimeZoneOptions.label(it) },
+                    { timeZoneLabel(it) },
                     viewModel::setTimeZone,
                 )
-                SwitchSetting("Show UTC clock", "Display UTC next to local time on the dashboard.", settings.showUtc, viewModel::setShowUtc)
-                ChoiceSetting("Distance units", settings.distanceUnit, DistanceUnit.entries, { it.label }, viewModel::setDistanceUnit)
+                SwitchSetting(
+                    stringResource(R.string.set_show_utc),
+                    stringResource(R.string.set_show_utc_sub),
+                    settings.showUtc,
+                    viewModel::setShowUtc,
+                )
+                ChoiceSetting(
+                    stringResource(R.string.set_units),
+                    settings.distanceUnit,
+                    DistanceUnit.entries,
+                    { it.displayName() },
+                    viewModel::setDistanceUnit,
+                )
             }
 
-            SectionCard("LOCATION") {
+            SectionCard(stringResource(R.string.set_sec_location)) {
                 SwitchSetting(
-                    "Show my location",
-                    "Uses GPS only to show your position on the map and distances to repeaters. It never leaves your device.",
+                    stringResource(R.string.set_show_location),
+                    stringResource(R.string.set_show_location_sub),
                     settings.showGps,
                     viewModel::setShowGps,
                 )
             }
 
-            SectionCard("DATA AND SYNC") {
+            SectionCard(stringResource(R.string.set_sec_data)) {
                 Text(
                     syncSummary(state.status, TimeZoneOptions.resolve(settings.timeZoneId)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 state.status.sync.lastError?.let {
-                    Text("Last problem: $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.set_last_problem, it.toUiText().asString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
-                SwitchSetting("Automatic sync", "Refresh the database when the app starts and the interval has passed.", settings.autoSync, viewModel::setAutoSync)
+                SwitchSetting(
+                    stringResource(R.string.set_auto_sync),
+                    stringResource(R.string.set_auto_sync_sub),
+                    settings.autoSync,
+                    viewModel::setAutoSync,
+                )
                 ChoiceSetting(
-                    "Update interval",
+                    stringResource(R.string.set_interval),
                     settings.syncIntervalHours,
                     AppSettings.SYNC_INTERVAL_OPTIONS,
                     { intervalLabel(it) },
                     viewModel::setSyncInterval,
                 )
-                SwitchSetting("Use mobile data", "When off, the database and propagation only sync on unmetered networks such as Wi-Fi.", settings.allowMobileData, viewModel::setAllowMobileData)
+                SwitchSetting(
+                    stringResource(R.string.set_mobile),
+                    stringResource(R.string.set_mobile_sub),
+                    settings.allowMobileData,
+                    viewModel::setAllowMobileData,
+                )
 
                 Spacer(Modifier.height(8.dp))
                 OutlinedTextField(
                     value = urlDraft,
                     onValueChange = { urlDraft = it },
-                    label = { Text("Data source URL (https, optional)") },
-                    supportingText = { Text("A catalog JSON in the same format as the bundled one. Leave empty to use bundled data only.") },
+                    label = { Text(stringResource(R.string.set_url_label)) },
+                    supportingText = { Text(stringResource(R.string.set_url_support)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = { viewModel.saveCatalogUrl(urlDraft) }) { Text("Save URL") }
-                    Button(onClick = viewModel::syncNow, enabled = !state.busy) { Text(if (state.busy) "Working…" else "Sync now") }
+                    OutlinedButton(onClick = { viewModel.saveCatalogUrl(urlDraft) }) { Text(stringResource(R.string.action_save_url)) }
+                    Button(onClick = viewModel::syncNow, enabled = !state.busy) {
+                        Text(stringResource(if (state.busy) R.string.action_working else R.string.action_sync_now))
+                    }
                 }
             }
 
-            SectionCard("MAP TILES") {
+            SectionCard(stringResource(R.string.set_sec_tiles)) {
                 Text(
-                    "By default the map uses the public OpenStreetMap tile server, which is meant for light use. " +
-                        "For heavy use, enter your own or a commercial tile server that allows it.",
+                    stringResource(R.string.set_tiles_text),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 OutlinedTextField(
                     value = tileDraft,
                     onValueChange = { tileDraft = it },
-                    label = { Text("Tile URL (optional)") },
-                    supportingText = { Text("Example: https://tiles.example.org/{z}/{x}/{y}.png. Leave empty for the default.") },
+                    label = { Text(stringResource(R.string.set_tile_label)) },
+                    supportingText = { Text(stringResource(R.string.set_tile_support)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 )
                 OutlinedButton(onClick = { viewModel.saveTileUrl(tileDraft) }, modifier = Modifier.padding(top = 8.dp)) {
-                    Text("Save tile source")
+                    Text(stringResource(R.string.action_save_tile))
                 }
             }
 
-            SectionCard("STORAGE") {
+            SectionCard(stringResource(R.string.set_sec_storage)) {
                 Text(
-                    "Clearing the cache removes downloaded repeater data, cached propagation values and saved map tiles. " +
-                        "The bundled data is restored. Favorites and settings are kept.",
+                    stringResource(R.string.set_storage_text),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 OutlinedButton(onClick = { confirmClear = true }, enabled = !state.busy, modifier = Modifier.padding(top = 8.dp)) {
-                    Text("Clear cache")
+                    Text(stringResource(R.string.action_clear_cache))
                 }
             }
         }
@@ -152,24 +188,17 @@ fun SettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel(
     if (confirmClear) {
         AlertDialog(
             onDismissRequest = { confirmClear = false },
-            title = { Text("Clear cache?") },
-            text = { Text("Downloaded data and saved map tiles will be removed. The bundled data will be restored.") },
+            title = { Text(stringResource(R.string.set_clear_title)) },
+            text = { Text(stringResource(R.string.set_clear_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     confirmClear = false
                     viewModel.clearCache()
-                }) { Text("Clear") }
+                }) { Text(stringResource(R.string.action_clear)) }
             },
-            dismissButton = { TextButton(onClick = { confirmClear = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { confirmClear = false }) { Text(stringResource(R.string.action_cancel)) } },
         )
     }
-}
-
-private fun intervalLabel(hours: Int): String = when (hours) {
-    1 -> "Every hour"
-    24 -> "Every day"
-    72 -> "Every 3 days"
-    else -> "Every $hours hours"
 }
 
 @Composable
@@ -187,7 +216,13 @@ private fun SwitchSetting(title: String, subtitle: String, checked: Boolean, onC
 }
 
 @Composable
-private fun <T> ChoiceSetting(title: String, value: T, options: List<T>, label: (T) -> String, onSelect: (T) -> Unit) {
+private fun <T> ChoiceSetting(
+    title: String,
+    value: T,
+    options: List<T>,
+    label: @Composable (T) -> String,
+    onSelect: (T) -> Unit,
+) {
     var open by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().clickable { open = true }.padding(vertical = 8.dp)) {
         Text(title, style = MaterialTheme.typography.bodyLarge)
@@ -216,7 +251,7 @@ private fun <T> ChoiceSetting(title: String, value: T, options: List<T>, label: 
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { open = false }) { Text("Close") } },
+            confirmButton = { TextButton(onClick = { open = false }) { Text(stringResource(R.string.action_close)) } },
         )
     }
 }

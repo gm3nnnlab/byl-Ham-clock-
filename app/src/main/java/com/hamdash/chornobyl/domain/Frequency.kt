@@ -31,8 +31,8 @@ fun formatMHz(mhz: Double): String {
     return if (decimals >= 3) raw else raw + "0".repeat(3 - decimals)
 }
 
-fun formatOffset(offsetMHz: Double): String {
-    if (abs(offsetMHz) < 0.0005) return "simplex"
+fun formatOffset(offsetMHz: Double, mhzLabel: String = "MHz", simplexLabel: String = "simplex"): String {
+    if (abs(offsetMHz) < 0.0005) return simplexLabel
     val sign = if (offsetMHz > 0) "+" else "-"
-    return "$sign${formatMHz(abs(offsetMHz))} MHz"
+    return "$sign${formatMHz(abs(offsetMHz))} $mhzLabel"
 }

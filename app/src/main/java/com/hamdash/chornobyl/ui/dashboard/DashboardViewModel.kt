@@ -3,6 +3,7 @@ package com.hamdash.chornobyl.ui.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamdash.chornobyl.AppContainer
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.PropagationSnapshot
 import com.hamdash.chornobyl.domain.RadioMode
@@ -10,6 +11,8 @@ import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.countByMode
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.settings.AppSettings
+import com.hamdash.chornobyl.ui.common.UiText
+import com.hamdash.chornobyl.ui.common.uiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +23,7 @@ import kotlinx.coroutines.launch
 
 data class DashboardUiState(
     val loading: Boolean = true,
-    val error: String? = null,
+    val error: UiText? = null,
     val repeaters: List<Repeater> = emptyList(),
     val settings: AppSettings = AppSettings(),
     val location: LocationState = LocationState.Searching,
@@ -58,7 +61,7 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
             emit(
                 DashboardUiState(
                     loading = false,
-                    error = "The dashboard data could not be loaded. Restart the app, or clear the cache in Settings.",
+                    error = uiText(R.string.err_dashboard),
                 ),
             )
         }

@@ -7,7 +7,7 @@ enum class DataOrigin { BUNDLED, REMOTE }
 data class SyncState(
     val lastSyncMillis: Long? = null,
     val origin: DataOrigin = DataOrigin.BUNDLED,
-    val lastError: String? = null,
+    val lastError: SyncProblem? = null,
     val dataUpdated: String? = null,
     val isSyncing: Boolean = false,
 )
@@ -23,7 +23,7 @@ sealed interface SyncResult {
     data object SkippedMobileData : SyncResult
     data object NotConfigured : SyncResult
     data object Busy : SyncResult
-    data class Failed(val message: String) : SyncResult
+    data class Failed(val problem: SyncProblem) : SyncResult
 }
 
 /** Single entry point for radio reference data; UI code never talks to Room or the network directly. */

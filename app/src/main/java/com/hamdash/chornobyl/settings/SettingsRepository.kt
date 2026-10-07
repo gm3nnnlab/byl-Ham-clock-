@@ -19,6 +19,7 @@ import java.io.IOException
 class SettingsRepository(private val store: DataStore<Preferences>) {
 
     private object Keys {
+        val LANGUAGE = stringPreferencesKey("language")
         val THEME = stringPreferencesKey("theme")
         val TIME_ZONE = stringPreferencesKey("time_zone")
         val SHOW_UTC = booleanPreferencesKey("show_utc")
@@ -36,6 +37,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
         .map { p ->
             val defaults = AppSettings()
             AppSettings(
+                language = AppLanguage.fromName(p[Keys.LANGUAGE]) ?: defaults.language,
                 themeMode = runCatching { ThemeMode.valueOf(p[Keys.THEME].orEmpty()) }.getOrDefault(defaults.themeMode),
                 timeZoneId = p[Keys.TIME_ZONE] ?: defaults.timeZoneId,
                 showUtc = p[Keys.SHOW_UTC] ?: defaults.showUtc,
@@ -56,6 +58,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
         store.edit { block(it) }
     }
 
+    suspend fun setLanguage(value: AppLanguage) = edit { it[Keys.LANGUAGE] = value.name }
     suspend fun setThemeMode(value: ThemeMode) = edit { it[Keys.THEME] = value.name }
     suspend fun setTimeZone(id: String) = edit { it[Keys.TIME_ZONE] = if (id in TimeZoneOptions.ids) id else TimeZoneOptions.SYSTEM }
     suspend fun setShowUtc(value: Boolean) = edit { it[Keys.SHOW_UTC] = value }

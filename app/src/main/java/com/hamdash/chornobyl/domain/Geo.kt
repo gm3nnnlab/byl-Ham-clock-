@@ -24,8 +24,8 @@ fun haversineKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double 
     return 2 * earthRadiusKm * asin(sqrt(a))
 }
 
-fun formatDistance(km: Double, unit: DistanceUnit): String {
+fun formatDistance(km: Double, unit: DistanceUnit, suffix: String = unit.suffix): String {
     val value = km * unit.perKm
     val text = if (value < 10) String.format(Locale.US, "%.1f", value) else String.format(Locale.US, "%.0f", value)
-    return "$text ${unit.suffix}"
+    return "$text $suffix"
 }

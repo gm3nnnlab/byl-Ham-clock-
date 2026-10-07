@@ -20,9 +20,9 @@ object TimeFormats {
     fun date(instant: Instant, zone: ZoneId, locale: Locale = Locale.ENGLISH): String =
         DateTimeFormatter.ofPattern("EEE, d MMM yyyy", locale).withZone(zone).format(instant)
 
-    fun duration(duration: Duration): String {
+    fun duration(duration: Duration, hourSuffix: String = "h", minuteSuffix: String = "m"): String {
         val minutes = duration.toMinutes()
-        return "${minutes / 60}h ${(minutes % 60).toString().padStart(2, '0')}m"
+        return "${minutes / 60}$hourSuffix ${(minutes % 60).toString().padStart(2, '0')}$minuteSuffix"
     }
 }
 

@@ -54,7 +54,7 @@ class PropagationRepository(
 
     suspend fun refresh() {
         if (!mutex.tryLock()) return
-        _state.value = _state.value.copy(loading = true, error = null)
+        _state.value = _state.value.copy(loading = true, error = false)
         try {
             val (flux, k, flare) = coroutineScope {
                 val f = async { download(PropagationSources.SOLAR_FLUX)?.let(NoaaParsers::parseSolarFlux) }
@@ -75,10 +75,7 @@ class PropagationRepository(
                 _state.value = PropagationSnapshot(data = fresh)
                 runCatching { store.edit { it[key] = json.encodeToString(PropagationData.serializer(), fresh) } }
             } else {
-                _state.value = _state.value.copy(
-                    loading = false,
-                    error = "NOAA data could not be loaded. Check the connection and try again.",
-                )
+                _state.value = _state.value.copy(loading = false, error = true)
             }
         } finally {
             _state.value = _state.value.copy(loading = false)

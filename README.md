@@ -22,6 +22,16 @@ builds the APK and runs the tests on every push.
 
 Minimum Android 8.0 (API 26), target and compile SDK 35.
 
+## Languages
+
+The interface is available in English and Ukrainian (Settings > Display > Language). On first launch the app follows the
+device language (Ukrainian if the device is set to Ukrainian, English otherwise). Strings live in
+`app/src/main/res/values/strings.xml` and `values-uk/strings.xml`; to add a language, add a `values-<code>/strings.xml`,
+an entry in `settings/AppLanguage.kt`, and a `fastlane/metadata/android/<code>/` folder.
+
+Reference content that comes from the catalog (band purposes, digital mode descriptions, talkgroup descriptions and source
+names) is shown as stored in the catalog data, so the bundled catalog texts are in English.
+
 ## Stack and layout
 
 Kotlin, Jetpack Compose, Material 3, coroutines and Flow, ViewModel, Room, DataStore, Retrofit and OkHttp,
@@ -98,7 +108,7 @@ F-Droid builds the app from source, so nothing is uploaded. Checklist:
 5. Open a merge request to https://gitlab.com/fdroid/fdroiddata adding `metadata/com.hamdash.chornobyl.yml`
    (start from `fdroid/com.hamdash.chornobyl.yml`), or file a request in https://gitlab.com/fdroid/rfp.
 
-Store texts and the icon live in `fastlane/metadata/android/` (en-US and ru-RU). When you release a new version,
+Store texts and the icon live in `fastlane/metadata/android/` (en-US, uk and ru-RU). When you release a new version,
 bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt`, and tag it.
 
 ## Privacy

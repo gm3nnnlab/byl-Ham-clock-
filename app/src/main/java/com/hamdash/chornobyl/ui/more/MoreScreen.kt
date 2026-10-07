@@ -24,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 
 private data class MoreItem(val title: String, val subtitle: String, val icon: ImageVector, val onClick: () -> Unit)
@@ -39,13 +41,13 @@ fun MoreScreen(
     onOpenAbout: () -> Unit,
 ) {
     val items = listOf(
-        MoreItem("Bands", "Amateur band reference: ranges, modes, purpose", Icons.Filled.Equalizer, onOpenBands),
-        MoreItem("Digital", "DMR, D-STAR, C4FM, APRS, FT8, JS8Call and more", Icons.Filled.Memory, onOpenDigital),
-        MoreItem("Propagation", "Solar flux, K-index, A-index, flares", Icons.Filled.WbSunny, onOpenPropagation),
-        MoreItem("Settings", "Time zone, theme, sync, privacy", Icons.Filled.Settings, onOpenSettings),
-        MoreItem("About", "Data sources, limits and safety notes", Icons.Filled.Info, onOpenAbout),
+        MoreItem(stringResource(R.string.more_bands_title), stringResource(R.string.more_bands_sub), Icons.Filled.Equalizer, onOpenBands),
+        MoreItem(stringResource(R.string.more_digital_title), stringResource(R.string.more_digital_sub), Icons.Filled.Memory, onOpenDigital),
+        MoreItem(stringResource(R.string.more_prop_title), stringResource(R.string.more_prop_sub), Icons.Filled.WbSunny, onOpenPropagation),
+        MoreItem(stringResource(R.string.more_settings_title), stringResource(R.string.more_settings_sub), Icons.Filled.Settings, onOpenSettings),
+        MoreItem(stringResource(R.string.more_about_title), stringResource(R.string.more_about_sub), Icons.Filled.Info, onOpenAbout),
     )
-    ScreenScaffold(title = "More") { padding ->
+    ScreenScaffold(title = stringResource(R.string.more_title)) { padding ->
         Column(Modifier.padding(padding).verticalScroll(rememberScrollState())) {
             items.forEachIndexed { index, item ->
                 Row(

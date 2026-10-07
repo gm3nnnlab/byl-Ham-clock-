@@ -63,8 +63,8 @@ class RadioDataRepositoryImpl(
                     SyncResult.NotConfigured
                 }
                 is RemoteResult.Failure -> {
-                    meta.recordFailure(now(), result.message)
-                    SyncResult.Failed(result.message)
+                    meta.recordFailure(now(), result.problem)
+                    SyncResult.Failed(result.problem)
                 }
                 is RemoteResult.Success -> {
                     local.replaceCatalog(result.catalog)

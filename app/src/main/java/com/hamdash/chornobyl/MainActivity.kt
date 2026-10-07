@@ -1,13 +1,21 @@
 package com.hamdash.chornobyl
 
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -43,8 +51,18 @@ class MainActivity : ComponentActivity() {
                 onDispose { }
             }
 
-            HamDashTheme(darkTheme = dark) {
-                HamDashRoot(container)
+            val localized = remember(settings.language) {
+                val config = Configuration(resources.configuration)
+                config.setLocale(settings.language.locale)
+                LocalizedContext(this, createConfigurationContext(config).resources)
+            }
+            CompositionLocalProvider(
+                LocalContext provides localized,
+                LocalConfiguration provides localized.resources.configuration,
+            ) {
+                HamDashTheme(darkTheme = dark) {
+                    HamDashRoot(container)
+                }
             }
         }
     }
@@ -66,4 +84,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+/**
+ * Keeps the Activity in the context chain (Compose looks it up for back handling and permission requests)
+ * and only swaps the resources, so stringResource() follows the language chosen in Settings.
+ */
+private class LocalizedContext(base: Context, private val localizedResources: Resources) : ContextWrapper(base) {
+    override fun getResources(): Resources = localizedResources
 }

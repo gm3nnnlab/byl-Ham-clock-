@@ -25,21 +25,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.Talkgroup
 import com.hamdash.chornobyl.domain.formatMHz
-import com.hamdash.chornobyl.domain.formatOffset
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.EmptyView
 import com.hamdash.chornobyl.ui.common.ErrorView
 import com.hamdash.chornobyl.ui.common.LabeledRow
 import com.hamdash.chornobyl.ui.common.LoadingView
-import com.hamdash.chornobyl.ui.common.NO_DATA
+import com.hamdash.chornobyl.ui.common.asString
+import com.hamdash.chornobyl.ui.common.displayName
+import com.hamdash.chornobyl.ui.common.mhzText
+import com.hamdash.chornobyl.ui.common.noData
+import com.hamdash.chornobyl.ui.common.offsetText
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.SectionCard
 import com.hamdash.chornobyl.ui.theme.NumberFont
@@ -48,15 +53,15 @@ import com.hamdash.chornobyl.ui.theme.NumberFont
 fun DmrScreen(viewModel: DmrViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ScreenScaffold(title = "DMR RADIO") { padding ->
+    ScreenScaffold(title = stringResource(R.string.dmr_title)) { padding ->
         val error = state.error
         val selected = state.selected
         when {
             state.loading -> LoadingView(Modifier.padding(padding))
-            error != null -> ErrorView(error, onRetry = null, modifier = Modifier.padding(padding))
+            error != null -> ErrorView(error.asString(), onRetry = null, modifier = Modifier.padding(padding))
             selected == null -> EmptyView(
-                title = "No DMR repeaters",
-                message = "The local database has no DMR repeaters. Open Settings to check your data source and sync.",
+                title = stringResource(R.string.dmr_none_title),
+                message = stringResource(R.string.dmr_none_msg),
                 modifier = Modifier.padding(padding),
             )
             else -> LazyColumn(
@@ -77,14 +82,14 @@ fun DmrScreen(viewModel: DmrViewModel = viewModel(factory = AppViewModelProvider
                 }
                 item { RepeaterSummary(selected) }
                 item {
-                    Text("TALKGROUPS", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.dmr_talkgroups), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 }
                 item {
                     OutlinedTextField(
                         value = state.query,
                         onValueChange = viewModel::setQuery,
                         singleLine = true,
-                        label = { Text("Search by ID, name or description") },
+                        label = { Text(stringResource(R.string.dmr_search)) },
                         leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -92,7 +97,7 @@ fun DmrScreen(viewModel: DmrViewModel = viewModel(factory = AppViewModelProvider
                 if (state.talkgroups.isEmpty()) {
                     item {
                         Text(
-                            if (state.totalTalkgroups == 0) "No talkgroups are published in the local database." else "No talkgroups match your search.",
+                            stringResource(if (state.totalTalkgroups == 0) R.string.dmr_tg_none_published else R.string.dmr_tg_none_match),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -115,34 +120,38 @@ private fun BigValue(text: String) {
 private fun RepeaterSummary(repeater: Repeater) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            SectionCard("FREQUENCY", Modifier.weight(3f)) {
-                BigValue("${formatMHz(repeater.rxMHz)} MHz")
+            SectionCard(stringResource(R.string.dmr_sec_frequency), Modifier.weight(3f)) {
+                BigValue(mhzText(formatMHz(repeater.rxMHz)))
                 Text(
-                    "TX ${formatMHz(repeater.txMHz)}  ${formatOffset(repeater.offsetMHz)}",
+                    stringResource(R.string.dmr_tx_line, formatMHz(repeater.txMHz), offsetText(repeater.offsetMHz)),
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = NumberFont,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            SectionCard("MODE", Modifier.weight(2f)) {
-                BigValue(repeater.mode.label)
-                Text(repeater.bandName ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            SectionCard(stringResource(R.string.dmr_sec_mode), Modifier.weight(2f)) {
+                BigValue(repeater.mode.displayName())
+                Text(repeater.bandName.orEmpty(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            SectionCard("COLOR CODE", Modifier.weight(1f)) {
-                BigValue(repeater.colorCode?.let { "CC $it" } ?: NO_DATA)
+            SectionCard(stringResource(R.string.dmr_sec_cc), Modifier.weight(1f)) {
+                BigValue(repeater.colorCode?.let { stringResource(R.string.value_cc, it) } ?: noData())
             }
-            SectionCard("SLOT", Modifier.weight(1f)) {
-                BigValue(repeater.timeslot?.let { "TS $it" } ?: NO_DATA)
+            SectionCard(stringResource(R.string.dmr_sec_slot), Modifier.weight(1f)) {
+                BigValue(repeater.timeslot?.let { stringResource(R.string.value_ts, it) } ?: noData())
             }
         }
-        SectionCard("REPEATER") {
-            LabeledRow("Callsign", repeater.callsign)
-            LabeledRow("Name", repeater.name)
-            LabeledRow("Talkgroups", repeater.talkgroupIds.takeIf { it.isNotEmpty() }?.joinToString(", ") { "TG $it" } ?: NO_DATA)
-            LabeledRow("Source", repeater.source)
-            LabeledRow("Last updated", repeater.lastUpdated.ifEmpty { NO_DATA })
+        SectionCard(stringResource(R.string.dmr_sec_repeater)) {
+            LabeledRow(stringResource(R.string.lbl_callsign), repeater.callsign)
+            LabeledRow(stringResource(R.string.lbl_name), repeater.name)
+            LabeledRow(
+                stringResource(R.string.lbl_talkgroups),
+                repeater.talkgroupIds.takeIf { it.isNotEmpty() }
+                    ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: noData(),
+            )
+            LabeledRow(stringResource(R.string.lbl_source), repeater.source)
+            LabeledRow(stringResource(R.string.lbl_last_updated), repeater.lastUpdated.ifEmpty { noData() })
         }
     }
 }
@@ -156,18 +165,18 @@ private fun TalkgroupRow(talkgroup: Talkgroup, onThisRepeater: Boolean) {
     ) {
         Column(Modifier.padding(14.dp)) {
             Row {
-                Text("TG ${talkgroup.id}", fontFamily = NumberFont, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(stringResource(R.string.value_tg, talkgroup.id), fontFamily = NumberFont, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 Spacer(Modifier.width(10.dp))
                 Text(talkgroup.name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 if (onThisRepeater) {
-                    Text("on this repeater", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.dmr_on_this), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                 }
             }
             if (talkgroup.description.isNotEmpty()) {
                 Text(talkgroup.description, style = MaterialTheme.typography.bodyMedium)
             }
             Spacer(Modifier.height(4.dp))
-            Text("Source: ${talkgroup.source}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.dmr_tg_source, talkgroup.source), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

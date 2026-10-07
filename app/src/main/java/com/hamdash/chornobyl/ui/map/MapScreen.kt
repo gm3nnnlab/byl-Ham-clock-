@@ -19,15 +19,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.FilterChipRow
 import com.hamdash.chornobyl.ui.common.RepeaterDetailSheet
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.UiState
+import com.hamdash.chornobyl.ui.common.displayName
 import com.hamdash.chornobyl.ui.common.rememberContainer
 
 @Composable
@@ -41,7 +44,7 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
     val fix = if (showGps) state.location as? LocationState.Fix else null
     val visible = (state.repeaters as? UiState.Content)?.data.orEmpty()
 
-    ScreenScaffold(title = "Map") { padding ->
+    ScreenScaffold(title = stringResource(R.string.map_title)) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
             FilterChipRow(state.filter, viewModel::setFilter, Modifier.padding(vertical = 8.dp))
             Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -64,7 +67,11 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
                             shape = MaterialTheme.shapes.small,
                         ) {
                             Text(
-                                if (state.total == 0) "No repeaters in the local database yet." else "No ${state.filter.label} repeaters to show.",
+                                if (state.total == 0) {
+                                    stringResource(R.string.dash_no_repeaters)
+                                } else {
+                                    stringResource(R.string.map_no_filter, state.filter.displayName())
+                                },
                                 modifier = Modifier.padding(12.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                             )
@@ -85,7 +92,7 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
                     },
                     modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
                 ) {
-                    Icon(Icons.Filled.MyLocation, contentDescription = "My location")
+                    Icon(Icons.Filled.MyLocation, contentDescription = stringResource(R.string.map_my_location))
                 }
             }
         }

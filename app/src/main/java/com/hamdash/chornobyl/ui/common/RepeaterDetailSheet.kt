@@ -23,14 +23,14 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.DistanceUnit
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
-import com.hamdash.chornobyl.domain.formatDistance
 import com.hamdash.chornobyl.domain.formatMHz
-import com.hamdash.chornobyl.domain.formatOffset
 import com.hamdash.chornobyl.domain.haversineKm
 import com.hamdash.chornobyl.location.LocationState
 import java.util.Locale
@@ -45,6 +45,7 @@ fun RepeaterDetailSheet(
     onToggleFavorite: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val missing = noData()
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(
             Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).navigationBarsPadding(),
@@ -58,7 +59,7 @@ fun RepeaterDetailSheet(
                 IconButton(onClick = onToggleFavorite) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
-                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        contentDescription = stringResource(if (isFavorite) R.string.fav_remove else R.string.fav_add),
                         tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -67,38 +68,53 @@ fun RepeaterDetailSheet(
             HorizontalDivider()
             Spacer(Modifier.height(8.dp))
 
-            DetailSection("FREQUENCY")
-            LabeledRow("RX (you listen)", "${formatMHz(repeater.rxMHz)} MHz", mono = true)
-            LabeledRow("TX (you send)", "${formatMHz(repeater.txMHz)} MHz", mono = true)
-            LabeledRow("Offset", formatOffset(repeater.offsetMHz), mono = true)
-            repeater.bandName?.let { LabeledRow("Band", it) }
+            DetailSection(stringResource(R.string.sec_frequency))
+            LabeledRow(stringResource(R.string.lbl_rx), mhzText(formatMHz(repeater.rxMHz)), mono = true)
+            LabeledRow(stringResource(R.string.lbl_tx), mhzText(formatMHz(repeater.txMHz)), mono = true)
+            LabeledRow(stringResource(R.string.lbl_offset), offsetText(repeater.offsetMHz), mono = true)
+            repeater.bandName?.let { LabeledRow(stringResource(R.string.lbl_band), it) }
 
-            DetailSection("PARAMETERS")
-            LabeledRow("Mode", repeater.mode.label)
-            repeater.ctcssHz?.let { LabeledRow("CTCSS", "${trimTone(it)} Hz", mono = true) }
-            if (repeater.mode == RadioMode.DMR) {
-                LabeledRow("Color code", repeater.colorCode?.let { "CC $it" } ?: "NO DATA")
-                LabeledRow("Timeslot", repeater.timeslot?.let { "TS $it" } ?: "NO DATA")
-                LabeledRow("Talkgroups", repeater.talkgroupIds.takeIf { it.isNotEmpty() }?.joinToString(", ") { "TG $it" } ?: "NO DATA")
+            DetailSection(stringResource(R.string.sec_parameters))
+            LabeledRow(stringResource(R.string.lbl_mode), repeater.mode.displayName())
+            repeater.ctcssHz?.let {
+                LabeledRow(stringResource(R.string.lbl_ctcss), stringResource(R.string.value_hz, trimTone(it)), mono = true)
             }
-
-            DetailSection("LOCATION")
-            LabeledRow(
-                "Coordinates",
-                String.format(Locale.US, "%.4f, %.4f", repeater.latitude, repeater.longitude),
-                mono = true,
-            )
-            LabeledRow("Elevation", repeater.elevationM?.let { "$it m" } ?: "NO DATA")
-            (location as? LocationState.Fix)?.let { fix ->
+            if (repeater.mode == RadioMode.DMR) {
                 LabeledRow(
-                    "Distance",
-                    formatDistance(haversineKm(fix.latitude, fix.longitude, repeater.latitude, repeater.longitude), unit),
+                    stringResource(R.string.lbl_color_code),
+                    repeater.colorCode?.let { stringResource(R.string.value_cc, it) } ?: missing,
+                )
+                LabeledRow(
+                    stringResource(R.string.lbl_timeslot),
+                    repeater.timeslot?.let { stringResource(R.string.value_ts, it) } ?: missing,
+                )
+                LabeledRow(
+                    stringResource(R.string.lbl_talkgroups),
+                    repeater.talkgroupIds.takeIf { it.isNotEmpty() }
+                        ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: missing,
                 )
             }
 
-            DetailSection("SOURCE")
-            LabeledRow("Source", repeater.source)
-            LabeledRow("Last updated", repeater.lastUpdated.ifEmpty { "NO DATA" })
+            DetailSection(stringResource(R.string.sec_location))
+            LabeledRow(
+                stringResource(R.string.lbl_coordinates),
+                String.format(Locale.US, "%.4f, %.4f", repeater.latitude, repeater.longitude),
+                mono = true,
+            )
+            LabeledRow(
+                stringResource(R.string.lbl_elevation),
+                repeater.elevationM?.let { stringResource(R.string.value_m, it) } ?: missing,
+            )
+            (location as? LocationState.Fix)?.let { fix ->
+                LabeledRow(
+                    stringResource(R.string.lbl_distance),
+                    distanceText(haversineKm(fix.latitude, fix.longitude, repeater.latitude, repeater.longitude), unit),
+                )
+            }
+
+            DetailSection(stringResource(R.string.sec_source))
+            LabeledRow(stringResource(R.string.lbl_source), repeater.source)
+            LabeledRow(stringResource(R.string.lbl_last_updated), repeater.lastUpdated.ifEmpty { missing })
             Spacer(Modifier.height(24.dp))
         }
     }

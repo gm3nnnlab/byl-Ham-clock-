@@ -14,15 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.Band
 import com.hamdash.chornobyl.domain.formatMHz
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.EmptyView
+import com.hamdash.chornobyl.ui.common.asString
+import com.hamdash.chornobyl.ui.common.mhzText
 import com.hamdash.chornobyl.ui.common.ErrorView
 import com.hamdash.chornobyl.ui.common.LabeledRow
 import com.hamdash.chornobyl.ui.common.LoadingView
@@ -34,22 +38,21 @@ import com.hamdash.chornobyl.ui.theme.NumberFont
 @Composable
 fun BandsScreen(onBack: () -> Unit, viewModel: ReferenceViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
     val bands by viewModel.bands.collectAsStateWithLifecycle()
-    ScreenScaffold(title = "Bands", onBack = onBack) { padding ->
+    ScreenScaffold(title = stringResource(R.string.more_bands_title), onBack = onBack) { padding ->
         val modifier = Modifier.padding(padding)
         when (val state = bands) {
             UiState.Loading -> LoadingView(modifier)
-            UiState.Empty -> EmptyView("No bands", "The band reference is empty. Clear the cache in Settings to restore the bundled reference.", modifier)
-            is UiState.Error -> ErrorView(state.message, onRetry = null, modifier = modifier)
+            UiState.Empty -> EmptyView(stringResource(R.string.bands_none_title), stringResource(R.string.bands_none_msg), modifier)
+            is UiState.Error -> ErrorView(state.message.asString(), onRetry = null, modifier = modifier)
             is UiState.Content -> LazyColumn(
                 modifier = modifier,
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 item {
-                    SectionCard("IMPORTANT") {
+                    SectionCard(stringResource(R.string.bands_important)) {
                         Text(
-                            "Ranges are a general IARU Region 1 reference. Allocations, power limits and modes differ by country " +
-                                "and by license class. Check your current national frequency allocation plan before transmitting.",
+                            stringResource(R.string.bands_disclaimer),
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
@@ -70,15 +73,15 @@ private fun BandCard(band: Band) {
         androidx.compose.foundation.layout.Column(Modifier.padding(16.dp)) {
             Text(band.name, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             Text(
-                "${formatMHz(band.startMHz)} - ${formatMHz(band.endMHz)} MHz",
+                mhzText("${formatMHz(band.startMHz)} - ${formatMHz(band.endMHz)}"),
                 fontFamily = NumberFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 8.dp),
             )
-            LabeledRow("Typical modes", band.typicalModes)
-            LabeledRow("Purpose", band.purpose)
-            if (band.notes.isNotEmpty()) LabeledRow("Notes", band.notes)
+            LabeledRow(stringResource(R.string.lbl_typical_modes), band.typicalModes)
+            LabeledRow(stringResource(R.string.lbl_purpose), band.purpose)
+            if (band.notes.isNotEmpty()) LabeledRow(stringResource(R.string.lbl_notes), band.notes)
         }
     }
 }

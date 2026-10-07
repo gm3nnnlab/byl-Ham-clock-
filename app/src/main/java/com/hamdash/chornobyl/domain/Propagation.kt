@@ -43,5 +43,5 @@ fun geomagneticState(kp: Double?): GeomagneticState? = when {
 data class PropagationSnapshot(
     val data: PropagationData? = null,
     val loading: Boolean = false,
-    val error: String? = null,
+    val error: Boolean = false,
 )

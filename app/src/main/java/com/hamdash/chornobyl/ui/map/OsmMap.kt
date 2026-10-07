@@ -22,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.ui.theme.ModeColors
@@ -57,6 +59,7 @@ fun OsmMap(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val myLocationTitle = stringResource(R.string.map_my_location)
     val onClick by rememberUpdatedState(onRepeaterClick)
     val latestUser by rememberUpdatedState(userLocation)
 
@@ -106,7 +109,7 @@ fun OsmMap(
         mapView.invalidate()
     }
 
-    LaunchedEffect(repeaters, userLocation) {
+    LaunchedEffect(repeaters, userLocation, myLocationTitle) {
         mapView.overlays.removeAll { it is Marker }
         repeaters.forEach { repeater ->
             val marker = Marker(mapView).apply {
@@ -126,7 +129,7 @@ fun OsmMap(
                 position = GeoPoint(fix.latitude, fix.longitude)
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                 icon = circleIcon(context, AndroidColor.parseColor("#2979FF"), 18)
-                title = "My location"
+                title = myLocationTitle
                 setOnMarkerClickListener { _, _ -> true }
             }
             mapView.overlays.add(me)
@@ -151,7 +154,7 @@ fun OsmMap(
             shape = MaterialTheme.shapes.extraSmall,
         ) {
             Text(
-                if (tileUrl.isBlank()) "© OpenStreetMap contributors" else "Custom map tile source",
+                stringResource(if (tileUrl.isBlank()) R.string.map_attribution_osm else R.string.map_attribution_custom),
                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                 style = MaterialTheme.typography.labelSmall,
             )

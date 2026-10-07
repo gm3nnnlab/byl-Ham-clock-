@@ -3,9 +3,12 @@ package com.hamdash.chornobyl.ui.dmr
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamdash.chornobyl.AppContainer
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.Talkgroup
+import com.hamdash.chornobyl.ui.common.UiText
+import com.hamdash.chornobyl.ui.common.uiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +19,7 @@ import kotlinx.coroutines.flow.update
 
 data class DmrUiState(
     val loading: Boolean = true,
-    val error: String? = null,
+    val error: UiText? = null,
     val repeaters: List<Repeater> = emptyList(),
     val selected: Repeater? = null,
     val talkgroups: List<Talkgroup> = emptyList(),
@@ -54,7 +57,7 @@ class DmrViewModel(container: AppContainer) : ViewModel() {
             emit(
                 DmrUiState(
                     loading = false,
-                    error = "The DMR data could not be read from the local database. Restart the app, or clear the cache in Settings.",
+                    error = uiText(R.string.err_dmr_read),
                 ),
             )
         }

@@ -6,6 +6,7 @@ import com.hamdash.chornobyl.domain.DocLink
 import com.hamdash.chornobyl.domain.RadioCatalog
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.SyncProblem
 import com.hamdash.chornobyl.domain.Talkgroup
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -69,7 +70,7 @@ internal data class DigitalModeDto(
     val links: List<DocLinkDto> = emptyList(),
 )
 
-class CatalogFormatException(message: String) : Exception(message)
+class CatalogFormatException(val problem: SyncProblem) : Exception(problem.encode())
 
 data class ParsedCatalog(val catalog: RadioCatalog, val rejected: List<String>)
 
@@ -86,15 +87,15 @@ object CatalogParser {
         val root = try {
             json.parseToJsonElement(text)
         } catch (e: SerializationException) {
-            throw CatalogFormatException("The response is not valid JSON.")
+            throw CatalogFormatException(SyncProblem.NotJson)
         } catch (e: IllegalArgumentException) {
-            throw CatalogFormatException("The response is not valid JSON.")
+            throw CatalogFormatException(SyncProblem.NotJson)
         }
-        val obj = root as? JsonObject ?: throw CatalogFormatException("The catalog root must be a JSON object.")
+        val obj = root as? JsonObject ?: throw CatalogFormatException(SyncProblem.NotObject)
 
         val schema = (obj["schemaVersion"] as? JsonPrimitive)?.intOrNull ?: 1
         if (schema > SUPPORTED_SCHEMA) {
-            throw CatalogFormatException("Catalog schema $schema is newer than this app supports ($SUPPORTED_SCHEMA).")
+            throw CatalogFormatException(SyncProblem.NewerSchema(schema, SUPPORTED_SCHEMA))
         }
 
         val rejected = mutableListOf<String>()

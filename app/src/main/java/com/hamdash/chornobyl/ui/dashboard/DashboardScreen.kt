@@ -25,11 +25,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.DEFAULT_LATITUDE
 import com.hamdash.chornobyl.domain.DEFAULT_LONGITUDE
 import com.hamdash.chornobyl.domain.RadioMode
@@ -45,7 +48,9 @@ import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.ErrorView
 import com.hamdash.chornobyl.ui.common.LoadingView
 import com.hamdash.chornobyl.ui.common.ModeDot
-import com.hamdash.chornobyl.ui.common.NO_DATA
+import com.hamdash.chornobyl.ui.common.asString
+import com.hamdash.chornobyl.ui.common.displayName
+import com.hamdash.chornobyl.ui.common.noData
 import com.hamdash.chornobyl.ui.common.RepeaterDetailSheet
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.SectionCard
@@ -78,13 +83,13 @@ fun DashboardScreen(
     val fix = if (showGps) state.location as? LocationState.Fix else null
 
     ScreenScaffold(
-        title = "CHORNOBYL HAMDASH",
+        title = stringResource(R.string.dash_title),
         actions = { StatusChip(online = state.status.online) },
     ) { padding ->
         val error = state.error
         when {
             state.loading -> LoadingView(Modifier.padding(padding))
-            error != null -> ErrorView(error, onRetry = null, modifier = Modifier.padding(padding))
+            error != null -> ErrorView(error.asString(), onRetry = null, modifier = Modifier.padding(padding))
             else -> Column(
                 Modifier
                     .padding(padding)
@@ -100,8 +105,8 @@ fun DashboardScreen(
                 ClockCard(zone = zone, showUtc = state.settings.showUtc, fix = fix)
 
                 SectionCard(
-                    title = "MAP",
-                    trailing = { TextButton(onClick = onOpenMap) { Text("Open map") } },
+                    title = stringResource(R.string.dash_map),
+                    trailing = { TextButton(onClick = onOpenMap) { Text(stringResource(R.string.action_open_map)) } },
                 ) {
                     OsmMap(
                         repeaters = state.repeaters,
@@ -150,28 +155,36 @@ private fun ClockCard(zone: ZoneId, showUtc: Boolean, fix: LocationState.Fix?) {
     val sun = remember(localDate, latitude, longitude) { SunCalculator.calculate(localDate, latitude, longitude) }
     val utc = ZoneId.of("UTC")
 
-    SectionCard("CLOCK") {
+    val locale = LocalConfiguration.current.locales[0]
+    val hourSuffix = stringResource(R.string.unit_h)
+    val minuteSuffix = stringResource(R.string.unit_min)
+
+    SectionCard(stringResource(R.string.dash_clock)) {
         Row(Modifier.fillMaxWidth()) {
             if (showUtc) {
-                ClockValue("UTC", TimeFormats.clock(now, utc), Modifier.weight(1f))
+                ClockValue(stringResource(R.string.dash_utc), TimeFormats.clock(now, utc), Modifier.weight(1f))
                 Spacer(Modifier.width(8.dp))
             }
-            ClockValue("LOCAL  ${zone.id}", TimeFormats.clock(now, zone), Modifier.weight(1f))
+            ClockValue(stringResource(R.string.dash_local, zone.id), TimeFormats.clock(now, zone), Modifier.weight(1f))
         }
         Spacer(Modifier.height(6.dp))
-        Text(TimeFormats.date(now, zone), style = MaterialTheme.typography.bodyMedium)
+        Text(TimeFormats.date(now, zone, locale), style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(10.dp))
         when (sun) {
             is SunResult.Normal -> Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                ValueTile("Sunrise", TimeFormats.hourMinute(sun.sunrise, zone), Modifier.weight(1f))
-                ValueTile("Sunset", TimeFormats.hourMinute(sun.sunset, zone), Modifier.weight(1f))
-                ValueTile("Daylight", TimeFormats.duration(sun.dayLength), Modifier.weight(1f))
+                ValueTile(stringResource(R.string.dash_sunrise), TimeFormats.hourMinute(sun.sunrise, zone), Modifier.weight(1f))
+                ValueTile(stringResource(R.string.dash_sunset), TimeFormats.hourMinute(sun.sunset, zone), Modifier.weight(1f))
+                ValueTile(
+                    stringResource(R.string.dash_daylight),
+                    TimeFormats.duration(sun.dayLength, hourSuffix, minuteSuffix),
+                    Modifier.weight(1f),
+                )
             }
-            SunResult.AlwaysUp -> Text("The sun does not set today at this location.")
-            SunResult.AlwaysDown -> Text("The sun does not rise today at this location.")
+            SunResult.AlwaysUp -> Text(stringResource(R.string.dash_sun_up_always))
+            SunResult.AlwaysDown -> Text(stringResource(R.string.dash_sun_down_always))
         }
         Text(
-            if (fix != null) "Sun times for your location" else "Sun times for Chornobyl (default location)",
+            stringResource(if (fix != null) R.string.dash_sun_for_you else R.string.dash_sun_default),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 6.dp),
@@ -197,19 +210,19 @@ private fun ClockValue(label: String, value: String, modifier: Modifier = Modifi
 @Composable
 private fun RepeatersCard(total: Int, counts: Map<RadioMode, Int>, onClick: () -> Unit) {
     SectionCard(
-        title = "REPEATERS",
+        title = stringResource(R.string.dash_repeaters),
         onClick = onClick,
-        trailing = { Text("$total found", style = MaterialTheme.typography.labelMedium) },
+        trailing = { Text(stringResource(R.string.dash_found, total), style = MaterialTheme.typography.labelMedium) },
     ) {
         if (total == 0) {
-            Text("No repeaters in the local database yet.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.dash_no_repeaters), color = MaterialTheme.colorScheme.onSurfaceVariant)
         } else {
             RadioMode.entries.filter { (counts[it] ?: 0) > 0 }.forEach { mode ->
                 Row(Modifier.padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
                     ModeDot(mode)
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "${mode.label} - ${counts[mode]}",
+                        "${mode.displayName()} - ${counts[mode]}",
                         fontFamily = NumberFont,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
@@ -222,27 +235,39 @@ private fun RepeatersCard(total: Int, counts: Map<RadioMode, Int>, onClick: () -
 
 @Composable
 private fun DmrCard(repeater: Repeater?, onClick: () -> Unit) {
-    SectionCard(title = "DMR", onClick = onClick) {
+    SectionCard(title = stringResource(R.string.dash_dmr), onClick = onClick) {
         if (repeater == null) {
-            Text("No DMR repeaters in the local database.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.dash_no_dmr), color = MaterialTheme.colorScheme.onSurfaceVariant)
             return@SectionCard
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            ValueTile("${repeater.bandName ?: "RX"} MHz", formatMHz(repeater.rxMHz), Modifier.weight(2f))
-            ValueTile("Mode", repeater.mode.label, Modifier.weight(1f))
+            ValueTile(stringResource(R.string.dash_band_mhz, repeater.bandName ?: "RX"), formatMHz(repeater.rxMHz), Modifier.weight(2f))
+            ValueTile(stringResource(R.string.dash_mode), repeater.mode.displayName(), Modifier.weight(1f))
         }
         Spacer(Modifier.height(8.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            ValueTile("Color code", repeater.colorCode?.let { "CC $it" } ?: NO_DATA, Modifier.weight(1f))
-            ValueTile("Slot", repeater.timeslot?.let { "TS $it" } ?: NO_DATA, Modifier.weight(1f))
+            ValueTile(
+                stringResource(R.string.dash_color_code),
+                repeater.colorCode?.let { stringResource(R.string.value_cc, it) } ?: noData(),
+                Modifier.weight(1f),
+            )
+            ValueTile(
+                stringResource(R.string.dash_slot),
+                repeater.timeslot?.let { stringResource(R.string.value_ts, it) } ?: noData(),
+                Modifier.weight(1f),
+            )
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            "Talkgroups: " + (repeater.talkgroupIds.takeIf { it.isNotEmpty() }?.joinToString(", ") { "TG $it" } ?: NO_DATA),
+            stringResource(
+                R.string.dash_talkgroups_line,
+                repeater.talkgroupIds.takeIf { it.isNotEmpty() }
+                    ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: noData(),
+            ),
             style = MaterialTheme.typography.bodyMedium,
         )
         Text(
-            "${repeater.callsign} - ${repeater.source}",
+            stringResource(R.string.dash_callsign_source, repeater.callsign, repeater.source),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp),
@@ -254,23 +279,33 @@ private fun DmrCard(repeater: Repeater?, onClick: () -> Unit) {
 private fun PropagationCard(state: DashboardUiState, onClick: () -> Unit) {
     val data = state.propagation.data
     SectionCard(
-        title = "PROPAGATION",
+        title = stringResource(R.string.dash_propagation),
         onClick = onClick,
         trailing = {
             if (state.propagation.loading) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
         },
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            ValueTile("Solar flux", data?.solarFlux?.toString() ?: NO_DATA, Modifier.weight(1f))
-            ValueTile("K-index", data?.kIndex?.let { String.format(Locale.US, "%.1f", it) } ?: NO_DATA, Modifier.weight(1f))
-            ValueTile("A-index", data?.aIndex?.toString() ?: NO_DATA, Modifier.weight(1f))
+            ValueTile(stringResource(R.string.dash_solar_flux), data?.solarFlux?.toString() ?: noData(), Modifier.weight(1f))
+            ValueTile(
+                stringResource(R.string.dash_k_index),
+                data?.kIndex?.let { String.format(Locale.US, "%.1f", it) } ?: noData(),
+                Modifier.weight(1f),
+            )
+            ValueTile(stringResource(R.string.dash_a_index), data?.aIndex?.toString() ?: noData(), Modifier.weight(1f))
         }
         Spacer(Modifier.height(8.dp))
-        Text("Geomagnetic: " + (geomagneticState(data?.kIndex)?.label ?: NO_DATA), style = MaterialTheme.typography.bodyMedium)
-        Text("Last X-ray flare: " + (data?.flareClass ?: NO_DATA), style = MaterialTheme.typography.bodyMedium)
+        Text(
+            stringResource(R.string.dash_geomagnetic_line, geomagneticState(data?.kIndex)?.displayName() ?: noData()),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(stringResource(R.string.dash_flare_line, data?.flareClass ?: noData()), style = MaterialTheme.typography.bodyMedium)
         if (data != null && data.fetchedAtMillis > 0) {
             Text(
-                "Fetched " + TimeFormats.dateTime(Instant.ofEpochMilli(data.fetchedAtMillis), ZoneId.of("UTC")) + " UTC",
+                stringResource(
+                    R.string.dash_fetched,
+                    TimeFormats.dateTime(Instant.ofEpochMilli(data.fetchedAtMillis), ZoneId.of("UTC")),
+                ),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp),

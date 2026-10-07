@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.hamdash.chornobyl.domain.DataOrigin
+import com.hamdash.chornobyl.domain.SyncProblem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -17,7 +18,7 @@ data class SyncMeta(
     val lastSuccessMillis: Long = 0L,
     val lastAttemptMillis: Long = 0L,
     val origin: DataOrigin = DataOrigin.BUNDLED,
-    val lastError: String? = null,
+    val lastError: SyncProblem? = null,
     val dataUpdated: String? = null,
 )
 
@@ -37,7 +38,7 @@ class SyncMetaStore(private val store: DataStore<Preferences>) {
                 lastSuccessMillis = p[Keys.LAST_SUCCESS] ?: 0L,
                 lastAttemptMillis = p[Keys.LAST_ATTEMPT] ?: 0L,
                 origin = runCatching { DataOrigin.valueOf(p[Keys.ORIGIN].orEmpty()) }.getOrDefault(DataOrigin.BUNDLED),
-                lastError = p[Keys.ERROR],
+                lastError = SyncProblem.decode(p[Keys.ERROR]),
                 dataUpdated = p[Keys.DATA_UPDATED],
             )
         }
@@ -59,9 +60,9 @@ class SyncMetaStore(private val store: DataStore<Preferences>) {
         if (dataUpdated != null) it[Keys.DATA_UPDATED] = dataUpdated
     }
 
-    suspend fun recordFailure(now: Long, message: String) = store.edit {
+    suspend fun recordFailure(now: Long, problem: SyncProblem) = store.edit {
         it[Keys.LAST_ATTEMPT] = now
-        it[Keys.ERROR] = message
+        it[Keys.ERROR] = problem.encode()
     }
 
     suspend fun recordAttempt(now: Long) = store.edit { it[Keys.LAST_ATTEMPT] = now }

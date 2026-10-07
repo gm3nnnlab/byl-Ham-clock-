@@ -1,6 +1,7 @@
 package com.hamdash.chornobyl.data
 
 import com.hamdash.chornobyl.domain.RadioCatalog
+import com.hamdash.chornobyl.domain.SyncProblem
 import com.hamdash.chornobyl.network.RawApi
 import com.hamdash.chornobyl.settings.SettingsRepository
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +11,7 @@ import java.io.IOException
 
 sealed interface RemoteResult {
     data object NotConfigured : RemoteResult
-    data class Failure(val message: String) : RemoteResult
+    data class Failure(val problem: SyncProblem) : RemoteResult
     data class Success(val catalog: RadioCatalog, val rejected: List<String>) : RemoteResult
 }
 
@@ -29,26 +30,26 @@ class HttpCatalogRemoteDataSource(
         val url = settings.current().catalogUrl.trim()
         if (url.isEmpty()) return RemoteResult.NotConfigured
         if (!url.startsWith("https://")) {
-            return RemoteResult.Failure("The catalog URL must start with https://. Edit it in Settings > Data source.")
+            return RemoteResult.Failure(SyncProblem.HttpsRequired)
         }
         return try {
             val text = withContext(Dispatchers.IO) {
                 val body = api.fetch(url)
-                if (body.contentLength() > MAX_BYTES) throw CatalogFormatException("The catalog is larger than 5 MB.")
+                if (body.contentLength() > MAX_BYTES) throw CatalogFormatException(SyncProblem.TooLarge)
                 body.string()
             }
             val parsed = CatalogParser.parse(text)
             if (parsed.catalog.isEmpty) {
-                RemoteResult.Failure("The server returned no valid entries, so the local data was kept.")
+                RemoteResult.Failure(SyncProblem.NoValidEntries)
             } else {
                 RemoteResult.Success(parsed.catalog, parsed.rejected)
             }
         } catch (e: CatalogFormatException) {
-            RemoteResult.Failure("${e.message} The local data was kept.")
+            RemoteResult.Failure(e.problem)
         } catch (e: HttpException) {
-            RemoteResult.Failure("The server answered HTTP ${e.code()}. The local data was kept; try again later.")
+            RemoteResult.Failure(SyncProblem.HttpStatus(e.code()))
         } catch (e: IOException) {
-            RemoteResult.Failure("The server could not be reached. The local data was kept; check the connection or the URL.")
+            RemoteResult.Failure(SyncProblem.Unreachable)
         }
     }
 

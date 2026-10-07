@@ -3,6 +3,7 @@ package com.hamdash.chornobyl.ui.repeaters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamdash.chornobyl.AppContainer
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.RepeaterFilter
@@ -10,6 +11,8 @@ import com.hamdash.chornobyl.domain.filterBy
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.settings.AppSettings
 import com.hamdash.chornobyl.ui.common.UiState
+import com.hamdash.chornobyl.ui.common.UiText
+import com.hamdash.chornobyl.ui.common.uiText
 import com.hamdash.chornobyl.ui.common.toMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,14 +33,14 @@ data class RepeatersUiState(
     val status: AppStatus = AppStatus(),
     val selected: Repeater? = null,
     val favoriteIds: Set<String> = emptySet(),
-    val message: String? = null,
+    val message: UiText? = null,
 )
 
 class RepeatersViewModel(private val container: AppContainer) : ViewModel() {
     private val filter = MutableStateFlow(RepeaterFilter.ALL)
     private val query = MutableStateFlow("")
     private val selectedId = MutableStateFlow<String?>(null)
-    private val message = MutableStateFlow<String?>(null)
+    private val message = MutableStateFlow<UiText?>(null)
 
     private val core = combine(container.repository.repeaters, filter, query, selectedId) { all, f, q, id ->
         val filtered = all.filterBy(f, q)
@@ -73,10 +76,7 @@ class RepeatersViewModel(private val container: AppContainer) : ViewModel() {
         .catch {
             emit(
                 RepeatersUiState(
-                    content = UiState.Error(
-                        "The repeater list could not be read from the local database. " +
-                            "Restart the app, or clear the cache in Settings to rebuild it.",
-                    ),
+                    content = UiState.Error(uiText(R.string.err_repeaters_read)),
                 ),
             )
         }

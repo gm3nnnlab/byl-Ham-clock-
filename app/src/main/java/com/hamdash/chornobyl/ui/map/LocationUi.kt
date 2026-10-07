@@ -18,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.location.LocationTracker
 
@@ -63,13 +65,13 @@ fun LocationStatusBanner(
             var onAction: (() -> Unit)? = null
             when (state) {
                 LocationState.NoPermission -> {
-                    message = "Location is off. Allow it to see your position on the map."
-                    action = "Allow"
+                    message = stringResource(R.string.loc_permission)
+                    action = stringResource(R.string.action_allow)
                     onAction = onRequestPermission
                 }
                 LocationState.Disabled -> {
-                    message = "GPS / location services are turned off on this device."
-                    action = "Open settings"
+                    message = stringResource(R.string.loc_disabled)
+                    action = stringResource(R.string.action_open_settings)
                     onAction = {
                         runCatching {
                             context.startActivity(
@@ -78,7 +80,7 @@ fun LocationStatusBanner(
                         }
                     }
                 }
-                else -> message = "Searching for a GPS fix…"
+                else -> message = stringResource(R.string.loc_searching)
             }
             Text(message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
             val actionLabel = action

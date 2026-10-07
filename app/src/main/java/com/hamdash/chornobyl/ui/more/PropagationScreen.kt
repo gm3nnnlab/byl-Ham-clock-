@@ -18,15 +18,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.TimeFormats
 import com.hamdash.chornobyl.domain.geomagneticState
 import com.hamdash.chornobyl.network.PropagationSources
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.LabeledRow
-import com.hamdash.chornobyl.ui.common.NO_DATA
+import com.hamdash.chornobyl.ui.common.displayName
+import com.hamdash.chornobyl.ui.common.noData
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.SectionCard
 import com.hamdash.chornobyl.ui.common.ValueTile
@@ -40,13 +43,13 @@ fun PropagationScreen(onBack: () -> Unit, viewModel: PropagationViewModel = view
     val data = snapshot.data
 
     ScreenScaffold(
-        title = "Propagation",
+        title = stringResource(R.string.prop_title),
         onBack = onBack,
         actions = {
             if (snapshot.loading) {
                 CircularProgressIndicator(Modifier.padding(end = 16.dp).size(20.dp), strokeWidth = 2.dp)
             } else {
-                IconButton(onClick = viewModel::refresh) { Icon(Icons.Filled.Refresh, contentDescription = "Refresh") }
+                IconButton(onClick = viewModel::refresh) { Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.action_refresh)) }
             }
         },
     ) { padding ->
@@ -54,34 +57,40 @@ fun PropagationScreen(onBack: () -> Unit, viewModel: PropagationViewModel = view
             Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            SectionCard("SPACE WEATHER") {
+            SectionCard(stringResource(R.string.prop_sec_weather)) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    ValueTile("Solar flux (SFI)", data?.solarFlux?.toString() ?: NO_DATA, Modifier.weight(1f))
-                    ValueTile("K-index", data?.kIndex?.let { String.format(Locale.US, "%.2f", it) } ?: NO_DATA, Modifier.weight(1f))
-                    ValueTile("A-index", data?.aIndex?.toString() ?: NO_DATA, Modifier.weight(1f))
+                    ValueTile(stringResource(R.string.prop_sfi), data?.solarFlux?.toString() ?: noData(), Modifier.weight(1f))
+                    ValueTile(
+                        stringResource(R.string.dash_k_index),
+                        data?.kIndex?.let { String.format(Locale.US, "%.2f", it) } ?: noData(),
+                        Modifier.weight(1f),
+                    )
+                    ValueTile(stringResource(R.string.dash_a_index), data?.aIndex?.toString() ?: noData(), Modifier.weight(1f))
                 }
             }
-            SectionCard("CONDITIONS") {
-                LabeledRow("Geomagnetic", geomagneticState(data?.kIndex)?.label ?: NO_DATA)
-                LabeledRow("Last X-ray flare", data?.flareClass ?: NO_DATA)
-                data?.flareTime?.let { LabeledRow("Flare time", it) }
-                data?.kIndexTime?.let { LabeledRow("K-index time", "$it UTC") }
+            SectionCard(stringResource(R.string.prop_sec_conditions)) {
+                LabeledRow(stringResource(R.string.prop_geomagnetic), geomagneticState(data?.kIndex)?.displayName() ?: noData())
+                LabeledRow(stringResource(R.string.prop_flare), data?.flareClass ?: noData())
+                data?.flareTime?.let { LabeledRow(stringResource(R.string.prop_flare_time), it) }
+                data?.kIndexTime?.let { LabeledRow(stringResource(R.string.prop_k_time), stringResource(R.string.prop_utc_value, it)) }
                 LabeledRow(
-                    "Fetched",
+                    stringResource(R.string.prop_fetched),
                     data?.takeIf { it.fetchedAtMillis > 0 }
-                        ?.let { TimeFormats.dateTime(Instant.ofEpochMilli(it.fetchedAtMillis), ZoneId.of("UTC")) + " UTC" }
-                        ?: NO_DATA,
+                        ?.let {
+                            stringResource(
+                                R.string.prop_utc_value,
+                                TimeFormats.dateTime(Instant.ofEpochMilli(it.fetchedAtMillis), ZoneId.of("UTC")),
+                            )
+                        }
+                        ?: noData(),
                 )
             }
-            snapshot.error?.let { error ->
-                Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+            if (snapshot.error) {
+                Text(stringResource(R.string.prop_error), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
             }
-            SectionCard("ABOUT THESE VALUES") {
+            SectionCard(stringResource(R.string.prop_sec_about)) {
                 Text(
-                    "Values come from ${PropagationSources.ATTRIBUTION}. A value shown as NO DATA was not available or could not be " +
-                        "read; the app never estimates it. Higher solar flux generally helps the higher HF bands (15 m and up). " +
-                        "A K-index of 5 or more means a geomagnetic storm, which often degrades HF and polar paths. " +
-                        "These are general indicators, not a forecast for a specific path.",
+                    stringResource(R.string.prop_about_text, PropagationSources.ATTRIBUTION),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }

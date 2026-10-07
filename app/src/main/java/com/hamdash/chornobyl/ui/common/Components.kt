@@ -44,10 +44,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.DataOrigin
 import com.hamdash.chornobyl.domain.RadioMode
@@ -75,7 +77,7 @@ fun ScreenScaffold(
                 navigationIcon = {
                     if (onBack != null) {
                         IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                         }
                     }
                 },
@@ -122,17 +124,15 @@ fun SectionCard(
     }
 }
 
-const val NO_DATA = "NO DATA"
-
 @Composable
 fun ValueTile(label: String, value: String, modifier: Modifier = Modifier, valueColor: Color = Color.Unspecified) {
-    val missing = value == NO_DATA
+    val missing = value == noData()
     Column(modifier) {
         Text(
             text = value,
             fontFamily = NumberFont,
             fontWeight = FontWeight.Bold,
-            fontSize = if (missing) 16.sp else 24.sp,
+            fontSize = if (missing) 13.sp else 24.sp,
             color = when {
                 missing -> MaterialTheme.colorScheme.onSurfaceVariant
                 valueColor == Color.Unspecified -> MaterialTheme.colorScheme.onSurface
@@ -172,7 +172,7 @@ fun ModeChip(mode: RadioMode, modifier: Modifier = Modifier) {
         border = BorderStroke(1.dp, color),
     ) {
         Text(
-            text = mode.label,
+            text = mode.displayName(),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
@@ -199,7 +199,7 @@ fun StatusChip(online: Boolean, modifier: Modifier = Modifier) {
             Box(Modifier.size(8.dp).clip(CircleShape).background(color))
             Spacer(Modifier.width(6.dp))
             Text(
-                text = if (online) "ONLINE" else "OFFLINE",
+                text = stringResource(if (online) R.string.status_online else R.string.status_offline),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = color,
@@ -208,14 +208,16 @@ fun StatusChip(online: Boolean, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
 fun syncSummary(status: AppStatus, zone: ZoneId): String {
     val sync = status.sync
-    val date = sync.dataUpdated?.let { " (catalog dated $it)" }.orEmpty()
+    val date = sync.dataUpdated?.let { stringResource(R.string.sync_catalog_date, it) }.orEmpty()
+    val lastSync = sync.lastSyncMillis
     return when {
-        sync.isSyncing -> "Updating…"
-        sync.origin == DataOrigin.REMOTE && sync.lastSyncMillis != null ->
-            "Database updated ${TimeFormats.dateTime(Instant.ofEpochMilli(sync.lastSyncMillis), zone)}$date"
-        else -> "Database: bundled data, never synced$date"
+        sync.isSyncing -> stringResource(R.string.sync_updating)
+        sync.origin == DataOrigin.REMOTE && lastSync != null ->
+            stringResource(R.string.sync_remote, TimeFormats.dateTime(Instant.ofEpochMilli(lastSync), zone), date)
+        else -> stringResource(R.string.sync_bundled, date)
     }
 }
 
@@ -230,14 +232,14 @@ fun FilterChipRow(selected: RepeaterFilter, onSelect: (RepeaterFilter) -> Unit, 
             FilterChip(
                 selected = filter == selected,
                 onClick = { onSelect(filter) },
-                label = { Text(filter.label) },
+                label = { Text(filter.displayName()) },
             )
         }
     }
 }
 
 @Composable
-fun LoadingView(modifier: Modifier = Modifier, message: String = "Loading…") {
+fun LoadingView(modifier: Modifier = Modifier, message: String = stringResource(R.string.loading)) {
     Column(
         modifier.fillMaxSize().padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -279,12 +281,12 @@ fun ErrorView(message: String, onRetry: (() -> Unit)?, modifier: Modifier = Modi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text("Something went wrong", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.error_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(8.dp))
         Text(message, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
         if (onRetry != null) {
             Spacer(Modifier.height(16.dp))
-            Button(onClick = onRetry) { Text("Try again") }
+            Button(onClick = onRetry) { Text(stringResource(R.string.action_try_again)) }
         }
     }
 }

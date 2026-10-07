@@ -6,6 +6,7 @@ import com.hamdash.chornobyl.domain.TimeZoneOptions
 enum class ThemeMode(val label: String) { DARK("Dark"), LIGHT("Light") }
 
 data class AppSettings(
+    val language: AppLanguage = AppLanguage.fromDevice(),
     val themeMode: ThemeMode = ThemeMode.DARK,
     val timeZoneId: String = TimeZoneOptions.SYSTEM,
     val showUtc: Boolean = true,

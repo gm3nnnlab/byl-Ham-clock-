@@ -33,20 +33,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.TimeZoneOptions
-import com.hamdash.chornobyl.domain.formatDistance
 import com.hamdash.chornobyl.domain.formatMHz
-import com.hamdash.chornobyl.domain.formatOffset
 import com.hamdash.chornobyl.domain.haversineKm
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.EmptyView
+import com.hamdash.chornobyl.ui.common.asString
+import com.hamdash.chornobyl.ui.common.distanceText
+import com.hamdash.chornobyl.ui.common.offsetText
 import com.hamdash.chornobyl.ui.common.ErrorView
 import com.hamdash.chornobyl.ui.common.FilterChipRow
 import com.hamdash.chornobyl.ui.common.LoadingView
@@ -66,7 +69,7 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
     val fix = if (showGps) state.location as? LocationState.Fix else null
 
     ScreenScaffold(
-        title = "Radio Repeaters",
+        title = stringResource(R.string.rep_title),
         actions = { StatusChip(online = state.status.online) },
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
@@ -76,15 +79,15 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            state.message?.let { message ->
+            state.message?.let { messageText ->
                 Surface(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     shape = MaterialTheme.shapes.small,
                 ) {
                     Row(Modifier.padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
-                        TextButton(onClick = viewModel::dismissMessage) { Text("OK") }
+                        Text(messageText.asString(), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+                        TextButton(onClick = viewModel::dismissMessage) { Text(stringResource(R.string.action_ok)) }
                     }
                 }
             }
@@ -92,7 +95,7 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
                 value = state.query,
                 onValueChange = viewModel::setQuery,
                 singleLine = true,
-                label = { Text("Search callsign, name or frequency") },
+                label = { Text(stringResource(R.string.rep_search)) },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
             )
@@ -101,18 +104,18 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
             Box(Modifier.weight(1f).fillMaxWidth()) {
                 when (val content = state.content) {
                     UiState.Loading -> LoadingView()
-                    is UiState.Error -> ErrorView(content.message, onRetry = viewModel::syncNow)
+                    is UiState.Error -> ErrorView(content.message.asString(), onRetry = viewModel::syncNow)
                     UiState.Empty -> if (state.total == 0) {
                         EmptyView(
-                            title = "No repeaters yet",
-                            message = "The local database is empty. Sync to load the bundled data or your data source.",
-                            actionLabel = "Sync now",
+                            title = stringResource(R.string.rep_empty_title),
+                            message = stringResource(R.string.rep_empty_msg),
+                            actionLabel = stringResource(R.string.action_sync_now),
                             onAction = viewModel::syncNow,
                         )
                     } else {
                         EmptyView(
-                            title = "No matches",
-                            message = "No repeaters match the current filter or search. Try All or clear the search field.",
+                            title = stringResource(R.string.rep_nomatch_title),
+                            message = stringResource(R.string.rep_nomatch_msg),
                         )
                     }
                     is UiState.Content -> LazyColumn(
@@ -123,7 +126,7 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
                             RepeaterRow(
                                 repeater = repeater,
                                 distance = fix?.let {
-                                    formatDistance(
+                                    distanceText(
                                         haversineKm(it.latitude, it.longitude, repeater.latitude, repeater.longitude),
                                         state.settings.distanceUnit,
                                     )
@@ -178,15 +181,22 @@ private fun RepeaterRow(
                 Text(repeater.name, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "RX ${formatMHz(repeater.rxMHz)}  TX ${formatMHz(repeater.txMHz)}  ${formatOffset(repeater.offsetMHz)}",
+                    stringResource(
+                        R.string.list_rx_tx,
+                        formatMHz(repeater.rxMHz),
+                        formatMHz(repeater.txMHz),
+                        offsetText(repeater.offsetMHz),
+                    ),
                     fontFamily = NumberFont,
                     style = MaterialTheme.typography.bodySmall,
                 )
                 val extras = buildList {
-                    repeater.ctcssHz?.let { add("CTCSS ${if (it % 1.0 == 0.0) it.toInt() else it} Hz") }
+                    repeater.ctcssHz?.let {
+                        add(stringResource(R.string.list_ctcss, if (it % 1.0 == 0.0) it.toInt().toString() else it.toString()))
+                    }
                     if (repeater.mode == RadioMode.DMR) {
-                        repeater.colorCode?.let { add("CC $it") }
-                        repeater.timeslot?.let { add("TS $it") }
+                        repeater.colorCode?.let { add(stringResource(R.string.value_cc, it)) }
+                        repeater.timeslot?.let { add(stringResource(R.string.value_ts, it)) }
                     }
                     distance?.let { add(it) }
                 }
@@ -197,7 +207,7 @@ private fun RepeaterRow(
             IconButton(onClick = onToggleFavorite) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
-                    contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                    contentDescription = stringResource(if (isFavorite) R.string.fav_remove else R.string.fav_add),
                     tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
