@@ -44,6 +44,7 @@ import com.hamdash.chornobyl.ui.common.asString
 import com.hamdash.chornobyl.ui.common.displayName
 import com.hamdash.chornobyl.ui.common.mhzText
 import com.hamdash.chornobyl.ui.common.noData
+import com.hamdash.chornobyl.ui.common.talkgroupsText
 import com.hamdash.chornobyl.ui.common.offsetText
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.SectionCard
