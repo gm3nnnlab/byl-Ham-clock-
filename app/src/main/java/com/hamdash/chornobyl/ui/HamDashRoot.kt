@@ -31,6 +31,9 @@ import com.hamdash.chornobyl.ui.navigation.Routes
 import com.hamdash.chornobyl.ui.navigation.TopLevel
 import com.hamdash.chornobyl.ui.repeaters.RepeatersScreen
 import com.hamdash.chornobyl.ui.settings.SettingsScreen
+import com.hamdash.chornobyl.ui.weather.FpvScreen
+import com.hamdash.chornobyl.ui.weather.WeatherScreen
+import com.hamdash.chornobyl.ui.zone.ZoneScreen
 
 private fun NavHostController.goTopLevel(route: String) {
     navigate(route) {
@@ -72,6 +75,9 @@ fun HamDashRoot(@Suppress("UNUSED_PARAMETER") container: AppContainer) {
                     onOpenRepeaters = { navController.goTopLevel(Routes.REPEATERS) },
                     onOpenDmr = { navController.goTopLevel(Routes.DMR) },
                     onOpenPropagation = { navController.navigate(Routes.PROPAGATION) { launchSingleTop = true } },
+                    onOpenWeather = { navController.navigate(Routes.WEATHER) { launchSingleTop = true } },
+                    onOpenFpv = { navController.navigate(Routes.FPV) { launchSingleTop = true } },
+                    onOpenZone = { navController.navigate(Routes.ZONE) { launchSingleTop = true } },
                 )
             }
             composable(Routes.MAP) { MapScreen() }
@@ -82,6 +88,9 @@ fun HamDashRoot(@Suppress("UNUSED_PARAMETER") container: AppContainer) {
                     onOpenBands = { navController.navigate(Routes.BANDS) { launchSingleTop = true } },
                     onOpenDigital = { navController.navigate(Routes.DIGITAL) { launchSingleTop = true } },
                     onOpenPropagation = { navController.navigate(Routes.PROPAGATION) { launchSingleTop = true } },
+                    onOpenWeather = { navController.navigate(Routes.WEATHER) { launchSingleTop = true } },
+                    onOpenFpv = { navController.navigate(Routes.FPV) { launchSingleTop = true } },
+                    onOpenZone = { navController.navigate(Routes.ZONE) { launchSingleTop = true } },
                     onOpenSettings = { navController.navigate(Routes.SETTINGS) { launchSingleTop = true } },
                     onOpenAbout = { navController.navigate(Routes.ABOUT) { launchSingleTop = true } },
                 )
@@ -91,6 +100,19 @@ fun HamDashRoot(@Suppress("UNUSED_PARAMETER") container: AppContainer) {
             composable(Routes.PROPAGATION) { PropagationScreen(onBack = { navController.popBackStack() }) }
             composable(Routes.SETTINGS) { SettingsScreen(onBack = { navController.popBackStack() }) }
             composable(Routes.ABOUT) { AboutScreen(onBack = { navController.popBackStack() }) }
+            composable(Routes.WEATHER) {
+                WeatherScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenFpv = { navController.navigate(Routes.FPV) { launchSingleTop = true } },
+                )
+            }
+            composable(Routes.FPV) { FpvScreen(onBack = { navController.popBackStack() }) }
+            composable(Routes.ZONE) {
+                ZoneScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenMap = { navController.goTopLevel(Routes.MAP) },
+                )
+            }
         }
     }
 }

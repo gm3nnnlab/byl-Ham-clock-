@@ -1,0 +1,6 @@
+* Weather forecast (Open-Meteo): now, next 12 hours and next days
+* Drone flight weather rating: wind, gusts, wind at 80 m, rain, storms, visibility, cold, Kp, daylight
+* FPV reference: 5.8 GHz video channels with license notes, control links, checklist, LiPo tips, legal notice
+* Exclusion Zone: history timeline and public landmarks with sources
+* Map: Zone landmarks layer and approximate 30 km ring
+* S.T.A.L.K.E.R. game references, clearly marked as fiction

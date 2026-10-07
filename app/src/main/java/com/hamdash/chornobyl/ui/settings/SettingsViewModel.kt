@@ -6,6 +6,7 @@ import com.hamdash.chornobyl.AppContainer
 import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.DistanceUnit
+import com.hamdash.chornobyl.domain.WeatherPlace
 import com.hamdash.chornobyl.settings.AppLanguage
 import com.hamdash.chornobyl.settings.AppSettings
 import com.hamdash.chornobyl.settings.ThemeMode
@@ -51,6 +52,12 @@ class SettingsViewModel(private val container: AppContainer) : ViewModel() {
     fun setSyncInterval(hours: Int) = launch { repo.setSyncIntervalHours(hours) }
     fun setAllowMobileData(value: Boolean) = launch { repo.setAllowMobileData(value) }
     fun dismissMessage() = message.update { null }
+
+    fun setWeatherPlace(value: WeatherPlace) = launch {
+        repo.setWeatherPlace(value)
+        if (value == WeatherPlace.MY_LOCATION) repo.setShowGps(true)
+        runCatching { container.weatherRepository.refresh() }
+    }
 
     fun saveCatalogUrl(raw: String) {
         val url = raw.trim()

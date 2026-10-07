@@ -12,6 +12,8 @@ import com.hamdash.chornobyl.ui.more.PropagationViewModel
 import com.hamdash.chornobyl.ui.more.ReferenceViewModel
 import com.hamdash.chornobyl.ui.repeaters.RepeatersViewModel
 import com.hamdash.chornobyl.ui.settings.SettingsViewModel
+import com.hamdash.chornobyl.ui.weather.WeatherViewModel
+import com.hamdash.chornobyl.ui.zone.ZoneViewModel
 
 private fun CreationExtras.container() =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as HamDashApplication).container
@@ -25,5 +27,7 @@ object AppViewModelProvider {
         initializer { PropagationViewModel(container()) }
         initializer { ReferenceViewModel(container()) }
         initializer { SettingsViewModel(container()) }
+        initializer { WeatherViewModel(container()) }
+        initializer { ZoneViewModel(container()) }
     }
 }

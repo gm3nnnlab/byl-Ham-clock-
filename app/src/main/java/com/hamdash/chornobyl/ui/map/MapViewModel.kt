@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hamdash.chornobyl.AppContainer
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.RepeaterFilter
+import com.hamdash.chornobyl.domain.ZonePlace
 import com.hamdash.chornobyl.domain.filterBy
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.settings.AppSettings
@@ -24,11 +25,18 @@ data class MapUiState(
     val settings: AppSettings = AppSettings(),
     val selected: Repeater? = null,
     val favoriteIds: Set<String> = emptySet(),
+    val showRepeaters: Boolean = true,
+    val showPlaces: Boolean = true,
+    val places: List<ZonePlace> = emptyList(),
+    val selectedPlace: ZonePlace? = null,
 )
+
+private data class Layers(val repeaters: Boolean, val places: Boolean, val selectedPlaceId: String?)
 
 class MapViewModel(private val container: AppContainer) : ViewModel() {
     private val filter = MutableStateFlow(RepeaterFilter.ALL)
     private val selectedId = MutableStateFlow<String?>(null)
+    private val layers = MutableStateFlow(Layers(repeaters = true, places = true, selectedPlaceId = null))
 
     private val repeatersState = container.repository.repeaters
     private val base = combine(repeatersState, filter, selectedId) { all, f, id ->
@@ -50,6 +58,13 @@ class MapViewModel(private val container: AppContainer) : ViewModel() {
         container.repository.favoriteIds,
     ) { state, location, settings, favorites ->
         state.copy(location = location, settings = settings, favoriteIds = favorites)
+    }.combine(combine(layers, container.zoneRepository.content) { l, c -> l to c?.places.orEmpty() }) { state, (l, places) ->
+        state.copy(
+            showRepeaters = l.repeaters,
+            showPlaces = l.places,
+            places = places,
+            selectedPlace = places.firstOrNull { it.id == l.selectedPlaceId },
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MapUiState())
 
     fun setFilter(value: RepeaterFilter) {
@@ -58,6 +73,18 @@ class MapViewModel(private val container: AppContainer) : ViewModel() {
 
     fun select(repeater: Repeater?) {
         selectedId.value = repeater?.id
+    }
+
+    fun toggleRepeaters() {
+        layers.value = layers.value.copy(repeaters = !layers.value.repeaters)
+    }
+
+    fun togglePlaces() {
+        layers.value = layers.value.copy(places = !layers.value.places)
+    }
+
+    fun selectPlace(place: ZonePlace?) {
+        layers.value = layers.value.copy(selectedPlaceId = place?.id)
     }
 
     fun enableGps() {

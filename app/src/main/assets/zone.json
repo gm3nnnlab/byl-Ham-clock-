@@ -1,0 +1,445 @@
+{
+ "schemaVersion": 1,
+ "history": [
+  {
+   "date": "1970-02-04",
+   "title": {
+    "en": "Pripyat is founded",
+    "uk": "Засновано Прип'ять"
+   },
+   "text": {
+    "en": "A new town for the builders and staff of the future power plant. By 1986 about 49,000 people lived there.",
+    "uk": "Нове місто для будівельників і працівників майбутньої станції. До 1986 року тут жило близько 49 000 людей."
+   },
+   "source": "https://en.wikipedia.org/wiki/Pripyat"
+  },
+  {
+   "date": "1976-07",
+   "title": {
+    "en": "The \"Russian Woodpecker\" is heard on shortwave",
+    "uk": "У КХ-ефірі з'являється \"Російський дятел\""
+   },
+   "text": {
+    "en": "Radio amateurs and broadcasters worldwide start hearing a loud 10 Hz tapping signal hopping across HF. It came from Soviet Duga over-the-horizon radars; one Duga array was built next to Chornobyl (the Chornobyl-2 site).",
+    "uk": "Радіоаматори й мовники всього світу чують гучне клацання з частотою 10 Гц, що стрибає по КХ. Це працювали радари загоризонтного виявлення \"Дуга\"; одну з антен побудували біля Чорнобиля (об'єкт \"Чорнобиль-2\")."
+   },
+   "source": "https://en.wikipedia.org/wiki/Duga_radar"
+  },
+  {
+   "date": "1977",
+   "title": {
+    "en": "Unit 1 of the power plant goes online",
+    "uk": "Запущено перший енергоблок ЧАЕС"
+   },
+   "text": {
+    "en": "The first RBMK-1000 reactor starts supplying power. Units 2, 3 and 4 follow in 1978, 1981 and 1983.",
+    "uk": "Перший реактор РБМК-1000 починає давати струм. Блоки 2, 3 і 4 запрацювали у 1978, 1981 і 1983 роках."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant"
+  },
+  {
+   "date": "1986-04-26",
+   "title": {
+    "en": "The disaster at Unit 4",
+    "uk": "Аварія на четвертому енергоблоці"
+   },
+   "text": {
+    "en": "At 01:23 local time a safety test ends in an explosion that destroys reactor 4 and releases large amounts of radioactive material. Firefighters and plant staff are the first victims.",
+    "uk": "О 01:23 за місцевим часом випробування закінчується вибухом, який руйнує реактор 4 і викидає велику кількість радіоактивних речовин. Першими жертвами стали пожежники та персонал станції."
+   },
+   "source": "https://www.iaea.org/newscenter/focus/chernobyl"
+  },
+  {
+   "date": "1986-04-27",
+   "title": {
+    "en": "Pripyat is evacuated",
+    "uk": "Евакуація Прип'яті"
+   },
+   "text": {
+    "en": "Residents are told to leave for \"three days\" and never return. About 49,000 people leave the town by bus within a few hours.",
+    "uk": "Мешканцям кажуть, що виїжджають \"на три дні\", але вони так і не повернулися. Близько 49 000 людей виїхали автобусами за кілька годин."
+   },
+   "source": "https://en.wikipedia.org/wiki/Pripyat"
+  },
+  {
+   "date": "1986-05",
+   "title": {
+    "en": "The 30 km exclusion zone is created",
+    "uk": "Створено 30-кілометрову зону відчуження"
+   },
+   "text": {
+    "en": "Villages within roughly 30 km of the plant are evacuated. Over 100,000 people are resettled in 1986.",
+    "uk": "Села в радіусі приблизно 30 км від станції евакуйовано. У 1986 році переселено понад 100 000 людей."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Exclusion_Zone"
+  },
+  {
+   "date": "1986-11",
+   "title": {
+    "en": "The Shelter (Sarcophagus) is completed",
+    "uk": "Збудовано укриття (\"Саркофаг\")"
+   },
+   "text": {
+    "en": "A concrete and steel structure is built over the ruined reactor in about 206 days.",
+    "uk": "Над зруйнованим реактором приблизно за 206 днів зводять споруду з бетону та сталі."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant_sarcophagus"
+  },
+  {
+   "date": "1989-12",
+   "title": {
+    "en": "The Woodpecker falls silent",
+    "uk": "\"Дятел\" замовкає"
+   },
+   "text": {
+    "en": "The Duga transmissions stop. The huge antenna near Chornobyl is abandoned and still stands.",
+    "uk": "Передачі \"Дуги\" припиняються. Величезну антену біля Чорнобиля покинуто, вона стоїть досі."
+   },
+   "source": "https://en.wikipedia.org/wiki/Duga_radar"
+  },
+  {
+   "date": "1991-10",
+   "title": {
+    "en": "Fire in the Unit 2 turbine hall",
+    "uk": "Пожежа в машинному залі блоку 2"
+   },
+   "text": {
+    "en": "Unit 2 is shut down after the fire and never restarted.",
+    "uk": "Після пожежі блок 2 зупинено, його так і не запустили знову."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant"
+  },
+  {
+   "date": "1996-11",
+   "title": {
+    "en": "Unit 1 is shut down",
+    "uk": "Зупинено блок 1"
+   },
+   "text": {
+    "en": "",
+    "uk": ""
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant"
+  },
+  {
+   "date": "2000-12-15",
+   "title": {
+    "en": "The plant stops generating power",
+    "uk": "Станція припиняє виробляти електроенергію"
+   },
+   "text": {
+    "en": "Unit 3, the last working reactor, is shut down. Decommissioning begins.",
+    "uk": "Зупинено блок 3, останній працюючий реактор. Починається виведення з експлуатації."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant"
+  },
+  {
+   "date": "2007-03-20",
+   "title": {
+    "en": "S.T.A.L.K.E.R.: Shadow of Chernobyl is released",
+    "uk": "Виходить S.T.A.L.K.E.R.: Тінь Чорнобиля"
+   },
+   "text": {
+    "en": "The Kyiv studio GSC Game World releases a shooter set in a fictional, anomaly-filled version of the Zone. It makes the Zone famous among gamers worldwide.",
+    "uk": "Київська студія GSC Game World випускає шутер про вигадану Зону, сповнену аномалій. Гра робить Зону відомою серед гравців усього світу."
+   },
+   "source": "https://en.wikipedia.org/wiki/S.T.A.L.K.E.R.:_Shadow_of_Chernobyl"
+  },
+  {
+   "date": "2011",
+   "title": {
+    "en": "The Zone opens to organized tourism",
+    "uk": "Зону відкрито для організованого туризму"
+   },
+   "text": {
+    "en": "Visits become possible with licensed tour operators, permits and fixed routes.",
+    "uk": "Відвідування стають можливими з ліцензованими туроператорами, за перепустками та визначеними маршрутами."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Exclusion_Zone"
+  },
+  {
+   "date": "2016-04-26",
+   "title": {
+    "en": "The Chornobyl Radiation and Ecological Biosphere Reserve",
+    "uk": "Чорнобильський радіаційно-екологічний біосферний заповідник"
+   },
+   "text": {
+    "en": "On the 30th anniversary of the disaster a large part of the Zone becomes a nature reserve. Wolves, elk, Przewalski's horses and lynx live there.",
+    "uk": "У 30-ту річницю аварії значну частину Зони оголошено заповідником. Тут живуть вовки, лосі, коні Пржевальського та рисі."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Radiation_and_Ecological_Biosphere_Reserve"
+  },
+  {
+   "date": "2016-11-29",
+   "title": {
+    "en": "The New Safe Confinement covers Unit 4",
+    "uk": "Нове безпечне укриття накриває блок 4"
+   },
+   "text": {
+    "en": "The 108 m tall steel arch, built nearby, is slid over the old Shelter. It is one of the largest movable land structures ever built.",
+    "uk": "Сталеву арку заввишки 108 м, зібрану поруч, насунули на старе укриття. Це одна з найбільших рухомих наземних споруд, коли-небудь збудованих."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_New_Safe_Confinement"
+  },
+  {
+   "date": "2020-04",
+   "title": {
+    "en": "Wildfires in the Zone",
+    "uk": "Лісові пожежі в Зоні"
+   },
+   "text": {
+    "en": "Large fires burn forests in the Zone for weeks before they are put out.",
+    "uk": "Великі пожежі тижнями знищують ліси Зони, поки їх не загасили."
+   },
+   "source": "https://en.wikipedia.org/wiki/2020_Chernobyl_Exclusion_Zone_wildfires"
+  },
+  {
+   "date": "2022-02-24",
+   "title": {
+    "en": "Occupation of the plant site",
+    "uk": "Окупація території станції"
+   },
+   "text": {
+    "en": "Russian forces seize the plant on the first day of the full-scale invasion and withdraw on 31 March 2022. Ukrainian staff keep the site running under occupation.",
+    "uk": "Російські війська захоплюють станцію в перший день повномасштабного вторгнення й відходять 31 березня 2022 року. Український персонал підтримує роботу об'єкта в окупації."
+   },
+   "source": "https://en.wikipedia.org/wiki/Capture_of_Chernobyl"
+  },
+  {
+   "date": "2024-11-20",
+   "title": {
+    "en": "S.T.A.L.K.E.R. 2: Heart of Chornobyl is released",
+    "uk": "Виходить S.T.A.L.K.E.R. 2: Серце Чорнобиля"
+   },
+   "text": {
+    "en": "GSC Game World releases the long-awaited sequel, developed partly during the war. Its title uses the Ukrainian spelling Chornobyl.",
+    "uk": "GSC Game World випускає довгоочікуване продовження, яке частково створювали під час війни. У назві використано українське написання Chornobyl."
+   },
+   "source": "https://en.wikipedia.org/wiki/S.T.A.L.K.E.R._2:_Heart_of_Chornobyl"
+  },
+  {
+   "date": "2025-02-14",
+   "title": {
+    "en": "Drone strike on the New Safe Confinement",
+    "uk": "Удар дрона по Новому безпечному укриттю"
+   },
+   "text": {
+    "en": "A drone hits the arch and starts a fire in its outer cladding. The IAEA reports that radiation levels stay normal and stable.",
+    "uk": "Дрон влучає в арку і спричиняє пожежу в її зовнішній оболонці. МАГАТЕ повідомляє, що радіаційний фон залишається в нормі."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_New_Safe_Confinement"
+  }
+ ],
+ "places": [
+  {
+   "id": "chnpp",
+   "category": "NUCLEAR",
+   "lat": 51.3894,
+   "lon": 30.0997,
+   "approximate": false,
+   "name": {
+    "en": "Chornobyl NPP and the New Safe Confinement",
+    "uk": "ЧАЕС і Нове безпечне укриття"
+   },
+   "text": {
+    "en": "The power plant whose Unit 4 exploded in 1986. Today the ruined reactor is covered by the New Safe Confinement arch.",
+    "uk": "Станція, четвертий блок якої вибухнув у 1986 році. Нині зруйнований реактор накрито аркою Нового безпечного укриття."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_Nuclear_Power_Plant",
+   "stalker": {
+    "en": "Final destination of Shadow of Chernobyl: legend says the Wish Granter waits inside the sarcophagus.",
+    "uk": "Фінальна точка \"Тіні Чорнобиля\": за легендою, всередині саркофага чекає Виконувач Бажань."
+   }
+  },
+  {
+   "id": "pripyat",
+   "category": "TOWN",
+   "lat": 51.4045,
+   "lon": 30.0542,
+   "approximate": false,
+   "name": {
+    "en": "Pripyat",
+    "uk": "Прип'ять"
+   },
+   "text": {
+    "en": "Abandoned atomic town of the plant workers, evacuated on 27 April 1986.",
+    "uk": "Покинуте місто енергетиків, евакуйоване 27 квітня 1986 року."
+   },
+   "source": "https://en.wikipedia.org/wiki/Pripyat",
+   "stalker": {
+    "en": "A key location in Shadow of Chernobyl and the main setting of Call of Pripyat.",
+    "uk": "Ключова локація \"Тіні Чорнобиля\" і головне місце дії \"Поклику Прип'яті\"."
+   }
+  },
+  {
+   "id": "pripyat_park",
+   "category": "MEMORIAL",
+   "lat": 51.4084,
+   "lon": 30.0554,
+   "approximate": true,
+   "name": {
+    "en": "Pripyat amusement park",
+    "uk": "Парк атракціонів Прип'яті"
+   },
+   "text": {
+    "en": "The Ferris wheel was due to open on 1 May 1986 and never carried passengers. It became a symbol of the disaster.",
+    "uk": "Колесо огляду мали відкрити 1 травня 1986 року, але воно так і не прийняло пасажирів. Воно стало символом катастрофи."
+   },
+   "source": "https://en.wikipedia.org/wiki/Pripyat_amusement_park",
+   "stalker": {
+    "en": "The Ferris wheel is one of the most recognizable sights of the series.",
+    "uk": "Колесо огляду: одна з найвпізнаваніших картин серії."
+   }
+  },
+  {
+   "id": "duga",
+   "category": "RADIO",
+   "lat": 51.3053,
+   "lon": 30.0661,
+   "approximate": false,
+   "name": {
+    "en": "Duga radar (Chornobyl-2)",
+    "uk": "Радар \"Дуга\" (Чорнобиль-2)"
+   },
+   "text": {
+    "en": "Giant over-the-horizon radar antenna, about 150 m tall. Radio amateurs knew its signal as the \"Russian Woodpecker\" (1976-1989).",
+    "uk": "Гігантська антена загоризонтного радара заввишки близько 150 м. Радіоаматори знали її сигнал як \"Російського дятла\" (1976-1989)."
+   },
+   "source": "https://en.wikipedia.org/wiki/Duga_radar",
+   "stalker": {
+    "en": "In Shadow of Chernobyl the \"Radar\" hides the Brain Scorcher, a fictional machine that burns out the minds of stalkers.",
+    "uk": "У \"Тіні Чорнобиля\" \"Радар\" приховує Випалювач мізків, вигадану установку, що випалює свідомість сталкерів."
+   }
+  },
+  {
+   "id": "red_forest",
+   "category": "NATURE",
+   "lat": 51.38,
+   "lon": 30.04,
+   "approximate": true,
+   "name": {
+    "en": "Red Forest (area)",
+    "uk": "Рудий ліс (район)"
+   },
+   "text": {
+    "en": "Pine forest west of the plant that turned red-brown after the 1986 fallout. One of the most contaminated places in the Zone. Do not enter.",
+    "uk": "Сосновий ліс на захід від станції, який порудів після викиду 1986 року. Одне з найзабрудненіших місць Зони. Не заходьте туди."
+   },
+   "source": "https://en.wikipedia.org/wiki/Red_Forest",
+   "stalker": {
+    "en": "A location in the series, most prominent in Clear Sky.",
+    "uk": "Локація серії, найпомітніша в \"Чистому небі\"."
+   }
+  },
+  {
+   "id": "chornobyl_town",
+   "category": "TOWN",
+   "lat": 51.2763,
+   "lon": 30.2219,
+   "approximate": false,
+   "name": {
+    "en": "Chornobyl town",
+    "uk": "Місто Чорнобиль"
+   },
+   "text": {
+    "en": "Historic town first mentioned in 1193. Today it is the administrative center of the Zone, where staff live on rotation.",
+    "uk": "Історичне місто, вперше згадане у 1193 році. Нині адміністративний центр Зони, де вахтовим методом живе персонал."
+   },
+   "source": "https://en.wikipedia.org/wiki/Chernobyl_(city)"
+  },
+  {
+   "id": "slavutych",
+   "category": "TOWN",
+   "lat": 51.5222,
+   "lon": 30.7569,
+   "approximate": false,
+   "name": {
+    "en": "Slavutych",
+    "uk": "Славутич"
+   },
+   "text": {
+    "en": "Town built after the disaster for the plant workers evacuated from Pripyat. Outside the Zone.",
+    "uk": "Місто, збудоване після аварії для працівників станції, евакуйованих із Прип'яті. Розташоване поза Зоною."
+   },
+   "source": "https://en.wikipedia.org/wiki/Slavutych"
+  }
+ ],
+ "stalker": {
+  "games": [
+   {
+    "year": 2007,
+    "title": "S.T.A.L.K.E.R.: Shadow of Chernobyl",
+    "text": {
+     "en": "The first game: a stalker called Strelok, the Wish Granter and the Brain Scorcher.",
+     "uk": "Перша гра: сталкер Стрілок, Виконувач Бажань і Випалювач мізків."
+    }
+   },
+   {
+    "year": 2008,
+    "title": "S.T.A.L.K.E.R.: Clear Sky",
+    "text": {
+     "en": "Prequel about the Clear Sky faction from the swamps.",
+     "uk": "Приквел про угруповання \"Чисте небо\" з боліт."
+    }
+   },
+   {
+    "year": 2010,
+    "title": "S.T.A.L.K.E.R.: Call of Pripyat",
+    "text": {
+     "en": "Major Degtyarev investigates lost helicopters around Zaton, Jupiter and Pripyat.",
+     "uk": "Майор Дегтярьов розслідує зникнення гелікоптерів біля Затону, Юпітера і Прип'яті."
+    }
+   },
+   {
+    "year": 2024,
+    "title": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+    "text": {
+     "en": "The long-awaited sequel from GSC Game World.",
+     "uk": "Довгоочікуване продовження від GSC Game World."
+    }
+   }
+  ],
+  "facts": [
+   {
+    "title": {
+     "en": "Where the word comes from",
+     "uk": "Звідки слово"
+    },
+    "text": {
+     "en": "\"Stalker\" and \"the Zone\" come from the 1972 novel Roadside Picnic by Arkady and Boris Strugatsky and Andrei Tarkovsky's 1979 film Stalker, both made before the disaster.",
+     "uk": "\"Сталкер\" і \"Зона\" походять з повісті братів Аркадія та Бориса Стругацьких \"Пікнік на узбіччі\" (1972) і фільму Андрія Тарковського \"Сталкер\" (1979), створених ще до аварії."
+    }
+   },
+   {
+    "title": {
+     "en": "Get out of here, stalker!",
+     "uk": "Іди звідси, сталкере!"
+    },
+    "text": {
+     "en": "The best known line of the series. Hint: try tapping the About card a few times.",
+     "uk": "Найвідоміша фраза серії. Підказка: натисніть кілька разів на картку \"Про застосунок\"."
+    }
+   },
+   {
+    "title": {
+     "en": "Emissions vs. real space weather",
+     "uk": "Викиди та справжня космічна погода"
+    },
+    "text": {
+     "en": "In the games an Emission forces stalkers to hide. This app shows an \"emission warning\" joke when the real Kp index reaches 5 (a geomagnetic storm). Real storms are harmless on the ground but disturb HF radio, GNSS and drone compasses.",
+     "uk": "В іграх Викид змушує сталкерів ховатися. Цей застосунок жартома показує \"попередження про Викид\", коли справжній індекс Kp досягає 5 (геомагнітна буря). Справжні бурі нешкідливі на землі, але заважають КХ-зв'язку, GNSS і компасам дронів."
+    }
+   },
+   {
+    "title": {
+     "en": "Fiction is not the real Zone",
+     "uk": "Вигадка не є справжньою Зоною"
+    },
+    "text": {
+     "en": "Anomalies, artifacts and mutants are fiction. The real hazards are radiation hotspots, contaminated soil and collapsing buildings. Entry needs an official permit, and taking anything out of the Zone is illegal.",
+     "uk": "Аномалії, артефакти й мутанти вигадані. Справжня небезпека: радіаційні плями, забруднений ґрунт і будівлі, що руйнуються. В'їзд можливий лише з офіційним дозволом, а виносити будь-що із Зони заборонено законом."
+    }
+   }
+  ]
+ }
+}

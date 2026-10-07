@@ -8,6 +8,7 @@ import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.PropagationSnapshot
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.WeatherSnapshot
 import com.hamdash.chornobyl.domain.countByMode
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.settings.AppSettings
@@ -31,6 +32,7 @@ data class DashboardUiState(
     val status: AppStatus = AppStatus(),
     val selected: Repeater? = null,
     val favoriteIds: Set<String> = emptySet(),
+    val weather: WeatherSnapshot = WeatherSnapshot(),
 ) {
     val counts: Map<RadioMode, Int> get() = repeaters.countByMode()
     val dmrRepeater: Repeater? get() = repeaters.firstOrNull { it.mode == RadioMode.DMR }
@@ -57,6 +59,7 @@ class DashboardViewModel(private val container: AppContainer) : ViewModel() {
     }
         .combine(selectedId) { state, id -> state.copy(selected = state.repeaters.firstOrNull { it.id == id }) }
         .combine(container.repository.favoriteIds) { state, favorites -> state.copy(favoriteIds = favorites) }
+        .combine(container.weatherRepository.state) { state, weather -> state.copy(weather = weather) }
         .catch {
             emit(
                 DashboardUiState(

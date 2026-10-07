@@ -34,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.DistanceUnit
 import com.hamdash.chornobyl.domain.TimeZoneOptions
+import com.hamdash.chornobyl.domain.WeatherPlace
 import com.hamdash.chornobyl.settings.AppLanguage
 import com.hamdash.chornobyl.settings.AppSettings
 import com.hamdash.chornobyl.settings.ThemeMode
@@ -106,6 +107,21 @@ fun SettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel(
                     stringResource(R.string.set_show_location_sub),
                     settings.showGps,
                     viewModel::setShowGps,
+                )
+            }
+
+            SectionCard(stringResource(R.string.set_sec_weather)) {
+                ChoiceSetting(
+                    stringResource(R.string.set_weather_place),
+                    settings.weatherPlace,
+                    WeatherPlace.entries,
+                    { it.displayName() },
+                    viewModel::setWeatherPlace,
+                )
+                Text(
+                    stringResource(R.string.set_weather_privacy),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 

@@ -7,6 +7,8 @@ import com.hamdash.chornobyl.data.PropagationRepository
 import com.hamdash.chornobyl.data.RadioDataRepositoryImpl
 import com.hamdash.chornobyl.data.RoomLocalDataSource
 import com.hamdash.chornobyl.data.SyncMetaStore
+import com.hamdash.chornobyl.data.WeatherRepository
+import com.hamdash.chornobyl.data.ZoneRepository
 import com.hamdash.chornobyl.database.AppDatabase
 import com.hamdash.chornobyl.domain.AppStatus
 import com.hamdash.chornobyl.domain.RadioDataRepository
@@ -46,6 +48,17 @@ class AppContainer(private val context: Context) {
 
     val propagationRepository = PropagationRepository(rawApi, context.appDataStore, appScope)
 
+    val weatherRepository = WeatherRepository(
+        api = rawApi,
+        store = context.appDataStore,
+        settings = settingsRepository,
+        location = locationTracker,
+        connectivity = connectivity,
+        scope = appScope,
+    )
+
+    val zoneRepository = ZoneRepository(context, appScope)
+
     val appStatus: Flow<AppStatus> = combine(connectivity.isOnline, repository.syncState) { online, sync ->
         AppStatus(online, sync)
     }
@@ -53,6 +66,7 @@ class AppContainer(private val context: Context) {
     suspend fun clearCaches() {
         repository.clearCache()
         propagationRepository.clearCache()
+        weatherRepository.clearCache()
         withContext(Dispatchers.IO) {
             runCatching { Configuration.getInstance().osmdroidTileCache.deleteRecursively() }
         }

@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.hamdash.chornobyl.domain.DistanceUnit
 import com.hamdash.chornobyl.domain.TimeZoneOptions
+import com.hamdash.chornobyl.domain.WeatherPlace
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -30,6 +31,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
         val MOBILE_DATA = booleanPreferencesKey("allow_mobile_data")
         val CATALOG_URL = stringPreferencesKey("catalog_url")
         val TILE_URL = stringPreferencesKey("tile_url")
+        val WEATHER_PLACE = stringPreferencesKey("weather_place")
     }
 
     val settings: Flow<AppSettings> = store.data
@@ -49,6 +51,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
                 allowMobileData = p[Keys.MOBILE_DATA] ?: defaults.allowMobileData,
                 catalogUrl = p[Keys.CATALOG_URL] ?: defaults.catalogUrl,
                 tileUrl = p[Keys.TILE_URL] ?: defaults.tileUrl,
+                weatherPlace = WeatherPlace.fromName(p[Keys.WEATHER_PLACE]) ?: defaults.weatherPlace,
             )
         }
 
@@ -69,4 +72,5 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
     suspend fun setAllowMobileData(value: Boolean) = edit { it[Keys.MOBILE_DATA] = value }
     suspend fun setCatalogUrl(value: String) = edit { it[Keys.CATALOG_URL] = value.trim() }
     suspend fun setTileUrl(value: String) = edit { it[Keys.TILE_URL] = value.trim() }
+    suspend fun setWeatherPlace(value: WeatherPlace) = edit { it[Keys.WEATHER_PLACE] = value.name }
 }

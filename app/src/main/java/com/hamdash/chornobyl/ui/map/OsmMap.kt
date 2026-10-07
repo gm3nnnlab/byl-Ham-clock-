@@ -30,6 +30,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.ZONE_CENTER_LAT
+import com.hamdash.chornobyl.domain.ZONE_CENTER_LON
+import com.hamdash.chornobyl.domain.ZONE_RADIUS_KM
+import com.hamdash.chornobyl.domain.ZonePlace
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.ui.theme.ModeColors
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -39,6 +43,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.TilesOverlay
 
 private const val INITIAL_LAT = 50.8
@@ -54,6 +59,10 @@ fun OsmMap(
     modifier: Modifier = Modifier,
     recenterRequest: Int = 0,
     tileUrl: String = "",
+    places: List<ZonePlace> = emptyList(),
+    showZoneRing: Boolean = false,
+    placeLanguage: String = "en",
+    onPlaceClick: (ZonePlace) -> Unit = {},
     onRepeaterClick: (Repeater) -> Unit,
 ) {
     val context = LocalContext.current
@@ -61,6 +70,8 @@ fun OsmMap(
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val myLocationTitle = stringResource(R.string.map_my_location)
     val onClick by rememberUpdatedState(onRepeaterClick)
+    val onPlace by rememberUpdatedState(onPlaceClick)
+    val zoneRingTitle = stringResource(R.string.map_zone_ring)
     val latestUser by rememberUpdatedState(userLocation)
 
     val mapView = remember {
@@ -109,8 +120,34 @@ fun OsmMap(
         mapView.invalidate()
     }
 
-    LaunchedEffect(repeaters, userLocation, myLocationTitle) {
-        mapView.overlays.removeAll { it is Marker }
+    LaunchedEffect(repeaters, userLocation, myLocationTitle, places, showZoneRing, placeLanguage) {
+        mapView.overlays.removeAll { it is Marker || it is Polygon }
+        if (showZoneRing) {
+            // Approximate 30 km radius around the plant, drawn first so markers stay tappable above it.
+            val ring = Polygon(mapView).apply {
+                setPoints(Polygon.pointsAsCircle(GeoPoint(ZONE_CENTER_LAT, ZONE_CENTER_LON), ZONE_RADIUS_KM * 1000))
+                fillPaint.color = AndroidColor.argb(28, 229, 72, 77)
+                outlinePaint.color = AndroidColor.argb(200, 229, 72, 77)
+                outlinePaint.strokeWidth = 3f * context.resources.displayMetrics.density
+                title = zoneRingTitle
+                infoWindow = null
+                setOnClickListener { _, _, _ -> false }
+            }
+            mapView.overlays.add(ring)
+        }
+        places.forEach { place ->
+            val marker = Marker(mapView).apply {
+                position = GeoPoint(place.latitude, place.longitude)
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                icon = squareIcon(context, AndroidColor.parseColor("#FFB300"), 18)
+                title = place.name.pick(placeLanguage)
+                setOnMarkerClickListener { _, _ ->
+                    onPlace(place)
+                    true
+                }
+            }
+            mapView.overlays.add(marker)
+        }
         repeaters.forEach { repeater ->
             val marker = Marker(mapView).apply {
                 position = GeoPoint(repeater.latitude, repeater.longitude)
@@ -169,6 +206,18 @@ private class TemplateTileSource(private val template: String) :
         .replace("{z}", MapTileIndex.getZoom(pMapTileIndex).toString())
         .replace("{x}", MapTileIndex.getX(pMapTileIndex).toString())
         .replace("{y}", MapTileIndex.getY(pMapTileIndex).toString())
+}
+
+private fun squareIcon(context: Context, color: Int, sizeDp: Int): Drawable {
+    val density = context.resources.displayMetrics.density
+    val px = (sizeDp * density).toInt()
+    return GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        cornerRadius = 3 * density
+        setColor(color)
+        setStroke((2 * density).toInt(), AndroidColor.BLACK)
+        setSize(px, px)
+    }
 }
 
 private fun circleIcon(context: Context, color: Int, sizeDp: Int): Drawable {

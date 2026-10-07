@@ -21,6 +21,9 @@ object Routes {
     const val PROPAGATION = "propagation"
     const val SETTINGS = "settings"
     const val ABOUT = "about"
+    const val WEATHER = "weather"
+    const val FPV = "fpv"
+    const val ZONE = "zone"
 }
 
 enum class TopLevel(val route: String, @StringRes val labelRes: Int, val icon: ImageVector, val routes: Set<String>) {
@@ -32,6 +35,9 @@ enum class TopLevel(val route: String, @StringRes val labelRes: Int, val icon: I
         Routes.MORE,
         R.string.nav_more,
         Icons.Filled.MoreHoriz,
-        setOf(Routes.MORE, Routes.BANDS, Routes.DIGITAL, Routes.PROPAGATION, Routes.SETTINGS, Routes.ABOUT),
+        setOf(
+            Routes.MORE, Routes.BANDS, Routes.DIGITAL, Routes.PROPAGATION, Routes.SETTINGS, Routes.ABOUT,
+            Routes.WEATHER, Routes.FPV, Routes.ZONE,
+        ),
     ),
 }

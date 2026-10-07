@@ -11,7 +11,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Equalizer
+import androidx.compose.material.icons.filled.FlightTakeoff
+import androidx.compose.material.icons.filled.HistoryEdu
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Settings
@@ -37,10 +40,16 @@ fun MoreScreen(
     onOpenBands: () -> Unit,
     onOpenDigital: () -> Unit,
     onOpenPropagation: () -> Unit,
+    onOpenWeather: () -> Unit,
+    onOpenFpv: () -> Unit,
+    onOpenZone: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenAbout: () -> Unit,
 ) {
     val items = listOf(
+        MoreItem(stringResource(R.string.more_weather_title), stringResource(R.string.more_weather_sub), Icons.Filled.Cloud, onOpenWeather),
+        MoreItem(stringResource(R.string.more_fpv_title), stringResource(R.string.more_fpv_sub), Icons.Filled.FlightTakeoff, onOpenFpv),
+        MoreItem(stringResource(R.string.more_zone_title), stringResource(R.string.more_zone_sub), Icons.Filled.HistoryEdu, onOpenZone),
         MoreItem(stringResource(R.string.more_bands_title), stringResource(R.string.more_bands_sub), Icons.Filled.Equalizer, onOpenBands),
         MoreItem(stringResource(R.string.more_digital_title), stringResource(R.string.more_digital_sub), Icons.Filled.Memory, onOpenDigital),
         MoreItem(stringResource(R.string.more_prop_title), stringResource(R.string.more_prop_sub), Icons.Filled.WbSunny, onOpenPropagation),

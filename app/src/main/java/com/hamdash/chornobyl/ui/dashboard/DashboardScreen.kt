@@ -34,6 +34,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.DEFAULT_LATITUDE
+import com.hamdash.chornobyl.domain.FlightConditions
+import com.hamdash.chornobyl.domain.flightInputAt
 import com.hamdash.chornobyl.domain.DEFAULT_LONGITUDE
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
@@ -63,6 +65,12 @@ import com.hamdash.chornobyl.ui.map.LocationStatusBanner
 import com.hamdash.chornobyl.ui.map.OsmMap
 import com.hamdash.chornobyl.ui.map.rememberLocationPermissionRequest
 import com.hamdash.chornobyl.ui.theme.NumberFont
+import com.hamdash.chornobyl.ui.common.VerdictBadge
+import com.hamdash.chornobyl.ui.common.conditionText
+import com.hamdash.chornobyl.ui.common.temperatureText
+import com.hamdash.chornobyl.ui.common.windText
+import com.hamdash.chornobyl.ui.zone.StalkerNote
+import com.hamdash.chornobyl.ui.zone.daysSinceDisaster
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.ZoneId
@@ -74,6 +82,9 @@ fun DashboardScreen(
     onOpenRepeaters: () -> Unit,
     onOpenDmr: () -> Unit,
     onOpenPropagation: () -> Unit,
+    onOpenWeather: () -> Unit,
+    onOpenFpv: () -> Unit,
+    onOpenZone: () -> Unit,
     viewModel: DashboardViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,6 +115,7 @@ fun DashboardScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 ClockCard(zone = zone, showUtc = state.settings.showUtc, fix = fix)
+                WeatherCard(state, onOpenWeather = onOpenWeather, onOpenFpv = onOpenFpv)
 
                 SectionCard(
                     title = stringResource(R.string.dash_map),
@@ -125,6 +137,7 @@ fun DashboardScreen(
                 RepeatersCard(state.repeaters.size, state.counts, onClick = onOpenRepeaters)
                 DmrCard(state.dmrRepeater, onClick = onOpenDmr)
                 PropagationCard(state, onClick = onOpenPropagation)
+                ZoneCard(onClick = onOpenZone)
             }
         }
     }
@@ -300,6 +313,10 @@ private fun PropagationCard(state: DashboardUiState, onClick: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
         )
         Text(stringResource(R.string.dash_flare_line, data?.flareClass ?: noData()), style = MaterialTheme.typography.bodyMedium)
+        val kp = data?.kIndex
+        if (kp != null && kp >= FlightConditions.KP_CAUTION) {
+            StalkerNote(stringResource(R.string.stalker_emission), Modifier.padding(top = 8.dp))
+        }
         if (data != null && data.fetchedAtMillis > 0) {
             Text(
                 stringResource(
@@ -311,5 +328,49 @@ private fun PropagationCard(state: DashboardUiState, onClick: () -> Unit) {
                 modifier = Modifier.padding(top = 4.dp),
             )
         }
+    }
+}
+
+@Composable
+private fun WeatherCard(state: DashboardUiState, onOpenWeather: () -> Unit, onOpenFpv: () -> Unit) {
+    val forecast = state.weather.forecast
+    val nowEpoch = Instant.now().epochSecond
+    val current = forecast?.current?.takeIf { nowEpoch - it.timeEpoch < 2 * 3600 }
+    val verdict = forecast?.flightInputAt(nowEpoch, state.propagation.data?.kIndex)?.let(FlightConditions::assess)?.overall
+    SectionCard(
+        title = stringResource(R.string.dash_weather, state.settings.weatherPlace.displayName()),
+        onClick = onOpenWeather,
+        trailing = {
+            if (state.weather.loading) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+        },
+    ) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ValueTile(stringResource(R.string.wx_temp), temperatureText(current?.temperatureC), Modifier.weight(1f))
+            ValueTile(stringResource(R.string.wx_wind), windText(current?.windSpeedMs), Modifier.weight(1f))
+            ValueTile(stringResource(R.string.wx_gusts), windText(current?.windGustsMs), Modifier.weight(1f))
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(conditionText(current?.weatherCode), style = MaterialTheme.typography.bodyMedium)
+        Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.dash_fpv), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+            TextButton(onClick = onOpenFpv) { VerdictBadge(verdict) }
+        }
+    }
+}
+
+@Composable
+private fun ZoneCard(onClick: () -> Unit) {
+    SectionCard(title = stringResource(R.string.dash_zone), onClick = onClick) {
+        Text(
+            stringResource(R.string.zone_since_days, daysSinceDisaster()),
+            fontFamily = NumberFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+        )
+        Text(
+            stringResource(R.string.dash_zone_sub),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

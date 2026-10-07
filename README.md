@@ -3,7 +3,9 @@
 Native Android dashboard for licensed radio amateurs working in the Chornobyl region, in the spirit of HamClock.
 It collects public amateur radio information in one place: repeaters (DMR, FM, D-STAR, C4FM), DMR parameters and
 talkgroups, a band reference, a digital mode reference, UTC and local clocks with sunrise and sunset, basic
-propagation data, and a map. Everything saved works offline.
+propagation data, a map, a weather forecast with a drone flight weather rating, an FPV reference (5.8 GHz video
+channels, control links, checklist, legal notice), and the history and public landmarks of the Exclusion Zone with
+clearly labeled S.T.A.L.K.E.R. game references. Everything saved works offline.
 
 It is not a navigator and is not intended for military use. See "Safety limits" below.
 
@@ -58,6 +60,8 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 | Repeaters, talkgroups | Bundled `catalog.json`. **The bundled repeaters are fictional demo entries marked `DEMO DATA`.** Replace them with a real public source. |
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
+| Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
+| Zone history, landmarks, game notes | Bundled `zone.json`, compiled from Wikipedia and IAEA articles. Every entry carries its source; only public civilian and historical landmarks. Game notes are labeled as fiction. |
 | Map | OpenStreetMap tiles through osmdroid, cached on the device. The default public OSM tile server is meant for light use; set your own https tile URL in Settings > Map tiles for heavier use. |
 
 ### Plugging in a real source
@@ -113,16 +117,20 @@ bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt`, and ta
 
 ## Privacy
 
-GPS only feeds the map, distance labels and sun times. It is never sent anywhere. Permission is requested only when
-you tap something that needs it, and "Show my location" can be turned off in Settings.
+GPS feeds the map, distance labels and sun times. It is sent anywhere only if you pick "My location" as the weather
+place, and then rounded to 0.1 degree (about 10 km) before the request to Open-Meteo. The default weather place is the
+town of Chornobyl. Permission is requested only when you tap something that needs it, and "Show my location" can be
+turned off in Settings.
 
 ## Safety limits
 
 Not implemented on purpose: interception of private communications, decoding of protected systems, key recovery,
 searching for military frequencies, detection of military sites, tracking of people, and sharing of the user's
-position. Use only public, lawful amateur radio data and transmit only where your license allows it.
+position without consent. The map shows only public civilian and historical landmarks. The drone section rates the
+weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. Use only
+public, lawful amateur radio data and transmit only where your license allows it.
 
 ## Status
 
-The pure Kotlin logic (domain, catalog parser, NOAA parsers) is covered by JVM unit tests. The Android UI layer has
+The pure Kotlin logic (domain, flight rating, catalog, Zone and weather parsers, NOAA parsers) is covered by JVM unit tests. The Android UI layer has
 not been exercised on a device yet.

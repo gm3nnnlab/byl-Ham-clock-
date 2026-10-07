@@ -16,6 +16,7 @@ class HamDashApplication : Application() {
         container.appScope.launch {
             runCatching { container.repository.initialize() }
             runCatching { container.propagationRepository.refreshIfStale() }
+            runCatching { container.weatherRepository.refreshIfStale() }
         }
     }
 

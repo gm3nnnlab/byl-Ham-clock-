@@ -14,7 +14,7 @@ interface RawApi {
 }
 
 object NetworkFactory {
-    const val USER_AGENT = "ChornobylHamDash/0.1 (amateur radio reference app)"
+    const val USER_AGENT = "ChornobylHamDash/0.2 (amateur radio reference app)"
 
     fun okHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)

@@ -7,11 +7,14 @@ Features:
 * DMR screen with frequency, mode, color code, slot and a searchable talkgroup list
 * Reference of amateur bands and digital modes (DMR, D-STAR, C4FM, APRS, FT8, JS8Call, M17, Winlink)
 * Propagation: solar flux, K and A index and the latest X-ray flare from NOAA SWPC. Missing values are shown as NO DATA, never guessed
+* Weather forecast from Open-Meteo with a drone flight weather rating (wind, gusts, wind at 80 m, rain, storms, visibility, cold, Kp, daylight). It rates weather only and is not a flight permission
+* FPV reference: 5.8 GHz video channels with license notes, control links, pre-flight checklist, LiPo tips and a legal notice about martial law and the Exclusion Zone
+* Exclusion Zone history timeline and public landmarks on the map, each with its source, plus clearly marked S.T.A.L.K.E.R. game references
 * Offline first: data is stored locally, with an ONLINE/OFFLINE indicator and the time of the last update
 * Optional https data source for your own repeater catalog (JSON), validated before it is stored
 * Dark theme by default, readable outdoors
 
-Privacy: your position is used only on the device to show you on the map, sort distances and compute sun times. It is never uploaded. There is no analytics, advertising or tracking.
+Privacy: your position is used on the device to show you on the map, sort distances and compute sun times. It is uploaded only if you choose "My location" for the weather, and then rounded to about 10 km. There is no analytics, advertising or tracking.
 
 Data: the bundled repeater catalog contains fictional demo entries labeled DEMO DATA. Replace them with a real public source. Band ranges are a general IARU Region 1 reference; always check your national allocation plan.
 
