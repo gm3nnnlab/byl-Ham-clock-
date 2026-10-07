@@ -1,4 +1,4 @@
-# Draft for gitlab.com/fdroid/fdroiddata: copy to metadata/com.hamdash.chornobyl.yml
+# Ready for gitlab.com/fdroid/fdroiddata: copy to metadata/com.hamdash.chornobyl.yml
 # Source repository: gm3nnnlab/Chernobyl-Ham-clock- (must be public for F-Droid).
 Categories:
   - Science & Education
@@ -12,51 +12,9 @@ RepoType: git
 Repo: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
 
 Builds:
-  - versionName: 0.1.0
-    versionCode: 1
-    commit: v0.1.0
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 0.2.0
-    versionCode: 2
-    commit: v0.2.0
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 0.2.1
-    versionCode: 3
-    commit: v0.2.1
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 0.2.2
-    versionCode: 4
-    commit: v0.2.2
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 0.2.3
-    versionCode: 5
-    commit: v0.2.3
-    subdir: app
-    gradle:
-      - yes
-
-  - versionName: 0.3.0
-    versionCode: 6
-    commit: v0.3.0
-    subdir: app
-    gradle:
-      - yes
-
   - versionName: 0.3.1
     versionCode: 7
-    commit: v0.3.1
+    commit: 341236df9438a09c7af72f8860c887aa5717cd44
     subdir: app
     gradle:
       - yes

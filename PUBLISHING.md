@@ -35,14 +35,22 @@ whose main list is labeled "DEMO DATA".
 
 ## F-Droid (official repository)
 
-1. Create an account on https://gitlab.com and fork https://gitlab.com/fdroid/fdroiddata.
-2. In the fork, add `metadata/com.hamdash.chornobyl.yml` with the content of `fdroid/com.hamdash.chornobyl.yml` (drop the
-   two comment lines at the top).
-3. Open a merge request "New app: Chornobyl HamDash" and fill in the template. Its CI runs lint and a test build.
-4. Answer the reviewers. F-Droid builds the APK itself and signs it with its own key, so the F-Droid version installs
-   only over F-Droid versions.
+The metadata is ready and passes `fdroid lint`: one build (0.3.1, versionCode 7) pinned to the full hash of the `v0.3.1`
+commit, as the F-Droid merge request template requires. The text for the merge request is in
+`fdroid/MR_DESCRIPTION.md`.
 
-New versions are picked up automatically from new `v*` tags (`UpdateCheckMode: Tags`).
+1. Create an account on https://gitlab.com, fork https://gitlab.com/fdroid/fdroiddata and make the fork public.
+2. In the fork, on a new branch (not protected), add `metadata/com.hamdash.chornobyl.yml` with the content of
+   `fdroid/com.hamdash.chornobyl.yml` (drop the two comment lines at the top). Add nothing else.
+3. Open a merge request to `fdroid/fdroiddata` titled **New app: Chornobyl HamDash** and paste `fdroid/MR_DESCRIPTION.md`
+   as the description. Tick the two boxes about the fork and the pipeline yourself.
+4. Wait for the pipeline and the reviewers. If it fails, read the Reports tab and fix the metadata. GitLab may ask for a
+   phone number or card to run CI: do not give them, leave a note in the MR so the maintainers trigger the pipeline.
+5. F-Droid builds the APK itself. Reproducible builds are not enabled for the first inclusion (see the MR text), so the
+   F-Droid APK is signed with F-Droid's key and installs only over F-Droid versions.
+
+New versions are picked up from new `v*` tags (`UpdateCheckMode: Tags`, `AutoUpdateMode: Version`). Each new release
+must keep `versionCode` increasing and be tagged; the F-Droid bot then proposes the new build with the commit hash.
 
 ## IzzyOnDroid (F-Droid compatible repository)
 

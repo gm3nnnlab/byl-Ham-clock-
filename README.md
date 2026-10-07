@@ -150,8 +150,9 @@ Huawei AppGallery, with the answers for the Google Play forms. Store texts, the 
 screenshots live in `fastlane/metadata/android/` (en-US, uk and ru-RU; images are in en-US, which F-Droid uses as the
 fallback for every language).
 
-For a new version: bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt` in each language, add a
-`Builds` entry to `fdroid/com.hamdash.chornobyl.yml`, and publish the release (it creates the `v<version>` tag).
+For a new version: bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt` in each language, replace
+the single `Builds` entry in `fdroid/com.hamdash.chornobyl.yml` (new version, and the full hash of the release commit), and publish the
+release (it creates the `v<version>` tag).
 
 ## Privacy
 
