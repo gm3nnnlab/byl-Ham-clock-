@@ -64,7 +64,7 @@ jobs:
           done
           if [ "$missing" = 1 ]; then
             echo "Repository: ${GITHUB_REPOSITORY}"
-            echo "::error::A release needs all four repository secrets in ${GITHUB_REPOSITORY} under Settings > Secrets and variables > Actions > Repository secrets (not Variables, not an Environment, not another repository or fork). Without them the release would carry only the debug APK."
+            echo "::error::A release needs all four repository secrets in ${GITHUB_REPOSITORY} under Settings > Secrets and variables > Actions, on the Secrets tab, as Repository secrets (not Variables, not an Environment secret, not the Codespaces or Dependabot tab, not another repository or a fork). Without them the release would carry only the debug APK."
             exit 1
           fi
       - name: Build signed release APK and App Bundle
