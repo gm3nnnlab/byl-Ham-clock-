@@ -9,6 +9,11 @@ on:
         description: Tag to create and publish as a release, for example v0.1.0. Leave empty for a plain build.
         required: false
         default: ""
+      debug_only:
+        description: Publish only the debug-signed test APK and skip the release key. Use it as long as the RELEASE_* secrets are not set up.
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build:
@@ -19,6 +24,7 @@ jobs:
       HAS_RELEASE_KEY: ${{ secrets.RELEASE_KEYSTORE_BASE64 != '' }}
       IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != '' }}
       RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+      DEBUG_ONLY: ${{ inputs.debug_only == true }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -44,7 +50,7 @@ jobs:
           name: chornobyl-hamdash-debug
           path: app/build/outputs/apk/debug/app-debug.apk
       - name: Check the release key secrets
-        if: env.IS_RELEASE == 'true'
+        if: env.IS_RELEASE == 'true' && env.DEBUG_ONLY != 'true'
         env:
           S1: ${{ secrets.RELEASE_KEYSTORE_BASE64 != '' }}
           S2: ${{ secrets.RELEASE_KEYSTORE_PASSWORD != '' }}
@@ -61,7 +67,7 @@ jobs:
             exit 1
           fi
       - name: Build signed release APK and App Bundle
-        if: env.HAS_RELEASE_KEY == 'true'
+        if: env.HAS_RELEASE_KEY == 'true' && env.DEBUG_ONLY != 'true'
         env:
           RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
@@ -83,9 +89,32 @@ jobs:
         if: env.IS_RELEASE == 'true'
         run: |
           cp app/build/outputs/apk/debug/app-debug.apk "chornobyl-hamdash-${RELEASE_TAG}-debug.apk"
-          if [ "$HAS_RELEASE_KEY" = "true" ]; then
+          if [ "$HAS_RELEASE_KEY" = "true" ] && [ "$DEBUG_ONLY" != "true" ]; then
             cp app/build/outputs/apk/release/app-release.apk "chornobyl-hamdash-${RELEASE_TAG}.apk"
             cp app/build/outputs/bundle/release/app-release.aab "chornobyl-hamdash-${RELEASE_TAG}.aab"
+          fi
+      - name: Write the release notes
+        if: env.IS_RELEASE == 'true'
+        run: |
+          if [ "$DEBUG_ONLY" = "true" ]; then
+            cat > release-notes.md <<EOF
+          Chornobyl HamDash ${RELEASE_TAG}: test build.
+
+          * \`chornobyl-hamdash-${RELEASE_TAG}-debug.apk\`: signed with the public debug key in \`keystore/debug.keystore\`. It installs over builds from 0.2.3 on and keeps your data.
+
+          This release has no store-signed APK or App Bundle yet: it was published with the release key skipped. Do not submit this file to a store.
+          EOF
+          else
+            cat > release-notes.md <<EOF
+          Chornobyl HamDash ${RELEASE_TAG}.
+
+          * \`chornobyl-hamdash-${RELEASE_TAG}.apk\`: release build signed with the project's release key (use this one).
+          * \`chornobyl-hamdash-${RELEASE_TAG}.aab\`: the same build as an Android App Bundle for Google Play.
+          * \`chornobyl-hamdash-${RELEASE_TAG}-debug.apk\`: test build signed with the public debug key in \`keystore/debug.keystore\`.
+
+          The release and debug builds use different keys, so Android will not install one over the other.
+          Release key SHA-256: see \`keystore/release-cert-sha256.txt\`.
+          EOF
           fi
       - name: Publish GitHub release
         if: env.IS_RELEASE == 'true'
@@ -98,12 +127,4 @@ jobs:
             chornobyl-hamdash-${{ env.RELEASE_TAG }}.aab
             chornobyl-hamdash-${{ env.RELEASE_TAG }}-debug.apk
           prerelease: true
-          body: |
-            Chornobyl HamDash ${{ env.RELEASE_TAG }}.
-
-            * `chornobyl-hamdash-${{ env.RELEASE_TAG }}.apk`: release build signed with the project's release key (use this one).
-            * `chornobyl-hamdash-${{ env.RELEASE_TAG }}.aab`: the same build as an Android App Bundle for Google Play.
-            * `chornobyl-hamdash-${{ env.RELEASE_TAG }}-debug.apk`: test build signed with the public debug key in `keystore/debug.keystore`.
-
-            The release and debug builds use different keys, so Android will not install one over the other.
-            Release key SHA-256: see `keystore/release-cert-sha256.txt`.
+          body_path: release-notes.md

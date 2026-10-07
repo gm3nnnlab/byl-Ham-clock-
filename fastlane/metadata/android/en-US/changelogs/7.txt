@@ -1,0 +1,3 @@
+* New radiation background layer on the map and a Radiation screen, from Safecast open data
+* Readings are grouped into 2 km cells; counts per minute are flagged as estimates
+* Not a dosimeter: volunteer data, no safety verdict

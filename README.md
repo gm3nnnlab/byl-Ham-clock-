@@ -16,13 +16,16 @@ It is not a navigator and is not intended for military use. See "Safety limits" 
 
 ## Download
 
-The current version is **0.3.0**. Get `chornobyl-hamdash-v0.3.0.apk` from the
+The current version is **0.3.1**. Get `chornobyl-hamdash-v0.3.1-debug.apk` from the
 [latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
 sources and open the file. To get updates automatically, add this repository to
 [Obtainium](https://github.com/ImranR98/Obtainium). Store listings (F-Droid, IzzyOnDroid, Google Play and others) are
 in progress, see `PUBLISHING.md`.
 
-Each release has two APKs signed with different keys, so Android will not install one over the other:
+Version 0.3.1 is published as a test build only: the release key for store builds is not set up yet, so the release has
+just the debug-signed APK. It installs over 0.2.3 and later and keeps your data. Once the release key secrets are set,
+releases also carry a store-signed APK and App Bundle. Those two kinds of APK are signed with different keys, so Android
+will not install one over the other:
 
 * `chornobyl-hamdash-vX.apk`: release build signed with the private release key (certificate SHA-256 in
   `keystore/release-cert-sha256.txt`). Use this one.
@@ -34,6 +37,7 @@ those stores and also update only from the same store.
 
 | Version | Changes |
 | --- | --- |
+| 0.3.1 | Radiation background layer and screen from Safecast open data (volunteer readings, grouped into 2 km cells, no safety verdict). Published as a test build |
 | 0.3.0 | Targets Android 16 (API 36), signed release APK and App Bundle for stores, privacy policy |
 | 0.2.3 | All builds signed with one fixed key, so updates install over each other (uninstall 0.2.2 or older once) |
 | 0.2.2 | Repeater on-air status (on air, off air, unknown), martial-law transmit-ban notice, database migration that keeps favorites |
