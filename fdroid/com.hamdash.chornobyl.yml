@@ -1,14 +1,14 @@
 # Draft for gitlab.com/fdroid/fdroiddata: copy to metadata/com.hamdash.chornobyl.yml
-# and replace <your-account> with the real repository owner before opening a merge request.
+# Source repository: gm3nnnlab/Chernobyl-Ham-clock- (must be public for F-Droid).
 Categories:
   - Ham Radio
 License: GPL-3.0-or-later
 AuthorName: Yevhen "CUBE" Honchar
-SourceCode: https://github.com/<your-account>/chornobyl-hamdash
-IssueTracker: https://github.com/<your-account>/chornobyl-hamdash/issues
+SourceCode: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
+IssueTracker: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/issues
 
 RepoType: git
-Repo: https://github.com/<your-account>/chornobyl-hamdash
+Repo: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
 
 Builds:
   - versionName: 0.1.0

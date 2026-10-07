@@ -101,7 +101,7 @@ GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if yo
 
 F-Droid builds the app from source, so nothing is uploaded. Checklist:
 
-1. Push the repository to a public host and replace `<your-account>` in `fdroid/com.hamdash.chornobyl.yml`.
+1. Make the repository public (the metadata already points to https://github.com/gm3nnnlab/Chernobyl-Ham-clock-; update `fdroid/com.hamdash.chornobyl.yml` if it moves).
 2. Replace the bundled demo repeaters in `app/src/main/assets/catalog.json` with real public data.
 3. Add real screenshots to `fastlane/metadata/android/<locale>/images/phoneScreenshots/` (1.png, 2.png, ...).
 4. Build from a clean clone with `./gradlew assembleRelease` and tag the release (`git tag v0.1.0`).
