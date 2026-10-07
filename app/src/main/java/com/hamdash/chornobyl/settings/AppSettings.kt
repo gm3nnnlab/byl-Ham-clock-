@@ -19,6 +19,7 @@ data class AppSettings(
     val catalogUrl: String = "",
     val tileUrl: String = "",
     val weatherPlace: WeatherPlace = WeatherPlace.DEFAULT,
+    val showRadiation: Boolean = false,
 ) {
     companion object {
         val SYNC_INTERVAL_OPTIONS = listOf(1, 6, 12, 24, 72)

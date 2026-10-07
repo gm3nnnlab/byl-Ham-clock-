@@ -14,7 +14,7 @@ weather place, and then rounded to about 10 km.
 ## Data stored on the device
 
 - Settings (language, theme, time zone, units, data source URLs, weather place) and favorite repeaters.
-- Cached reference data: the repeater catalog, space weather values, the last weather forecast and map tiles.
+- Cached reference data: the repeater catalog, space weather values, the last weather forecast, the last radiation readings (grouped into cells of about 2 km) and map tiles.
 
 This data never leaves the device. "Clear cache" in Settings deletes the downloaded data; uninstalling the app deletes
 everything.
@@ -37,6 +37,7 @@ itself; the app sends no identifiers, accounts or device data.
 | --- | --- | --- |
 | NOAA Space Weather Prediction Center (`services.swpc.noaa.gov`) | Solar flux, K index, X-ray flares | https://www.weather.gov/privacy |
 | Open-Meteo (`api.open-meteo.com`) | Weather forecast for the chosen place | https://open-meteo.com/en/terms |
+| Safecast (`api.safecast.org`) | Radiation measurements near the Exclusion Zone, requested for the fixed coordinates of the power plant (never your position) | https://safecast.org/ |
 | OpenStreetMap tile server (`tile.openstreetmap.org`) or a tile server you set | Map tiles for the area you view | https://osmfoundation.org/wiki/Privacy_Policy |
 | A catalog URL you enter in Settings (none by default) | Repeater catalog JSON | The operator of that server |
 
@@ -84,7 +85,7 @@ Yevhen "CUBE" Honchar у всіх магазинах і на GitHub.
 
 ## Мережеві запити
 
-Застосунок завантажує публічні дані з сервісів, перелічених у таблиці вище (NOAA SWPC, Open-Meteo, сервер тайлів
+Застосунок завантажує публічні дані з сервісів, перелічених у таблиці вище (NOAA SWPC, Open-Meteo, Safecast для радіаційного фону, сервер тайлів
 OpenStreetMap або заданий вами, адреса каталогу з налаштувань). Як і будь-який вебзапит, вони бачать вашу IP-адресу та
 сам запит; застосунок не надсилає ідентифікаторів, облікових записів чи даних пристрою.
 

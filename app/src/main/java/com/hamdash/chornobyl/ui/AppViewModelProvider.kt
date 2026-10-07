@@ -10,6 +10,7 @@ import com.hamdash.chornobyl.ui.dmr.DmrViewModel
 import com.hamdash.chornobyl.ui.map.MapViewModel
 import com.hamdash.chornobyl.ui.more.PropagationViewModel
 import com.hamdash.chornobyl.ui.more.ReferenceViewModel
+import com.hamdash.chornobyl.ui.radiation.RadiationViewModel
 import com.hamdash.chornobyl.ui.repeaters.RepeatersViewModel
 import com.hamdash.chornobyl.ui.settings.SettingsViewModel
 import com.hamdash.chornobyl.ui.weather.WeatherViewModel
@@ -29,5 +30,6 @@ object AppViewModelProvider {
         initializer { SettingsViewModel(container()) }
         initializer { WeatherViewModel(container()) }
         initializer { ZoneViewModel(container()) }
+        initializer { RadiationViewModel(container()) }
     }
 }

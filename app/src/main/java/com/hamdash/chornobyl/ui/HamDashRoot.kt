@@ -29,6 +29,7 @@ import com.hamdash.chornobyl.ui.more.MoreScreen
 import com.hamdash.chornobyl.ui.more.PropagationScreen
 import com.hamdash.chornobyl.ui.navigation.Routes
 import com.hamdash.chornobyl.ui.navigation.TopLevel
+import com.hamdash.chornobyl.ui.radiation.RadiationScreen
 import com.hamdash.chornobyl.ui.repeaters.RepeatersScreen
 import com.hamdash.chornobyl.ui.settings.SettingsScreen
 import com.hamdash.chornobyl.ui.weather.FpvScreen
@@ -91,6 +92,7 @@ fun HamDashRoot(@Suppress("UNUSED_PARAMETER") container: AppContainer) {
                     onOpenWeather = { navController.navigate(Routes.WEATHER) { launchSingleTop = true } },
                     onOpenFpv = { navController.navigate(Routes.FPV) { launchSingleTop = true } },
                     onOpenZone = { navController.navigate(Routes.ZONE) { launchSingleTop = true } },
+                    onOpenRadiation = { navController.navigate(Routes.RADIATION) { launchSingleTop = true } },
                     onOpenSettings = { navController.navigate(Routes.SETTINGS) { launchSingleTop = true } },
                     onOpenAbout = { navController.navigate(Routes.ABOUT) { launchSingleTop = true } },
                 )
@@ -104,6 +106,12 @@ fun HamDashRoot(@Suppress("UNUSED_PARAMETER") container: AppContainer) {
                 WeatherScreen(
                     onBack = { navController.popBackStack() },
                     onOpenFpv = { navController.navigate(Routes.FPV) { launchSingleTop = true } },
+                )
+            }
+            composable(Routes.RADIATION) {
+                RadiationScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenMap = { navController.goTopLevel(Routes.MAP) },
                 )
             }
             composable(Routes.FPV) { FpvScreen(onBack = { navController.popBackStack() }) }

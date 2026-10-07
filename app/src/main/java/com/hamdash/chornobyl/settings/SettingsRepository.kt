@@ -32,6 +32,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
         val CATALOG_URL = stringPreferencesKey("catalog_url")
         val TILE_URL = stringPreferencesKey("tile_url")
         val WEATHER_PLACE = stringPreferencesKey("weather_place")
+        val SHOW_RADIATION = booleanPreferencesKey("show_radiation")
     }
 
     val settings: Flow<AppSettings> = store.data
@@ -52,6 +53,7 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
                 catalogUrl = p[Keys.CATALOG_URL] ?: defaults.catalogUrl,
                 tileUrl = p[Keys.TILE_URL] ?: defaults.tileUrl,
                 weatherPlace = WeatherPlace.fromName(p[Keys.WEATHER_PLACE]) ?: defaults.weatherPlace,
+                showRadiation = p[Keys.SHOW_RADIATION] ?: defaults.showRadiation,
             )
         }
 
@@ -73,4 +75,5 @@ class SettingsRepository(private val store: DataStore<Preferences>) {
     suspend fun setCatalogUrl(value: String) = edit { it[Keys.CATALOG_URL] = value.trim() }
     suspend fun setTileUrl(value: String) = edit { it[Keys.TILE_URL] = value.trim() }
     suspend fun setWeatherPlace(value: WeatherPlace) = edit { it[Keys.WEATHER_PLACE] = value.name }
+    suspend fun setShowRadiation(value: Boolean) = edit { it[Keys.SHOW_RADIATION] = value }
 }

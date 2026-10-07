@@ -94,6 +94,7 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
 | Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
+| Radiation background | Safecast open data (`api.safecast.org`, CC0): volunteer dose-rate readings within 35 km of the plant, last 12 months, grouped into 2 km cells with the median shown. The request uses the plant's fixed coordinates, never the user's position. Counts per minute are converted with 334 CPM per uSv/h (bGeigie Nano) and flagged as estimates. Unverified by any authority; shown as `NO DATA` when nothing usable arrives. |
 | Zone history, landmarks, game notes | Bundled `zone.json`, compiled from Wikipedia and IAEA articles. Every entry carries its source; only public civilian and historical landmarks. Game notes are labeled as fiction. |
 | Map | OpenStreetMap tiles through osmdroid, cached on the device. The default public OSM tile server is meant for light use; set your own https tile URL in Settings > Map tiles for heavier use. |
 
@@ -162,7 +163,8 @@ turned off in Settings.
 
 Not implemented on purpose: interception of private communications, decoding of protected systems, key recovery,
 searching for military frequencies, detection of military sites, tracking of people, and sharing of the user's
-position without consent. The map shows only public civilian and historical landmarks. The drone section rates the
+position without consent. The map shows only public civilian and historical landmarks. The radiation layer shows volunteer
+measurements with a "not a dosimeter" warning and no safety verdict, and never uses the user's position. The drone section rates the
 weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. Repeater
 lists carry a notice that amateur transmitting is banned in Ukraine under martial law (Presidential Decrees
 No. 133/2022, 259/2022 and 341/2022), and no repeater is shown as on air unless its source says so. Use only

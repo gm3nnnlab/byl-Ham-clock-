@@ -1,5 +1,6 @@
 package com.hamdash.chornobyl.ui.map
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hamdash.chornobyl.R
+import com.hamdash.chornobyl.domain.RadiationSnapshot
+import com.hamdash.chornobyl.domain.TimeZoneOptions
 import com.hamdash.chornobyl.location.LocationState
 import com.hamdash.chornobyl.ui.AppViewModelProvider
 import com.hamdash.chornobyl.ui.common.FilterChipRow
+import com.hamdash.chornobyl.ui.common.RadiationDetailSheet
+import com.hamdash.chornobyl.ui.common.RadiationLegendCard
 import com.hamdash.chornobyl.ui.common.RepeaterDetailSheet
+import com.hamdash.chornobyl.ui.common.message
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.UiState
 import com.hamdash.chornobyl.ui.common.displayName
+import com.hamdash.chornobyl.ui.common.noData
 import com.hamdash.chornobyl.ui.common.rememberContainer
 import com.hamdash.chornobyl.ui.zone.PlaceDetailSheet
 
@@ -63,6 +70,11 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
                     onClick = viewModel::togglePlaces,
                     label = { Text(stringResource(R.string.map_layer_places)) },
                 )
+                FilterChip(
+                    selected = state.settings.showRadiation,
+                    onClick = viewModel::toggleRadiation,
+                    label = { Text(stringResource(R.string.map_layer_radiation)) },
+                )
             }
             if (state.showRepeaters) FilterChipRow(state.filter, viewModel::setFilter, Modifier.padding(vertical = 8.dp))
             Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -76,11 +88,16 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
                     showZoneRing = state.showPlaces,
                     placeLanguage = language,
                     onPlaceClick = viewModel::selectPlace,
+                    radiationCells = if (state.settings.showRadiation) state.radiation.data?.cells.orEmpty() else emptyList(),
+                    onRadiationClick = viewModel::selectRadiation,
                     onRepeaterClick = viewModel::select,
                 )
                 Column(Modifier.align(Alignment.TopCenter).padding(8.dp)) {
                     if (showGps) {
                         LocationStatusBanner(state.location, onRequestPermission = requestPermission)
+                    }
+                    if (state.settings.showRadiation) {
+                        RadiationMapStatus(state.radiation, onRefresh = viewModel::refreshRadiation)
                     }
                     if (state.showRepeaters && state.repeaters is UiState.Empty) {
                         Surface(
@@ -99,6 +116,9 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
                             )
                         }
                     }
+                }
+                if (state.settings.showRadiation) {
+                    RadiationLegendCard(Modifier.align(Alignment.BottomStart).padding(start = 8.dp, bottom = 32.dp))
                 }
                 FloatingActionButton(
                     onClick = {
@@ -120,6 +140,10 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
         }
     }
 
+    state.selectedRadiation?.let { cell ->
+        RadiationDetailSheet(cell = cell, zone = TimeZoneOptions.resolve(state.settings.timeZoneId), onDismiss = { viewModel.selectRadiation(null) })
+    }
+
     state.selectedPlace?.let { place ->
         PlaceDetailSheet(place = place, onDismiss = { viewModel.selectPlace(null) })
     }
@@ -133,5 +157,25 @@ fun MapScreen(viewModel: MapViewModel = viewModel(factory = AppViewModelProvider
             onToggleFavorite = { viewModel.toggleFavorite(repeater) },
             onDismiss = { viewModel.select(null) },
         )
+    }
+}
+
+@Composable
+private fun RadiationMapStatus(snapshot: RadiationSnapshot, onRefresh: () -> Unit) {
+    val data = snapshot.data
+    val problem = snapshot.problem
+    val text = when {
+        snapshot.loading -> stringResource(R.string.loading)
+        problem != null -> problem.message(snapshot.received, snapshot.skipped)
+        data == null -> stringResource(R.string.rad_none)
+        data.cells.isEmpty() -> noData()
+        else -> null
+    } ?: return
+    Surface(
+        modifier = Modifier.padding(top = 8.dp).clickable(onClick = onRefresh),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
+        shape = MaterialTheme.shapes.small,
+    ) {
+        Text(text, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall)
     }
 }

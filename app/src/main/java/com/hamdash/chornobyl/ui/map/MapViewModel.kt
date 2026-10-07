@@ -3,6 +3,8 @@ package com.hamdash.chornobyl.ui.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamdash.chornobyl.AppContainer
+import com.hamdash.chornobyl.domain.RadiationCell
+import com.hamdash.chornobyl.domain.RadiationSnapshot
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.RepeaterFilter
 import com.hamdash.chornobyl.domain.ZonePlace
@@ -14,6 +16,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -29,6 +33,8 @@ data class MapUiState(
     val showPlaces: Boolean = true,
     val places: List<ZonePlace> = emptyList(),
     val selectedPlace: ZonePlace? = null,
+    val radiation: RadiationSnapshot = RadiationSnapshot(),
+    val selectedRadiation: RadiationCell? = null,
 )
 
 private data class Layers(val repeaters: Boolean, val places: Boolean, val selectedPlaceId: String?)
@@ -36,6 +42,7 @@ private data class Layers(val repeaters: Boolean, val places: Boolean, val selec
 class MapViewModel(private val container: AppContainer) : ViewModel() {
     private val filter = MutableStateFlow(RepeaterFilter.ALL)
     private val selectedId = MutableStateFlow<String?>(null)
+    private val selectedRadiation = MutableStateFlow<RadiationCell?>(null)
     private val layers = MutableStateFlow(Layers(repeaters = true, places = true, selectedPlaceId = null))
 
     private val repeatersState = container.repository.repeaters
@@ -65,7 +72,22 @@ class MapViewModel(private val container: AppContainer) : ViewModel() {
             places = places,
             selectedPlace = places.firstOrNull { it.id == l.selectedPlaceId },
         )
+    }.combine(container.radiationRepository.state) { state, radiation ->
+        state.copy(radiation = radiation)
+    }.combine(selectedRadiation) { state, cell ->
+        state.copy(selectedRadiation = cell)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MapUiState())
+
+    init {
+        viewModelScope.launch {
+            container.settingsRepository.settings
+                .map { it.showRadiation }
+                .distinctUntilChanged()
+                .collect { shown ->
+                    if (shown) runCatching { container.radiationRepository.refreshIfStale() }
+                }
+        }
+    }
 
     fun setFilter(value: RepeaterFilter) {
         filter.value = value
@@ -85,6 +107,20 @@ class MapViewModel(private val container: AppContainer) : ViewModel() {
 
     fun selectPlace(place: ZonePlace?) {
         layers.value = layers.value.copy(selectedPlaceId = place?.id)
+    }
+
+    fun toggleRadiation() {
+        viewModelScope.launch {
+            container.settingsRepository.setShowRadiation(!container.settingsRepository.current().showRadiation)
+        }
+    }
+
+    fun selectRadiation(cell: RadiationCell?) {
+        selectedRadiation.value = cell
+    }
+
+    fun refreshRadiation() {
+        viewModelScope.launch { runCatching { container.radiationRepository.refresh() } }
     }
 
     fun enableGps() {

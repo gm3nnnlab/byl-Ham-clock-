@@ -29,12 +29,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.hamdash.chornobyl.R
+import com.hamdash.chornobyl.domain.RadiationCell
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.radiationBand
 import com.hamdash.chornobyl.domain.ZONE_CENTER_LAT
 import com.hamdash.chornobyl.domain.ZONE_CENTER_LON
 import com.hamdash.chornobyl.domain.ZONE_RADIUS_KM
 import com.hamdash.chornobyl.domain.ZonePlace
 import com.hamdash.chornobyl.location.LocationState
+import com.hamdash.chornobyl.ui.common.color
 import com.hamdash.chornobyl.ui.theme.ModeColors
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -63,6 +66,8 @@ fun OsmMap(
     showZoneRing: Boolean = false,
     placeLanguage: String = "en",
     onPlaceClick: (ZonePlace) -> Unit = {},
+    radiationCells: List<RadiationCell> = emptyList(),
+    onRadiationClick: (RadiationCell) -> Unit = {},
     onRepeaterClick: (Repeater) -> Unit,
 ) {
     val context = LocalContext.current
@@ -71,6 +76,7 @@ fun OsmMap(
     val myLocationTitle = stringResource(R.string.map_my_location)
     val onClick by rememberUpdatedState(onRepeaterClick)
     val onPlace by rememberUpdatedState(onPlaceClick)
+    val onRadiation by rememberUpdatedState(onRadiationClick)
     val zoneRingTitle = stringResource(R.string.map_zone_ring)
     val latestUser by rememberUpdatedState(userLocation)
 
@@ -120,7 +126,7 @@ fun OsmMap(
         mapView.invalidate()
     }
 
-    LaunchedEffect(repeaters, userLocation, myLocationTitle, places, showZoneRing, placeLanguage) {
+    LaunchedEffect(repeaters, userLocation, myLocationTitle, places, showZoneRing, placeLanguage, radiationCells) {
         mapView.overlays.removeAll { it is Marker || it is Polygon }
         if (showZoneRing) {
             // Approximate 30 km radius around the plant, drawn first so markers stay tappable above it.
@@ -134,6 +140,18 @@ fun OsmMap(
                 setOnClickListener { _, _, _ -> false }
             }
             mapView.overlays.add(ring)
+        }
+        radiationCells.forEach { cell ->
+            val marker = Marker(mapView).apply {
+                position = GeoPoint(cell.latitude, cell.longitude)
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                icon = circleIcon(context, radiationBand(cell.medianUsvH).color().toArgb(), 26)
+                setOnMarkerClickListener { _, _ ->
+                    onRadiation(cell)
+                    true
+                }
+            }
+            mapView.overlays.add(marker)
         }
         places.forEach { place ->
             val marker = Marker(mapView).apply {

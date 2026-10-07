@@ -4,6 +4,7 @@ import android.content.Context
 import com.hamdash.chornobyl.data.BundledCatalogSource
 import com.hamdash.chornobyl.data.HttpCatalogRemoteDataSource
 import com.hamdash.chornobyl.data.PropagationRepository
+import com.hamdash.chornobyl.data.RadiationRepository
 import com.hamdash.chornobyl.data.RadioDataRepositoryImpl
 import com.hamdash.chornobyl.data.RoomLocalDataSource
 import com.hamdash.chornobyl.data.SyncMetaStore
@@ -59,6 +60,14 @@ class AppContainer(private val context: Context) {
 
     val zoneRepository = ZoneRepository(context, appScope)
 
+    val radiationRepository = RadiationRepository(
+        api = rawApi,
+        store = context.appDataStore,
+        settings = settingsRepository,
+        connectivity = connectivity,
+        scope = appScope,
+    )
+
     val appStatus: Flow<AppStatus> = combine(connectivity.isOnline, repository.syncState) { online, sync ->
         AppStatus(online, sync)
     }
@@ -67,6 +76,7 @@ class AppContainer(private val context: Context) {
         repository.clearCache()
         propagationRepository.clearCache()
         weatherRepository.clearCache()
+        radiationRepository.clearCache()
         withContext(Dispatchers.IO) {
             runCatching { Configuration.getInstance().osmdroidTileCache.deleteRecursively() }
         }
