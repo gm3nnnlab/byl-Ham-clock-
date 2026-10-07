@@ -1,7 +1,8 @@
 # Draft for gitlab.com/fdroid/fdroiddata: copy to metadata/com.hamdash.chornobyl.yml
 # Source repository: gm3nnnlab/Chernobyl-Ham-clock- (must be public for F-Droid).
 Categories:
-  - Ham Radio
+  - Science & Education
+  - Weather
 License: GPL-3.0-or-later
 AuthorName: Yevhen "CUBE" Honchar
 SourceCode: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-

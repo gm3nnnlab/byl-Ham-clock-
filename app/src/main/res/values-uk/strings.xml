@@ -29,7 +29,7 @@
     <string name="sync_updating">Оновлення…</string>
     <string name="sync_remote">База оновлена %1$s%2$s</string>
     <string name="sync_bundled">База: вбудовані дані, синхронізації ще не було%1$s</string>
-    <string name="sync_catalog_date"> (каталог від %1$s)</string>
+    <string name="sync_catalog_date">\u0020(каталог від %1$s)</string>
     <string name="filter_all">Усі</string>
     <string name="mode_other">Інші</string>
     <string name="unit_km_name">Кілометри</string>

@@ -9,6 +9,10 @@ clearly labeled S.T.A.L.K.E.R. game references. Everything saved works offline.
 
 It is not a navigator and is not intended for military use. See "Safety limits" below.
 
+| Dashboard | Map | Repeaters | FPV | More |
+| --- | --- | --- | --- | --- |
+| ![Dashboard](docs/screenshots/1.png) | ![Map with Zone places](docs/screenshots/2.png) | ![Repeaters](docs/screenshots/3.png) | ![FPV and drones](docs/screenshots/4.png) | ![More](docs/screenshots/5.png) |
+
 ## Build and run
 
 Requirements: JDK 17 or newer, Android SDK with platform 35 (Android Studio installs both).
@@ -103,17 +107,21 @@ GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if yo
 
 ## Publishing on F-Droid
 
-F-Droid builds the app from source, so nothing is uploaded. Checklist:
+F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` and `v0.2.0` tags
+exist, and `fdroid/com.hamdash.chornobyl.yml` passes `fdroid lint` against the current fdroiddata categories.
 
-1. Make the repository public (the metadata already points to https://github.com/gm3nnnlab/Chernobyl-Ham-clock-; update `fdroid/com.hamdash.chornobyl.yml` if it moves).
-2. Replace the bundled demo repeaters in `app/src/main/assets/catalog.json` with real public data.
-3. Add real screenshots to `fastlane/metadata/android/<locale>/images/phoneScreenshots/` (1.png, 2.png, ...).
-4. Build from a clean clone with `./gradlew assembleRelease` and tag the release (`git tag v0.1.0`).
-5. Open a merge request to https://gitlab.com/fdroid/fdroiddata adding `metadata/com.hamdash.chornobyl.yml`
-   (start from `fdroid/com.hamdash.chornobyl.yml`), or file a request in https://gitlab.com/fdroid/rfp.
+1. Create a GitLab account and fork https://gitlab.com/fdroid/fdroiddata.
+2. In the fork, add `metadata/com.hamdash.chornobyl.yml` with the content of `fdroid/com.hamdash.chornobyl.yml`
+   (the comment lines at the top can be dropped).
+3. Open a merge request to fdroiddata titled "New app: Chornobyl HamDash" and fill in its template. The CI pipeline
+   on the merge request runs lint and a test build; answer reviewer questions there.
+4. Before that, it is worth replacing the bundled demo repeaters with real public data (see "Data sources"):
+   reviewers may ask why the catalog holds only demo entries.
 
-Store texts and the icon live in `fastlane/metadata/android/` (en-US, uk and ru-RU). When you release a new version,
-bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt`, and tag it.
+Store texts, the icon and screenshots live in `fastlane/metadata/android/` (en-US, uk and ru-RU; screenshots are in
+en-US, which F-Droid uses as the fallback for every language). For a new version: bump `versionCode` and
+`versionName`, add `changelogs/<versionCode>.txt` in each language, add a `Builds` entry to the F-Droid metadata,
+and publish the release (it creates the `v<version>` tag).
 
 ## Privacy
 
@@ -132,5 +140,5 @@ public, lawful amateur radio data and transmit only where your license allows it
 
 ## Status
 
-The pure Kotlin logic (domain, flight rating, catalog, Zone and weather parsers, NOAA parsers) is covered by JVM unit tests. The Android UI layer has
-not been exercised on a device yet.
+The pure Kotlin logic (domain, flight rating, catalog, Zone and weather parsers, NOAA parsers) is covered by JVM unit tests. Version 0.2.0 has been installed and
+checked on a real Android phone.

@@ -29,7 +29,7 @@
     <string name="sync_updating">Updating…</string>
     <string name="sync_remote">Database updated %1$s%2$s</string>
     <string name="sync_bundled">Database: bundled data, never synced%1$s</string>
-    <string name="sync_catalog_date"> (catalog dated %1$s)</string>
+    <string name="sync_catalog_date">\u0020(catalog dated %1$s)</string>
     <string name="filter_all">All</string>
     <string name="mode_other">Other</string>
     <string name="unit_km_name">Kilometers</string>
