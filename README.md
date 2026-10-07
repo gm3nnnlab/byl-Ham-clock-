@@ -16,20 +16,25 @@ It is not a navigator and is not intended for military use. See "Safety limits" 
 
 ## Download
 
-The current version is **0.2.3**. Get the APK from the
+The current version is **0.3.0**. Get `chornobyl-hamdash-v0.3.0.apk` from the
 [latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
-sources and open the file. From 0.2.3 on, every build is signed with the same debug key kept in
-`keystore/debug.keystore` (CI checks its SHA-256 fingerprint, stored in `keystore/debug-cert-sha256.txt`), so a new
-version installs over the previous one and keeps your favorites and settings.
+sources and open the file. To get updates automatically, add this repository to
+[Obtainium](https://github.com/ImranR98/Obtainium). Store listings (F-Droid, IzzyOnDroid, Google Play and others) are
+in progress, see `PUBLISHING.md`.
 
-Versions 0.1.0 to 0.2.2 were each signed with a different, randomly generated key, so Android refuses to install
-anything over them ("App not installed"). Uninstall the old version once, then install 0.2.3.
+Each release has two APKs signed with different keys, so Android will not install one over the other:
 
-The repository debug key is public on purpose and only identifies test builds. F-Droid builds sign with F-Droid's own
-key; a Google Play release would need a separate, private release key.
+* `chornobyl-hamdash-vX.apk`: release build signed with the private release key (certificate SHA-256 in
+  `keystore/release-cert-sha256.txt`). Use this one.
+* `chornobyl-hamdash-vX-debug.apk`: test build signed with the public debug key in `keystore/debug.keystore`.
+
+Versions 0.1.0 to 0.2.2 were each signed with a different, randomly generated key, so nothing installs over them
+("App not installed"): uninstall such a version once. Versions installed from F-Droid or Google Play are signed by
+those stores and also update only from the same store.
 
 | Version | Changes |
 | --- | --- |
+| 0.3.0 | Targets Android 16 (API 36), signed release APK and App Bundle for stores, privacy policy |
 | 0.2.3 | All builds signed with one fixed key, so updates install over each other (uninstall 0.2.2 or older once) |
 | 0.2.2 | Repeater on-air status (on air, off air, unknown), martial-law transmit-ban notice, database migration that keeps favorites |
 | 0.2.1 | Fixed a missing space in the database status line; screenshots in the store listing |
@@ -38,7 +43,7 @@ key; a Google Play release would need a separate, private release key.
 
 ## Build and run
 
-Requirements: JDK 17 or newer, Android SDK with platform 35 (Android Studio installs both).
+Requirements: JDK 17 or newer, Android SDK with platform 36 (Android Studio installs both).
 
 ```bash
 ./gradlew :app:testDebugUnitTest      # JVM unit tests
@@ -49,7 +54,7 @@ Requirements: JDK 17 or newer, Android SDK with platform 35 (Android Studio inst
 Or open the folder in Android Studio and press Run. A GitHub Actions workflow (`.github/workflows/build.yml`)
 builds the APK and runs the tests on every push.
 
-Minimum Android 8.0 (API 26), target and compile SDK 35.
+Minimum Android 8.0 (API 26), target and compile SDK 36.
 
 ## Languages
 
@@ -133,25 +138,20 @@ Yevhen "CUBE" Honchar
 GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if you prefer another free license
 (also update `fdroid/com.hamdash.chornobyl.yml`).
 
-## Publishing on F-Droid
+## Publishing
 
-F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` to `v0.2.3` tags
-exist, and `fdroid/com.hamdash.chornobyl.yml` passes `fdroid lint` against the current fdroiddata categories.
+`PUBLISHING.md` has the step-by-step guide for F-Droid, IzzyOnDroid, Obtainium, Google Play, Samsung Galaxy Store and
+Huawei AppGallery, with the answers for the Google Play forms. Store texts, the icon, the feature graphic and
+screenshots live in `fastlane/metadata/android/` (en-US, uk and ru-RU; images are in en-US, which F-Droid uses as the
+fallback for every language).
 
-1. Create a GitLab account and fork https://gitlab.com/fdroid/fdroiddata.
-2. In the fork, add `metadata/com.hamdash.chornobyl.yml` with the content of `fdroid/com.hamdash.chornobyl.yml`
-   (the comment lines at the top can be dropped).
-3. Open a merge request to fdroiddata titled "New app: Chornobyl HamDash" and fill in its template. The CI pipeline
-   on the merge request runs lint and a test build; answer reviewer questions there.
-4. Before that, it is worth replacing the bundled demo repeaters with real public data (see "Data sources"):
-   reviewers may ask why the catalog holds only demo entries.
-
-Store texts, the icon and screenshots live in `fastlane/metadata/android/` (en-US, uk and ru-RU; screenshots are in
-en-US, which F-Droid uses as the fallback for every language). For a new version: bump `versionCode` and
-`versionName`, add `changelogs/<versionCode>.txt` in each language, add a `Builds` entry to the F-Droid metadata,
-and publish the release (it creates the `v<version>` tag).
+For a new version: bump `versionCode` and `versionName`, add `changelogs/<versionCode>.txt` in each language, add a
+`Builds` entry to `fdroid/com.hamdash.chornobyl.yml`, and publish the release (it creates the `v<version>` tag).
 
 ## Privacy
+
+Full policy: `PRIVACY.md`.
+
 
 GPS feeds the map, distance labels and sun times. It is sent anywhere only if you pick "My location" as the weather
 place, and then rounded to 0.1 degree (about 10 km) before the request to Open-Meteo. The default weather place is the

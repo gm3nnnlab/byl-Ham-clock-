@@ -1,0 +1,3 @@
+* Targets Android 16 (API 36)
+* Signed release builds for app stores, alongside the test build
+* Privacy policy published

@@ -6,16 +6,18 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+val releaseKeystore: String? = System.getenv("RELEASE_KEYSTORE_PATH")?.takeIf { it.isNotBlank() }
+
 android {
     namespace = "com.hamdash.chornobyl"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.hamdash.chornobyl"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 5
-        versionName = "0.2.3"
+        targetSdk = 36
+        versionCode = 6
+        versionName = "0.3.0"
     }
 
     // A fixed debug key kept in the repository, so every CI build is signed the same way and a new
@@ -27,10 +29,21 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
+        // The store release key is private: CI reads it from GitHub secrets. Without them (local builds,
+        // F-Droid) the release build stays unsigned and the store signs it.
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+                keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
+            if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
