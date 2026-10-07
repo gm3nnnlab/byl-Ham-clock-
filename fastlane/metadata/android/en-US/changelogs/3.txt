@@ -1,0 +1,2 @@
+* Fixed a missing space before "(catalog dated ...)" in the database status line
+* Screenshots added to the store listing
