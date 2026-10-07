@@ -80,3 +80,8 @@ fun offsetText(offsetMHz: Double): String = com.hamdash.chornobyl.domain.formatO
 @Composable
 fun distanceText(km: Double, unit: DistanceUnit): String =
     com.hamdash.chornobyl.domain.formatDistance(km, unit, unit.displaySuffix())
+
+/** "TG 255, TG 91", or null when the list is empty. `map` is inline, so stringResource may be called inside it. */
+@Composable
+fun talkgroupsText(ids: List<Int>): String? =
+    if (ids.isEmpty()) null else ids.map { stringResource(R.string.value_tg, it) }.joinToString(", ")

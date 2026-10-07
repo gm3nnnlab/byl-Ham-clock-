@@ -147,8 +147,7 @@ private fun RepeaterSummary(repeater: Repeater) {
             LabeledRow(stringResource(R.string.lbl_name), repeater.name)
             LabeledRow(
                 stringResource(R.string.lbl_talkgroups),
-                repeater.talkgroupIds.takeIf { it.isNotEmpty() }
-                    ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: noData(),
+                talkgroupsText(repeater.talkgroupIds) ?: noData(),
             )
             LabeledRow(stringResource(R.string.lbl_source), repeater.source)
             LabeledRow(stringResource(R.string.lbl_last_updated), repeater.lastUpdated.ifEmpty { noData() })

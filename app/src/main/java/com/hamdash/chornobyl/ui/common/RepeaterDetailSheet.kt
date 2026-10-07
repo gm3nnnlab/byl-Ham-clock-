@@ -90,8 +90,7 @@ fun RepeaterDetailSheet(
                 )
                 LabeledRow(
                     stringResource(R.string.lbl_talkgroups),
-                    repeater.talkgroupIds.takeIf { it.isNotEmpty() }
-                        ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: missing,
+                    talkgroupsText(repeater.talkgroupIds) ?: missing,
                 )
             }
 

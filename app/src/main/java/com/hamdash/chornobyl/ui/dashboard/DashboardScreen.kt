@@ -261,8 +261,7 @@ private fun DmrCard(repeater: Repeater?, onClick: () -> Unit) {
         Text(
             stringResource(
                 R.string.dash_talkgroups_line,
-                repeater.talkgroupIds.takeIf { it.isNotEmpty() }
-                    ?.joinToString(", ") { stringResource(R.string.value_tg, it) } ?: noData(),
+                talkgroupsText(repeater.talkgroupIds) ?: noData(),
             ),
             style = MaterialTheme.typography.bodyMedium,
         )
