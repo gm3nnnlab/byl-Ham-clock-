@@ -408,4 +408,9 @@
     <string name="stalker_trademark">S.T.A.L.K.E.R. is a trademark of GSC Game World. This app is not affiliated with or endorsed by GSC Game World.</string>
     <string name="stalker_emission">Emission warning! Find cover, stalker. (A joke: the real Kp index shows a geomagnetic storm. It is harmless on the ground, but expect poor HF conditions and GNSS drift.)</string>
     <string name="stalker_get_out">Get out of here, stalker!</string>
+    <string name="status_active">ON AIR</string>
+    <string name="status_off_air">OFF AIR</string>
+    <string name="status_unknown">STATUS UNKNOWN</string>
+    <string name="ban_title">Transmitting is banned under martial law</string>
+    <string name="ban_text">Ukraine has prohibited the operation of amateur transmitting stations since 2022 (Presidential Decrees No. 133/2022, 259/2022 and 341/2022). The repeaters listed here may be off air. Do not transmit until the ban is lifted; check the current rules with the Ukrainian Amateur Radio League (UARL) and NCEC.</string>
 </resources>

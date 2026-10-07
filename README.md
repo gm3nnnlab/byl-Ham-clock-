@@ -86,13 +86,17 @@ Catalog format (`schemaVersion` 1), see `app/src/main/assets/catalog.json` for a
     "rxMHz": 438.4, "txMHz": 430.8, "mode": "DMR",
     "colorCode": 1, "timeslot": 2, "talkgroups": [255],
     "lat": 50.45, "lon": 30.52, "elevationM": 180,
-    "source": "where this entry comes from", "lastUpdated": "2026-10-06"
+    "source": "where this entry comes from", "lastUpdated": "2026-10-06",
+    "status": "OFF_AIR"
   }],
   "talkgroups": [], "bands": [], "digitalModes": []
 }
 ```
 
 `rxMHz` is the frequency you listen on (repeater output), `txMHz` the frequency you transmit on (repeater input).
+`status` is `ACTIVE`, `OFF_AIR` or `UNKNOWN` (the default when the field is missing; the app never assumes a
+repeater works). Ukraine has banned amateur transmitters under martial law since 2022, so the app shows a transmit-ban
+notice next to every repeater list, and real entries should be marked `OFF_AIR` unless the source confirms otherwise.
 Invalid entries are skipped and reported; entries without a `source` are rejected. A section with no valid entries
 never replaces the stored one.
 

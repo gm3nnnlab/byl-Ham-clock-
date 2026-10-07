@@ -66,6 +66,8 @@ import com.hamdash.chornobyl.ui.map.OsmMap
 import com.hamdash.chornobyl.ui.map.rememberLocationPermissionRequest
 import com.hamdash.chornobyl.ui.theme.NumberFont
 import com.hamdash.chornobyl.ui.common.VerdictBadge
+import com.hamdash.chornobyl.ui.common.RepeaterStatusBadge
+import com.hamdash.chornobyl.ui.common.TransmitBanNotice
 import com.hamdash.chornobyl.ui.common.conditionText
 import com.hamdash.chornobyl.ui.common.temperatureText
 import com.hamdash.chornobyl.ui.common.windText
@@ -244,6 +246,7 @@ private fun RepeatersCard(total: Int, counts: Map<RadioMode, Int>, onClick: () -
                 }
             }
         }
+        TransmitBanNotice(Modifier.padding(top = 8.dp))
     }
 }
 
@@ -254,6 +257,7 @@ private fun DmrCard(repeater: Repeater?, onClick: () -> Unit) {
             Text(stringResource(R.string.dash_no_dmr), color = MaterialTheme.colorScheme.onSurfaceVariant)
             return@SectionCard
         }
+        RepeaterStatusBadge(repeater.status, Modifier.padding(bottom = 8.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ValueTile(stringResource(R.string.dash_band_mhz, repeater.bandName ?: "RX"), formatMHz(repeater.rxMHz), Modifier.weight(2f))
             ValueTile(stringResource(R.string.dash_mode), repeater.mode.displayName(), Modifier.weight(1f))

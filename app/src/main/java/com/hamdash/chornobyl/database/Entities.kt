@@ -20,6 +20,7 @@ data class RepeaterEntity(
     val elevationM: Int?,
     val source: String,
     val lastUpdated: String,
+    val status: String,
 )
 
 @Entity(tableName = "talkgroups")

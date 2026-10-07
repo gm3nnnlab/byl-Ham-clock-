@@ -22,6 +22,23 @@ enum class RadioMode(val label: String) {
 }
 
 /**
+ * Whether a repeater is on the air, as stated by the catalog source. UNKNOWN is the default: the app never
+ * assumes a repeater works. Under martial law in Ukraine amateur transmitters are banned, so OFF_AIR is common.
+ */
+enum class RepeaterStatus {
+    ACTIVE, OFF_AIR, UNKNOWN;
+
+    companion object {
+        fun parse(raw: String?): RepeaterStatus =
+            when (raw?.uppercase()?.filter { it.isLetter() }) {
+                "ACTIVE", "ON", "ONAIR", "OPERATIONAL" -> ACTIVE
+                "OFFAIR", "OFF", "INACTIVE", "DOWN", "SUSPENDED" -> OFF_AIR
+                else -> UNKNOWN
+            }
+    }
+}
+
+/**
  * RX is the frequency the user listens on (repeater output); TX is the frequency the user
  * transmits on (repeater input). offset = TX - RX.
  */
@@ -41,6 +58,7 @@ data class Repeater(
     val elevationM: Int?,
     val source: String,
     val lastUpdated: String,
+    val status: RepeaterStatus = RepeaterStatus.UNKNOWN,
 ) {
     val offsetMHz: Double get() = txMHz - rxMHz
     val bandName: String? get() = bandNameFor(rxMHz)

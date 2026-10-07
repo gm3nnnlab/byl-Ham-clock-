@@ -5,6 +5,7 @@ import com.hamdash.chornobyl.domain.DigitalMode
 import com.hamdash.chornobyl.domain.DocLink
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.RepeaterStatus
 import com.hamdash.chornobyl.domain.Talkgroup
 
 fun Repeater.toEntity() = RepeaterEntity(
@@ -12,7 +13,7 @@ fun Repeater.toEntity() = RepeaterEntity(
     ctcssHz = ctcssHz, colorCode = colorCode, timeslot = timeslot,
     talkgroupIds = talkgroupIds.joinToString(","),
     latitude = latitude, longitude = longitude, elevationM = elevationM,
-    source = source, lastUpdated = lastUpdated,
+    source = source, lastUpdated = lastUpdated, status = status.name,
 )
 
 fun RepeaterEntity.toDomain() = Repeater(
@@ -20,7 +21,7 @@ fun RepeaterEntity.toDomain() = Repeater(
     mode = RadioMode.parse(mode), ctcssHz = ctcssHz, colorCode = colorCode, timeslot = timeslot,
     talkgroupIds = talkgroupIds.split(',').mapNotNull { it.trim().toIntOrNull() },
     latitude = latitude, longitude = longitude, elevationM = elevationM,
-    source = source, lastUpdated = lastUpdated,
+    source = source, lastUpdated = lastUpdated, status = RepeaterStatus.parse(status),
 )
 
 fun Talkgroup.toEntity() = TalkgroupEntity(id, name, description, source)

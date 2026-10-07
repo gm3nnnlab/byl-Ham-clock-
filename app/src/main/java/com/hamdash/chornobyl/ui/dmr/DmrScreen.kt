@@ -48,6 +48,8 @@ import com.hamdash.chornobyl.ui.common.talkgroupsText
 import com.hamdash.chornobyl.ui.common.offsetText
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.SectionCard
+import com.hamdash.chornobyl.ui.common.RepeaterStatusBadge
+import com.hamdash.chornobyl.ui.common.TransmitBanNotice
 import com.hamdash.chornobyl.ui.theme.NumberFont
 
 @Composable
@@ -70,6 +72,7 @@ fun DmrScreen(viewModel: DmrViewModel = viewModel(factory = AppViewModelProvider
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                item { TransmitBanNotice() }
                 item {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(state.repeaters, key = { it.id }) { repeater ->
@@ -144,6 +147,7 @@ private fun RepeaterSummary(repeater: Repeater) {
             }
         }
         SectionCard(stringResource(R.string.dmr_sec_repeater)) {
+            RepeaterStatusBadge(repeater.status, Modifier.padding(bottom = 6.dp))
             LabeledRow(stringResource(R.string.lbl_callsign), repeater.callsign)
             LabeledRow(stringResource(R.string.lbl_name), repeater.name)
             LabeledRow(

@@ -6,6 +6,7 @@ import com.hamdash.chornobyl.domain.DocLink
 import com.hamdash.chornobyl.domain.RadioCatalog
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.Repeater
+import com.hamdash.chornobyl.domain.RepeaterStatus
 import com.hamdash.chornobyl.domain.SyncProblem
 import com.hamdash.chornobyl.domain.Talkgroup
 import kotlinx.serialization.KSerializer
@@ -36,6 +37,7 @@ internal data class RepeaterDto(
     val elevationM: Int? = null,
     val source: String = "",
     val lastUpdated: String = "",
+    val status: String = "",
 )
 
 @Serializable
@@ -150,6 +152,7 @@ object CatalogParser {
         elevationM = d.elevationM,
         source = d.source.trim(),
         lastUpdated = d.lastUpdated.trim(),
+        status = RepeaterStatus.parse(d.status),
     )
 
     private fun toTalkgroup(d: TalkgroupDto) =

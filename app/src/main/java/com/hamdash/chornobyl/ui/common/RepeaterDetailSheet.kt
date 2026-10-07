@@ -54,6 +54,7 @@ fun RepeaterDetailSheet(
                 Column(Modifier.weight(1f)) {
                     Text(repeater.callsign, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                     Text(repeater.name, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    RepeaterStatusBadge(repeater.status, Modifier.padding(top = 4.dp))
                 }
                 ModeChip(repeater.mode)
                 IconButton(onClick = onToggleFavorite) {
