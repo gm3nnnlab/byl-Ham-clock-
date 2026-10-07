@@ -16,13 +16,21 @@ It is not a navigator and is not intended for military use. See "Safety limits" 
 
 ## Download
 
-The current version is **0.2.2**. Get the APK from the
+The current version is **0.2.3**. Get the APK from the
 [latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
-sources and open the file. Release builds are signed with the CI debug key, so each version installs over the
-previous one and keeps your favorites and settings.
+sources and open the file. From 0.2.3 on, every build is signed with the same debug key kept in
+`keystore/debug.keystore` (CI checks its SHA-256 fingerprint, stored in `keystore/debug-cert-sha256.txt`), so a new
+version installs over the previous one and keeps your favorites and settings.
+
+Versions 0.1.0 to 0.2.2 were each signed with a different, randomly generated key, so Android refuses to install
+anything over them ("App not installed"). Uninstall the old version once, then install 0.2.3.
+
+The repository debug key is public on purpose and only identifies test builds. F-Droid builds sign with F-Droid's own
+key; a Google Play release would need a separate, private release key.
 
 | Version | Changes |
 | --- | --- |
+| 0.2.3 | All builds signed with one fixed key, so updates install over each other (uninstall 0.2.2 or older once) |
 | 0.2.2 | Repeater on-air status (on air, off air, unknown), martial-law transmit-ban notice, database migration that keeps favorites |
 | 0.2.1 | Fixed a missing space in the database status line; screenshots in the store listing |
 | 0.2.0 | Weather, drone flight weather rating, FPV reference, Exclusion Zone history and landmarks, S.T.A.L.K.E.R. references |
@@ -127,7 +135,7 @@ GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if yo
 
 ## Publishing on F-Droid
 
-F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` to `v0.2.2` tags
+F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` to `v0.2.3` tags
 exist, and `fdroid/com.hamdash.chornobyl.yml` passes `fdroid lint` against the current fdroiddata categories.
 
 1. Create a GitLab account and fork https://gitlab.com/fdroid/fdroiddata.

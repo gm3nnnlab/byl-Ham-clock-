@@ -1,0 +1,2 @@
+* All builds are now signed with one fixed key, so new versions install over the old one
+* Versions up to 0.2.2 used a different key each time: uninstall them once before installing 0.2.3

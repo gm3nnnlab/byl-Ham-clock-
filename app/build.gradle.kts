@@ -14,8 +14,19 @@ android {
         applicationId = "com.hamdash.chornobyl"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.2.2"
+        versionCode = 5
+        versionName = "0.2.3"
+    }
+
+    // A fixed debug key kept in the repository, so every CI build is signed the same way and a new
+    // version installs over the old one. It is only for test builds; F-Droid signs with its own key.
+    signingConfigs {
+        getByName("debug") {
+            storeFile = rootProject.file("keystore/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
