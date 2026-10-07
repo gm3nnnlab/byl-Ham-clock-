@@ -5,13 +5,28 @@ It collects public amateur radio information in one place: repeaters (DMR, FM, D
 talkgroups, a band reference, a digital mode reference, UTC and local clocks with sunrise and sunset, basic
 propagation data, a map, a weather forecast with a drone flight weather rating, an FPV reference (5.8 GHz video
 channels, control links, checklist, legal notice), and the history and public landmarks of the Exclusion Zone with
-clearly labeled S.T.A.L.K.E.R. game references. Everything saved works offline.
+clearly labeled S.T.A.L.K.E.R. game references. Every repeater shows whether it is on air, and a notice reminds that
+amateur transmitting is banned in Ukraine under martial law. Everything saved works offline.
 
 It is not a navigator and is not intended for military use. See "Safety limits" below.
 
 | Dashboard | Map | Repeaters | FPV | More |
 | --- | --- | --- | --- | --- |
 | ![Dashboard](docs/screenshots/1.png) | ![Map with Zone places](docs/screenshots/2.png) | ![Repeaters](docs/screenshots/3.png) | ![FPV and drones](docs/screenshots/4.png) | ![More](docs/screenshots/5.png) |
+
+## Download
+
+The current version is **0.2.2**. Get the APK from the
+[latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
+sources and open the file. Release builds are signed with the CI debug key, so each version installs over the
+previous one and keeps your favorites and settings.
+
+| Version | Changes |
+| --- | --- |
+| 0.2.2 | Repeater on-air status (on air, off air, unknown), martial-law transmit-ban notice, database migration that keeps favorites |
+| 0.2.1 | Fixed a missing space in the database status line; screenshots in the store listing |
+| 0.2.0 | Weather, drone flight weather rating, FPV reference, Exclusion Zone history and landmarks, S.T.A.L.K.E.R. references |
+| 0.1.0 | First release: dashboard, map, repeaters, DMR, bands, digital modes, propagation, English and Ukrainian |
 
 ## Build and run
 
@@ -46,13 +61,14 @@ kotlinx.serialization, osmdroid (OpenStreetMap, no API key). Architecture: MVVM 
 ```
 app/src/main/java/com/hamdash/chornobyl/
   domain/     models, filters, sun calculator, formatting (no Android dependencies)
-  data/       RadioDataRepository implementation, Local/Remote data sources, catalog parser and validator
-  database/   Room entities, DAOs, database
-  network/    Retrofit RawApi, NOAA parsers, connectivity monitor
+  data/       repositories (radio data, propagation, weather, Zone), data sources, catalog and Zone parsers
+  database/   Room entities, DAOs, database and migrations (schema version 2)
+  network/    Retrofit RawApi, NOAA and Open-Meteo parsers, connectivity monitor
   location/   LocationTracker (platform LocationManager, no Google Play services)
   settings/   DataStore settings
-  ui/         theme, navigation, screens and ViewModels (dashboard, map, repeaters, dmr, more, settings)
+  ui/         theme, navigation, screens and ViewModels (dashboard, map, repeaters, dmr, weather, zone, more, settings)
 app/src/main/assets/catalog.json   bundled offline catalog
+app/src/main/assets/zone.json      bundled Zone history, landmarks and game notes
 ```
 
 ## Data sources
@@ -61,7 +77,7 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 
 | Data | Source |
 | --- | --- |
-| Repeaters, talkgroups | Bundled `catalog.json`. **The bundled repeaters are fictional demo entries marked `DEMO DATA`.** Replace them with a real public source. |
+| Repeaters, talkgroups | Bundled `catalog.json`. **The bundled repeaters are fictional demo entries marked `DEMO DATA`, with status unknown.** Replace them with a real public source. |
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
 | Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
@@ -111,7 +127,7 @@ GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if yo
 
 ## Publishing on F-Droid
 
-F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` and `v0.2.0` tags
+F-Droid builds the app from source, so nothing is uploaded. The repository is public, the `v0.1.0` to `v0.2.2` tags
 exist, and `fdroid/com.hamdash.chornobyl.yml` passes `fdroid lint` against the current fdroiddata categories.
 
 1. Create a GitLab account and fork https://gitlab.com/fdroid/fdroiddata.
@@ -139,10 +155,14 @@ turned off in Settings.
 Not implemented on purpose: interception of private communications, decoding of protected systems, key recovery,
 searching for military frequencies, detection of military sites, tracking of people, and sharing of the user's
 position without consent. The map shows only public civilian and historical landmarks. The drone section rates the
-weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. Use only
+weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. Repeater
+lists carry a notice that amateur transmitting is banned in Ukraine under martial law (Presidential Decrees
+No. 133/2022, 259/2022 and 341/2022), and no repeater is shown as on air unless its source says so. Use only
 public, lawful amateur radio data and transmit only where your license allows it.
 
 ## Status
 
-The pure Kotlin logic (domain, flight rating, catalog, Zone and weather parsers, NOAA parsers) is covered by JVM unit tests. Version 0.2.0 has been installed and
-checked on a real Android phone.
+The pure Kotlin logic (domain, flight rating, repeater status, catalog, Zone and weather parsers, NOAA parsers) is
+covered by 46 JVM unit tests that run on every push. Version 0.2.2 has been installed over 0.2.1 on a real Android
+phone and checked, including the database migration. The repeater catalog still holds demo entries; real public
+data is the next step.
