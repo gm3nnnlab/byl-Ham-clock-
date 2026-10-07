@@ -56,7 +56,6 @@ jobs:
           S2: ${{ secrets.RELEASE_KEYSTORE_PASSWORD != '' }}
           S3: ${{ secrets.RELEASE_KEY_ALIAS != '' }}
           S4: ${{ secrets.RELEASE_KEY_PASSWORD != '' }}
-          ALL_SECRETS: ${{ toJSON(secrets) }}
         run: |
           missing=0
           for pair in "RELEASE_KEYSTORE_BASE64:$S1" "RELEASE_KEYSTORE_PASSWORD:$S2" "RELEASE_KEY_ALIAS:$S3" "RELEASE_KEY_PASSWORD:$S4"; do
@@ -65,9 +64,7 @@ jobs:
           done
           if [ "$missing" = 1 ]; then
             echo "Repository: ${GITHUB_REPOSITORY}"
-            echo "Secret names this workflow can see (names only, values are never printed):"
-            python3 -c 'import json, os; print("\n".join("  " + k for k in sorted(json.loads(os.environ["ALL_SECRETS"]))))'
-            echo "::error::A release needs all four repository secrets in ${GITHUB_REPOSITORY} under Settings > Secrets and variables > Actions > Repository secrets (not Variables, not an Environment, not another repository or fork). Compare the names above with the four required ones. Without them the release would carry only the debug APK."
+            echo "::error::A release needs all four repository secrets in ${GITHUB_REPOSITORY} under Settings > Secrets and variables > Actions > Repository secrets (not Variables, not an Environment, not another repository or fork). Without them the release would carry only the debug APK."
             exit 1
           fi
       - name: Build signed release APK and App Bundle
