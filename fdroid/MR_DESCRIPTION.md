@@ -46,6 +46,13 @@ coordinates of the power plant, never the user's position.
 
 Privacy policy: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/blob/main/PRIVACY.md (no accounts, no ads, no analytics).
 
+### Use of generative AI
+
+Most of the code was written with Claude Code (Anthropic), an AI coding assistant, working from the author's
+requirements; every such commit carries a `Claude-Session` link. The author defined the features and the safety limits,
+tested every release on a real Android phone, and publishes the full history. The app itself contains no AI features
+and calls no AI services. I am happy to answer questions about any part of the code.
+
 ## Checklist
 
 ### Policy

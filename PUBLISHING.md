@@ -23,14 +23,16 @@ the owner; paste the text inside the file, not the file name). They are set sinc
 `chornobyl-hamdash-vX.apk` (signed release build) and `chornobyl-hamdash-vX.aab` (for Google Play). The release step
 checks that the keystore opens and that the APK certificate matches `keystore/release-cert-sha256.txt`, and names the
 secret at fault when something is wrong. Keep the `.jks` file and passwords in a password manager and an offline
-backup: without them, IzzyOnDroid and direct-APK users cannot get updates.
+backup: without them, Obtainium and direct-APK users cannot get updates.
 
 ## Recommended order
 
-1. **IzzyOnDroid** and **Obtainium**: fastest, use the GitHub release APK.
-2. **F-Droid**: builds from source, review takes weeks.
+1. **Obtainium**: works now, no submission, uses the signed GitHub release APK.
+2. **F-Droid**: builds from source, review takes weeks. Disclose the AI assistance in the merge request (see below).
 3. **Google Play**: paid account and a mandatory 14-day closed test for new personal accounts.
 4. **Samsung Galaxy Store**, **Huawei AppGallery**: optional extra reach.
+
+IzzyOnDroid is not an option for this app, see its section below.
 
 Before the big stores, consider replacing the demo repeaters with real public data: reviewers may question an app
 whose main list is labeled "DEMO DATA".
@@ -54,13 +56,17 @@ commit, as the F-Droid merge request template requires. The text for the merge r
 New versions are picked up from new `v*` tags (`UpdateCheckMode: Tags`, `AutoUpdateMode: Version`). Each new release
 must keep `versionCode` increasing and be tagged; the F-Droid bot then proposes the new build with the commit hash.
 
-## IzzyOnDroid (F-Droid compatible repository)
+## IzzyOnDroid (not eligible)
 
-1. The latest GitHub release contains the signed `chornobyl-hamdash-vX.apk` (since 0.3.1).
-2. Open an issue at https://gitlab.com/IzzyOnDroid/repo/-/issues using the "app request" template: app name, source
-   URL https://github.com/gm3nnnlab/Chernobyl-Ham-clock-, license GPL-3.0-or-later, and the release key SHA-256 from
-   `keystore/release-cert-sha256.txt`.
-3. Updates follow new GitHub releases within about a day.
+IzzyOnDroid's App Inclusion Policy (https://izzyondroid.org/docs/general/AppInclusionPolicy/, checked 2026-10-08) says
+the maintainers are strongly opposed to apps fully or partly created by generative AI tools, that vibe-coded apps are
+rejected, and that the code itself should be free of LLM-generated output (documentation may contain it). Requests are
+filed at https://codeberg.org/IzzyOnDroid/repodata/issues, and the request form asks for the level of AI assistance and
+the tools used; missing transparency can get an app rejected later.
+
+Most of this app's code was written with Claude Code, an AI coding assistant (the commits carry a `Claude-Session`
+link), so an honest request would not meet that policy. Do not file one unless the policy changes. Other places in this
+guide, including F-Droid and Obtainium, accept the app; disclose the AI assistance wherever a form asks.
 
 ## Obtainium (no submission needed)
 

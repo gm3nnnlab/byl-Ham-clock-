@@ -20,7 +20,7 @@ The current version is **0.3.1**. Get `chornobyl-hamdash-v0.3.1.apk` from the
 [latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
 sources and open the file. To get updates automatically, add this repository to
 [Obtainium](https://github.com/ImranR98/Obtainium) and pick the asset without `-debug`. Store listings (F-Droid,
-IzzyOnDroid, Google Play and others) are in progress, see `PUBLISHING.md`.
+Google Play and others) are in progress, see `PUBLISHING.md`.
 
 Each release carries two APKs signed with different keys, so Android will not install one over the other:
 
@@ -147,8 +147,8 @@ GPL-3.0-or-later, see `LICENSE`. Change it before the first public release if yo
 
 ## Publishing
 
-`PUBLISHING.md` has the step-by-step guide for F-Droid, IzzyOnDroid, Obtainium, Google Play, Samsung Galaxy Store and
-Huawei AppGallery, with the answers for the Google Play forms. Store texts, the icon, the feature graphic and
+`PUBLISHING.md` has the step-by-step guide for F-Droid, Obtainium, Google Play, Samsung Galaxy Store and
+Huawei AppGallery (and why IzzyOnDroid is not an option), with the answers for the Google Play forms. Store texts, the icon, the feature graphic and
 screenshots live in `fastlane/metadata/android/` (en-US, uk and ru-RU; images are in en-US, which F-Droid uses as the
 fallback for every language).
 
