@@ -14,13 +14,15 @@ What is ready in this repository, and the steps only the owner can do (accounts,
 | Release key certificate SHA-256 | `keystore/release-cert-sha256.txt` |
 | Target SDK 36 (Google Play requirement since 31 August 2026) | `app/build.gradle.kts` |
 
-## Step 0: release key secrets (once)
+## Step 0: release key secrets (done)
 
-The release key is private and is not in the repository. Add four secrets at
-https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/settings/secrets/actions (values are in the private
-`github-secrets.txt` given to the owner): `RELEASE_KEYSTORE_BASE64`, `RELEASE_KEYSTORE_PASSWORD`, `RELEASE_KEY_ALIAS`,
-`RELEASE_KEY_PASSWORD`. From then on every release also carries `chornobyl-hamdash-vX.apk` (signed release build) and
-`chornobyl-hamdash-vX.aab` (for Google Play). Keep the `.jks` file and passwords in a password manager and an offline
+The release key is private and is not in the repository. It lives in four repository secrets at
+https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/settings/secrets/actions: `RELEASE_KEYSTORE_BASE64`,
+`RELEASE_KEYSTORE_PASSWORD`, `RELEASE_KEY_ALIAS`, `RELEASE_KEY_PASSWORD` (values in the private `github-secrets.txt` given to
+the owner; paste the text inside the file, not the file name). They are set since 0.3.1, so every release carries
+`chornobyl-hamdash-vX.apk` (signed release build) and `chornobyl-hamdash-vX.aab` (for Google Play). The release step
+checks that the keystore opens and that the APK certificate matches `keystore/release-cert-sha256.txt`, and names the
+secret at fault when something is wrong. Keep the `.jks` file and passwords in a password manager and an offline
 backup: without them, IzzyOnDroid and direct-APK users cannot get updates.
 
 ## Recommended order
@@ -54,7 +56,7 @@ must keep `versionCode` increasing and be tagged; the F-Droid bot then proposes 
 
 ## IzzyOnDroid (F-Droid compatible repository)
 
-1. Make sure the latest GitHub release contains the signed `chornobyl-hamdash-vX.apk` (step 0).
+1. The latest GitHub release contains the signed `chornobyl-hamdash-vX.apk` (since 0.3.1).
 2. Open an issue at https://gitlab.com/IzzyOnDroid/repo/-/issues using the "app request" template: app name, source
    URL https://github.com/gm3nnnlab/Chernobyl-Ham-clock-, license GPL-3.0-or-later, and the release key SHA-256 from
    `keystore/release-cert-sha256.txt`.

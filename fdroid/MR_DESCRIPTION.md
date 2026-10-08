@@ -81,11 +81,11 @@ Privacy policy: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/blob/main/PRIV
 * [x] Releases are tagged (`v0.3.1`) and auto update is enabled (`AutoUpdateMode: Version`, `UpdateCheckMode: Tags`).
 * [x] Issue tracker and author contact: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/issues, `AuthorName` set.
 * [x] No external repos, no submodules, no srclibs.
-* [ ] Reproducible builds are **not enabled** for the first inclusion. Reason: the project's own release signing key was
-  only just created and no store-signed release APK has been published yet, so I cannot yet verify that the F-Droid
-  build matches a published signed APK byte for byte. I would like to enable `Binaries` and `AllowedAPKSigningKeys`
-  later; if that must be decided now, I am happy to hold the MR until a signed, verified release exists (release key
-  SHA-256 is in `keystore/release-cert-sha256.txt`).
+* [ ] Reproducible builds are **not enabled** for the first inclusion. Reason: the release signed with the project's
+  own key (`v0.3.1`, certificate SHA-256 `5d1800761718185ca237eb2974cdedfafe206c31456de316ff382b4266f82b28`, also in
+  `keystore/release-cert-sha256.txt`) was published only now, and I have not verified that the F-Droid build matches it
+  byte for byte. I would like to enable `Binaries` and `AllowedAPKSigningKeys` once that is checked; if it must be
+  decided before inclusion, I am happy to try it in this MR.
 * [x] ABI split is not needed: the APK has no native libraries.
 * [x] Only the latest version (0.3.1, versionCode 7) is in the metadata, no disabled versions.
 * [x] The `commit` field is the full hash (`341236df9438a09c7af72f8860c887aa5717cd44`, the commit tagged `v0.3.1`).
