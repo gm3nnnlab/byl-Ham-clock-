@@ -1,7 +1,7 @@
 name: Publish F-Droid repository
 
-# Builds an F-Droid compatible repository from the signed release APKs and publishes it on GitHub Pages:
-# https://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo
+# Builds an F-Droid compatible repository from the signed release APKs and publishes it on GitHub Pages at
+# https://<owner>.github.io/<repository>/fdroid/repo (the address follows the repository name).
 # The index is signed with the release key, so the repository fingerprint equals keystore/release-cert-sha256.txt.
 
 on:
@@ -61,16 +61,20 @@ jobs:
           ALIAS=$(clean "$RELEASE_KEY_ALIAS")
           printf '%s' "$RELEASE_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 -d > "$RUNNER_TEMP/release.jks"
           APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
-          cp fdroid/binary-repo/com.hamdash.chornobyl.yml work/metadata/
+          OWNER=$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr 'A-Z' 'a-z')
+          SITE="$OWNER.github.io/${GITHUB_REPOSITORY#*/}"
+          SOURCE="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          echo "Repository address: https://$SITE/fdroid/repo"
+          sed -e "s|https://github.com/gm3nnnlab/Chernobyl-Ham-clock-|$SOURCE|g" fdroid/binary-repo/com.hamdash.chornobyl.yml > work/metadata/com.hamdash.chornobyl.yml
           cp -r fastlane/metadata/android work/metadata/com.hamdash.chornobyl
           mkdir -p work/repo/icons
           cp fastlane/metadata/android/en-US/images/icon.png work/repo/icons/icon.png
           cat > work/config.yml <<CONFIG
-          repo_url: https://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo
+          repo_url: https://$SITE/fdroid/repo
           repo_name: Chornobyl HamDash
           repo_description: >-
             Releases of Chornobyl HamDash, built from source on GitHub Actions and signed by the developer.
-            Source code: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
+            Source code: $SOURCE
           repo_icon: icon.png
           archive_older: 0
           apksigner: $APKSIGNER
@@ -103,7 +107,7 @@ jobs:
           PY
           mkdir -p site/fdroid
           cp -r work/repo site/fdroid/repo
-          cp fdroid/binary-repo/index.html site/index.html
+          sed -e "s|__SITE__|$SITE|g" -e "s|__SOURCE__|$SOURCE|g" fdroid/binary-repo/index.html > site/index.html
           touch site/.nojekyll
           du -sh site
       - uses: actions/upload-pages-artifact@v3
