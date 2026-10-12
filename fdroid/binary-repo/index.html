@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chornobyl HamDash F-Droid repo</title>
+<style>
+  :root { --bg: #f7f7f5; --fg: #1d1d1b; --muted: #5d5d58; --card: #ffffff; --line: #d9d9d4; --accent: #2f6b3a; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151614; --fg: #ececea; --muted: #a8a8a2; --card: #1f201d; --line: #34352f; --accent: #8fc79a; }
+  }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 28px 0 8px; }
+  p, li { color: var(--fg); }
+  .muted { color: var(--muted); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; }
+  code { font-family: ui-monospace, monospace; font-size: 0.9rem; word-break: break-all; }
+  a.button { display: inline-block; background: var(--accent); color: var(--bg); text-decoration: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; margin: 4px 0; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chornobyl HamDash</h1>
+  <p class="muted">F-Droid compatible repository of the developer's signed releases. Works in F-Droid, Droid-ify, Neo Store and other F-Droid clients.</p>
+
+  <h2>Додати репозиторій / Add the repository</h2>
+  <p><a class="button" href="fdroidrepos://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo?fingerprint=5D1800761718185CA237EB2974CDEDFAFE206C31456DE316FF382B4266F82B28">Відкрити в F-Droid / Open in F-Droid</a></p>
+  <p>Або додайте вручну в налаштуваннях репозиторіїв клієнта / Or add it by hand in the client's repository settings:</p>
+  <div class="card">
+    <p class="muted">Адреса / Address</p>
+    <code>https://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo?fingerprint=5D1800761718185CA237EB2974CDEDFAFE206C31456DE316FF382B4266F82B28</code>
+    <p class="muted">Відбиток / Fingerprint (SHA-256)</p>
+    <code>5D1800761718185CA237EB2974CDEDFAFE206C31456DE316FF382B4266F82B28</code>
+  </div>
+
+  <h2>Що треба знати / Good to know</h2>
+  <ul>
+    <li>Ці APK підписані тим самим ключем, що й файли <code>chornobyl-hamdash-vX.apk</code> у <a href="https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases">GitHub releases</a>, тож оновлюються одне поверх одного. The APKs carry the same signature as the GitHub release APKs.</li>
+    <li>Версії з офіційного F-Droid або Google Play підписані іншими ключами і поверх цих не встановлюються. Builds from the official F-Droid or Google Play use other keys.</li>
+    <li>Більшу частину коду застосунку написано з допомогою ШІ-асистента Claude Code. Most of the app's code was written with the AI coding assistant Claude Code.</li>
+  </ul>
+  <p class="muted">Source code: <a href="https://github.com/gm3nnnlab/Chernobyl-Ham-clock-">github.com/gm3nnnlab/Chernobyl-Ham-clock-</a>. Privacy policy: <a href="https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/blob/main/PRIVACY.md">PRIVACY.md</a>.</p>
+</main>
+</body>
+</html>

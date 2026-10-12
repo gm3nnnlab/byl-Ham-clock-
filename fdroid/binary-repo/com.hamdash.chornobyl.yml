@@ -1,0 +1,11 @@
+# Metadata for the developer's own F-Droid compatible repository (GitHub Pages), used by
+# .github/workflows/fdroid-repo.yml. Texts and images come from fastlane/metadata/android/.
+Categories:
+  - Science & Education
+  - Weather
+License: GPL-3.0-or-later
+AuthorName: Yevhen "CUBE" Honchar
+SourceCode: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
+IssueTracker: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/issues
+Changelog: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases
+AutoName: Chornobyl HamDash

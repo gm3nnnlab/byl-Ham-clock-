@@ -1,0 +1,114 @@
+name: Publish F-Droid repository
+
+# Builds an F-Droid compatible repository from the signed release APKs and publishes it on GitHub Pages:
+# https://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo
+# The index is signed with the release key, so the repository fingerprint equals keystore/release-cert-sha256.txt.
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build debug APK"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # After the build workflow, only release runs (started by hand) can bring a new APK.
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install fdroidserver
+        run: pip install fdroidserver==2.4.5
+      - name: Download the signed release APKs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p work/repo work/metadata
+          for tag in $(gh release list --limit 10 --json tagName --jq '.[].tagName'); do
+            gh release download "$tag" --pattern "chornobyl-hamdash-${tag}.apk" --dir work/repo 2>/dev/null \
+              && echo "$tag: release APK" || echo "$tag: no release-signed APK, skipped"
+          done
+          ls -la work/repo
+          if ! ls work/repo/*.apk >/dev/null 2>&1; then
+            echo "::error::No release-signed APK found in the GitHub releases."
+            exit 1
+          fi
+      - name: Build and sign the repository index
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: |
+          clean() { printf '%s' "$1" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^Value:[[:space:]]*//'; }
+          export FDROID_STORE_PASS=$(clean "$RELEASE_KEYSTORE_PASSWORD")
+          export FDROID_KEY_PASS=$(clean "$RELEASE_KEY_PASSWORD")
+          ALIAS=$(clean "$RELEASE_KEY_ALIAS")
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 -d > "$RUNNER_TEMP/release.jks"
+          APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          cp fdroid/binary-repo/com.hamdash.chornobyl.yml work/metadata/
+          cp -r fastlane/metadata/android work/metadata/com.hamdash.chornobyl
+          mkdir -p work/repo/icons
+          cp fastlane/metadata/android/en-US/images/icon.png work/repo/icons/icon.png
+          cat > work/config.yml <<CONFIG
+          repo_url: https://gm3nnnlab.github.io/Chernobyl-Ham-clock-/fdroid/repo
+          repo_name: Chornobyl HamDash
+          repo_description: >-
+            Releases of Chornobyl HamDash, built from source on GitHub Actions and signed by the developer.
+            Source code: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
+          repo_icon: icon.png
+          archive_older: 0
+          apksigner: $APKSIGNER
+          keystore: $RUNNER_TEMP/release.jks
+          repo_keyalias: $ALIAS
+          keystorepass: {env: FDROID_STORE_PASS}
+          keypass: {env: FDROID_KEY_PASS}
+          CONFIG
+          chmod 600 work/config.yml
+          (cd work && fdroid update --pretty)
+          rm -f "$RUNNER_TEMP/release.jks" work/config.yml
+          python3 - <<'PY'
+          import json, sys
+          expected = open("keystore/release-cert-sha256.txt").read().split()[0].lower()
+          index = json.load(open("work/repo/index-v1.json"))
+          versions = index.get("packages", {}).get("com.hamdash.chornobyl", [])
+          if not versions:
+              print("::error::The repository index lists no version of com.hamdash.chornobyl.")
+              sys.exit(1)
+          for v in versions:
+              print(f"{v['versionName']} ({v['versionCode']}): {v['apkName']}, signer {v.get('signer')}")
+              if v.get("signer", "").lower() != expected:
+                  print(f"::error::{v['apkName']} is not signed with the release key (expected {expected}).")
+                  sys.exit(1)
+          v2 = json.load(open("work/repo/index-v2.json"))
+          if "com.hamdash.chornobyl" not in v2.get("packages", {}):
+              print("::error::index-v2.json lists no com.hamdash.chornobyl.")
+              sys.exit(1)
+          print("Index OK:", len(versions), "version(s)")
+          PY
+          mkdir -p site/fdroid
+          cp -r work/repo site/fdroid/repo
+          cp fdroid/binary-repo/index.html site/index.html
+          touch site/.nojekyll
+          du -sh site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish on GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
