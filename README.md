@@ -5,8 +5,7 @@ It collects public amateur radio information in one place: repeaters (DMR, FM, D
 talkgroups, a band reference, a digital mode reference, UTC and local clocks with sunrise and sunset, basic
 propagation data, a map, a weather forecast with a drone flight weather rating, an FPV reference (5.8 GHz video
 channels, control links, checklist, legal notice), and the history and public landmarks of the Exclusion Zone with
-clearly labeled S.T.A.L.K.E.R. game references. Every repeater shows whether it is on air, and a notice reminds that
-amateur transmitting is banned in Ukraine under martial law. Everything saved works offline.
+clearly labeled S.T.A.L.K.E.R. game references. Every repeater shows whether it is on air.Everything saved works offline.
 
 It is not a navigator and is not intended for military use. See "Safety limits" below.
 
