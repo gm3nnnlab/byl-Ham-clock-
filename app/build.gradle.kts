@@ -16,8 +16,8 @@ android {
         applicationId = "com.hamdash.chornobyl"
         minSdk = 26
         targetSdk = 36
-        versionCode = 8
-        versionName = "0.3.2"
+        versionCode = 9
+        versionName = "0.3.3"
     }
 
     // A fixed debug key kept in the repository, so every CI build is signed the same way and a new
