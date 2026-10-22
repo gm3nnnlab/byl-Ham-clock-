@@ -1,0 +1,28 @@
+name: Snapshot HearHam repeaters
+
+# Downloads the public HearHam.live repeater list (the source the earlier HamDash app used), keeps the
+# listings near Chornobyl and pushes the result to the hearham-snapshot branch for review. It does not touch
+# the app's bundled catalog: copying entries into app/src/main/assets/catalog.json stays a reviewed commit.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and filter the list
+        run: python3 tools/hearham_snapshot.py "$RUNNER_TEMP/hearham-near-chornobyl.json"
+      - name: Push the snapshot to the hearham-snapshot branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan hearham-snapshot
+          git rm -rfq .
+          cp "$RUNNER_TEMP/hearham-near-chornobyl.json" .
+          git add hearham-near-chornobyl.json
+          git commit -qm "HearHam.live repeaters near Chornobyl, retrieved $(date -u +%F)"
+          git push -f origin hearham-snapshot
