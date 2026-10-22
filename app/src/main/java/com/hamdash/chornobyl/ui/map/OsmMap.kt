@@ -32,6 +32,7 @@ import com.hamdash.chornobyl.R
 import com.hamdash.chornobyl.domain.RadiationCell
 import com.hamdash.chornobyl.domain.Repeater
 import com.hamdash.chornobyl.domain.radiationBand
+import com.hamdash.chornobyl.domain.sideBySideAnchors
 import com.hamdash.chornobyl.domain.ZONE_CENTER_LAT
 import com.hamdash.chornobyl.domain.ZONE_CENTER_LON
 import com.hamdash.chornobyl.domain.ZONE_RADIUS_KM
@@ -166,10 +167,11 @@ fun OsmMap(
             }
             mapView.overlays.add(marker)
         }
-        repeaters.forEach { repeater ->
+        val anchors = sideBySideAnchors(repeaters.map { it.latitude to it.longitude })
+        repeaters.forEachIndexed { index, repeater ->
             val marker = Marker(mapView).apply {
                 position = GeoPoint(repeater.latitude, repeater.longitude)
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                setAnchor(anchors[index], Marker.ANCHOR_CENTER)
                 icon = circleIcon(context, ModeColors.of(repeater.mode).toArgb(), 22)
                 title = repeater.callsign
                 setOnMarkerClickListener { _, _ ->

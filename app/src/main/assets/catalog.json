@@ -1,51 +1,38 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-10-06",
+  "updated": "2026-10-22",
   "repeaters": [
     {
-      "id": "demo-dmr-1", "name": "Demo DMR Kyiv", "callsign": "DEMO-D1",
-      "rxMHz": 438.4000, "txMHz": 430.8000, "mode": "DMR",
-      "colorCode": 1, "timeslot": 2, "talkgroups": [255, 91, 9],
-      "lat": 50.4501, "lon": 30.5234, "elevationM": 180,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+      "id": "hearham-4515", "name": "Kyiv, Ukraine", "callsign": "UR0UUO",
+      "rxMHz": 438.8500, "txMHz": 431.2500, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4064923, "lon": 30.5195949,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-09-28",
+      "lastUpdated": "2026-09-28", "status": "UNKNOWN"
     },
     {
-      "id": "demo-dmr-2", "name": "Demo DMR Ivankiv", "callsign": "DEMO-D2",
-      "rxMHz": 438.5250, "txMHz": 430.9250, "mode": "DMR",
-      "colorCode": 1, "timeslot": 1, "talkgroups": [255, 9],
-      "lat": 50.9333, "lon": 29.9000, "elevationM": 140,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+      "id": "hearham-4520", "name": "Kyiv, Ukraine", "callsign": "UR0UUM",
+      "rxMHz": 438.8000, "txMHz": 431.2000, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336, "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-09-28",
+      "lastUpdated": "2026-09-28", "status": "UNKNOWN"
     },
     {
-      "id": "demo-dmr-3", "name": "Demo DMR Chernihiv", "callsign": "DEMO-D3",
-      "rxMHz": 438.6500, "txMHz": 431.0500, "mode": "DMR",
-      "colorCode": 2, "timeslot": 2, "talkgroups": [255, 92],
-      "lat": 51.4982, "lon": 31.2893, "elevationM": 150,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+      "id": "hearham-4532", "name": "Kyiv, Ukraine", "callsign": "UR0UUB",
+      "rxMHz": 438.7000, "txMHz": 431.1000, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336, "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-09-28",
+      "lastUpdated": "2026-09-28", "status": "UNKNOWN"
     },
     {
-      "id": "demo-fm-1", "name": "Demo FM Zhytomyr", "callsign": "DEMO-F1",
-      "rxMHz": 145.6125, "txMHz": 145.0125, "mode": "FM", "ctcssHz": 88.5,
-      "lat": 50.2547, "lon": 28.6587, "elevationM": 220,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
-    },
-    {
-      "id": "demo-fm-2", "name": "Demo FM Bila Tserkva", "callsign": "DEMO-F2",
-      "rxMHz": 145.7000, "txMHz": 145.1000, "mode": "FM", "ctcssHz": 71.9,
-      "lat": 49.8089, "lon": 30.1122, "elevationM": 190,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
-    },
-    {
-      "id": "demo-dstar-1", "name": "Demo D-STAR Slavutych", "callsign": "DEMO-S1",
-      "rxMHz": 439.4625, "txMHz": 431.8625, "mode": "D-STAR",
-      "lat": 51.5217, "lon": 30.7469, "elevationM": 130,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
-    },
-    {
-      "id": "demo-c4fm-1", "name": "Demo C4FM Fastiv", "callsign": "DEMO-Y1",
-      "rxMHz": 145.6375, "txMHz": 145.0375, "mode": "C4FM",
-      "lat": 50.0761, "lon": 29.9181, "elevationM": 200,
-      "source": "DEMO DATA (fictional, for app testing only)", "lastUpdated": "2026-10-06"
+      "id": "hearham-12698", "name": "Mogilyov, Belarus, All Regions", "callsign": "EU7A02R",
+      "rxMHz": 438.5750, "txMHz": 430.9750, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 53.8713, "lon": 30.3238,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-09-28",
+      "lastUpdated": "2026-09-28", "status": "UNKNOWN"
     }
   ],
   "talkgroups": [

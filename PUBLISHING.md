@@ -34,8 +34,7 @@ backup: without them, Obtainium and direct-APK users cannot get updates.
 
 IzzyOnDroid is not an option for this app, see its section below.
 
-Before the big stores, consider replacing the demo repeaters with real public data: reviewers may question an app
-whose main list is labeled "DEMO DATA".
+The repeater list holds real public data from HearHam.live since 0.3.2 (the demo entries are gone).
 
 ## F-Droid (official repository)
 

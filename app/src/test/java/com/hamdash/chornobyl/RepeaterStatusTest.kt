@@ -35,7 +35,7 @@ class RepeaterStatusTest {
     }
 
     @Test
-    fun bundledDemoEntriesDoNotClaimToBeOnAir() {
+    fun bundledEntriesDoNotClaimToBeOnAir() {
         val catalog = CatalogParser.parse(File("src/main/assets/catalog.json").readText()).catalog
         assert(catalog.repeaters.none { it.status == RepeaterStatus.ACTIVE })
     }

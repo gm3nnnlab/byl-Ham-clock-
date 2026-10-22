@@ -59,28 +59,29 @@ class CoreLogicTest {
     @Test fun bundledCatalogIsFullyValid() {
         assertTrue("rejected: ${catalog.rejected}", catalog.rejected.isEmpty())
         val c = catalog.catalog
-        jAssertEquals(7, c.repeaters.size)
+        jAssertEquals(4, c.repeaters.size)
         jAssertEquals(12, c.bands.size)
         assertTrue(c.digitalModes.size >= 6)
         assertTrue(c.talkgroups.isNotEmpty())
         assertTrue(c.repeaters.all { it.source.isNotBlank() })
     }
 
-    @Test fun countsMatchSpecExample() {
+    @Test fun countsBundledRepeatersByMode() {
         val counts = catalog.catalog.repeaters.countByMode()
-        jAssertEquals(3, counts[RadioMode.DMR])
-        jAssertEquals(2, counts[RadioMode.FM])
-        jAssertEquals(1, counts[RadioMode.DSTAR])
-        jAssertEquals(1, counts[RadioMode.C4FM])
+        jAssertEquals(4, counts[RadioMode.DMR])
+        jAssertEquals(0, counts[RadioMode.FM])
+        jAssertEquals(0, counts[RadioMode.DSTAR])
+        jAssertEquals(0, counts[RadioMode.C4FM])
         jAssertEquals(0, counts[RadioMode.OTHER])
     }
 
     @Test fun filtersAndSearches() {
         val all = catalog.catalog.repeaters
-        jAssertEquals(3, all.filterBy(RepeaterFilter.DMR).size)
-        jAssertEquals(7, all.filterBy(RepeaterFilter.ALL).size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "zhytomyr").size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.DMR, "438.525").size)
+        jAssertEquals(4, all.filterBy(RepeaterFilter.DMR).size)
+        jAssertEquals(4, all.filterBy(RepeaterFilter.ALL).size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "mogilyov").size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.DMR, "438.575").size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "UR0UUB").size)
         jAssertEquals(0, all.filterBy(RepeaterFilter.OTHER).size)
     }
 

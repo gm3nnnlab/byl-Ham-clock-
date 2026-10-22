@@ -1,8 +1,10 @@
 package com.hamdash.chornobyl.data
 
+import com.hamdash.chornobyl.domain.DataOrigin
 import com.hamdash.chornobyl.domain.RadioDataRepository
 import com.hamdash.chornobyl.domain.SyncResult
 import com.hamdash.chornobyl.domain.SyncState
+import com.hamdash.chornobyl.domain.bundledCatalogIsNewer
 import com.hamdash.chornobyl.network.ConnectivityMonitor
 import com.hamdash.chornobyl.settings.SettingsRepository
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +43,7 @@ class RadioDataRepositoryImpl(
     }
 
     override suspend fun initialize() {
-        mutex.withLock { seedIfEmpty() }
+        mutex.withLock { seedFromBundle() }
         val s = settings.current()
         if (s.autoSync && now() - meta.current().lastAttemptMillis >= s.syncIntervalHours * HOUR_MS) {
             refresh()
@@ -52,7 +54,7 @@ class RadioDataRepositoryImpl(
         if (!mutex.tryLock()) return SyncResult.Busy
         syncing.value = true
         try {
-            seedIfEmpty()
+            seedFromBundle()
             val network = connectivity.status()
             if (!network.online) return SyncResult.Offline
             if (network.metered && !settings.current().allowMobileData) return SyncResult.SkippedMobileData
@@ -84,15 +86,23 @@ class RadioDataRepositoryImpl(
         mutex.withLock {
             local.clearCatalog()
             meta.reset()
-            seedIfEmpty()
+            seedFromBundle()
         }
     }
 
-    private suspend fun seedIfEmpty() {
-        if (!local.isCatalogEmpty()) return
+    /**
+     * Fills an empty database from the catalog in the APK, and replaces data that came from an older bundled
+     * catalog after an app update. A catalog downloaded from the user's own source is left alone.
+     */
+    private suspend fun seedFromBundle() {
+        val empty = local.isCatalogEmpty()
+        val stored = meta.current()
+        if (!empty && stored.origin != DataOrigin.BUNDLED) return
         val catalog = bundled.load()
-        local.replaceCatalog(catalog)
-        meta.recordSeed(catalog.updated)
+        if (empty || bundledCatalogIsNewer(stored.origin, stored.dataUpdated, catalog.updated)) {
+            local.replaceCatalog(catalog)
+            meta.recordSeed(catalog.updated)
+        }
     }
 
     private companion object {
