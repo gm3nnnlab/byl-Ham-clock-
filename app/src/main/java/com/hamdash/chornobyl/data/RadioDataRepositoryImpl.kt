@@ -4,7 +4,7 @@ import com.hamdash.chornobyl.domain.DataOrigin
 import com.hamdash.chornobyl.domain.RadioDataRepository
 import com.hamdash.chornobyl.domain.SyncResult
 import com.hamdash.chornobyl.domain.SyncState
-import com.hamdash.chornobyl.domain.bundledCatalogIsNewer
+import com.hamdash.chornobyl.domain.bundledCatalogChanged
 import com.hamdash.chornobyl.network.ConnectivityMonitor
 import com.hamdash.chornobyl.settings.SettingsRepository
 import kotlinx.coroutines.flow.Flow
@@ -98,10 +98,10 @@ class RadioDataRepositoryImpl(
         val empty = local.isCatalogEmpty()
         val stored = meta.current()
         if (!empty && stored.origin != DataOrigin.BUNDLED) return
-        val catalog = bundled.load()
-        if (empty || bundledCatalogIsNewer(stored.origin, stored.dataUpdated, catalog.updated)) {
-            local.replaceCatalog(catalog)
-            meta.recordSeed(catalog.updated)
+        val bundle = bundled.load()
+        if (empty || bundledCatalogChanged(stored.origin, stored.bundledFingerprint, bundle.fingerprint)) {
+            local.replaceCatalog(bundle.catalog)
+            meta.recordSeed(bundle.catalog.updated, bundle.fingerprint)
         }
     }
 

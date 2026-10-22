@@ -34,9 +34,6 @@ backup: without them, Obtainium and direct-APK users cannot get updates.
 
 IzzyOnDroid is not an option for this app, see its section below.
 
-Before the big stores, consider replacing the demo repeaters with real public data: reviewers may question an app
-whose main list is labeled "DEMO DATA".
-
 ## F-Droid (official repository)
 
 The metadata is ready and passes `fdroid lint`: one build (0.3.2, versionCode 8) pinned to the full hash of the `v0.3.2`

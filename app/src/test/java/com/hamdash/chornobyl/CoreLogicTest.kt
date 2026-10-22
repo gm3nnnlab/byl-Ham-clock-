@@ -59,7 +59,7 @@ class CoreLogicTest {
     @Test fun bundledCatalogIsFullyValid() {
         assertTrue("rejected: ${catalog.rejected}", catalog.rejected.isEmpty())
         val c = catalog.catalog
-        jAssertEquals(7, c.repeaters.size)
+        jAssertEquals(6, c.repeaters.size)
         jAssertEquals(12, c.bands.size)
         assertTrue(c.digitalModes.size >= 6)
         assertTrue(c.talkgroups.isNotEmpty())
@@ -68,21 +68,21 @@ class CoreLogicTest {
 
     @Test fun countsBundledRepeatersByMode() {
         val counts = catalog.catalog.repeaters.countByMode()
-        jAssertEquals(2, counts[RadioMode.DMR])
-        jAssertEquals(2, counts[RadioMode.FM])
-        jAssertEquals(1, counts[RadioMode.DSTAR])
-        jAssertEquals(1, counts[RadioMode.C4FM])
-        jAssertEquals(1, counts[RadioMode.OTHER])
+        jAssertEquals(6, counts[RadioMode.DMR])
+        jAssertEquals(0, counts[RadioMode.FM])
+        jAssertEquals(0, counts[RadioMode.DSTAR])
+        jAssertEquals(0, counts[RadioMode.C4FM])
+        jAssertEquals(0, counts[RadioMode.OTHER])
     }
 
     @Test fun filtersAndSearches() {
         val all = catalog.catalog.repeaters
-        jAssertEquals(2, all.filterBy(RepeaterFilter.DMR).size)
-        jAssertEquals(7, all.filterBy(RepeaterFilter.ALL).size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "korosten").size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.DMR, "438.9125").size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "UR3EZS").size)
-        jAssertEquals(1, all.filterBy(RepeaterFilter.OTHER).size)
+        jAssertEquals(6, all.filterBy(RepeaterFilter.DMR).size)
+        jAssertEquals(6, all.filterBy(RepeaterFilter.ALL).size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "mogilev").size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.DMR, "438.85").size)
+        jAssertEquals(1, all.filterBy(RepeaterFilter.ALL, "UR0UUJ").size)
+        jAssertEquals(0, all.filterBy(RepeaterFilter.OTHER).size)
     }
 
     @Test fun rejectsRepeatersWithUnknownSourceOrBadValues() {

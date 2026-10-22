@@ -1,22 +1,15 @@
 package com.hamdash.chornobyl.domain
 
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
+import java.security.MessageDigest
+
+/** SHA-256 of the catalog text, used to notice that an app update ships a different bundled catalog. */
+fun catalogFingerprint(text: String): String =
+    MessageDigest.getInstance("SHA-256").digest(text.toByteArray()).joinToString("") { "%02x".format(it) }
 
 /**
- * Whether the catalog bundled with a newer app version should replace the stored one. Only data that came
- * from the bundle is replaced; a catalog downloaded from the user's own source is never overwritten.
+ * Whether the catalog bundled with this app version should replace the stored one. Only data that itself
+ * came from the bundle is replaced; a catalog downloaded from the user's own source is never overwritten.
+ * The content is compared rather than the "updated" date, so two bundles from the same day still differ.
  */
-fun bundledCatalogIsNewer(storedOrigin: DataOrigin, storedUpdated: String?, bundledUpdated: String?): Boolean {
-    if (storedOrigin != DataOrigin.BUNDLED) return false
-    val bundled = parseDate(bundledUpdated) ?: return false
-    val stored = parseDate(storedUpdated) ?: return true
-    return bundled.isAfter(stored)
-}
-
-private fun parseDate(value: String?): LocalDate? =
-    try {
-        value?.let { LocalDate.parse(it.trim()) }
-    } catch (e: DateTimeParseException) {
-        null
-    }
+fun bundledCatalogChanged(storedOrigin: DataOrigin, storedFingerprint: String?, bundledFingerprint: String): Boolean =
+    storedOrigin == DataOrigin.BUNDLED && storedFingerprint != bundledFingerprint

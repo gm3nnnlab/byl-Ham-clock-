@@ -20,6 +20,7 @@ data class SyncMeta(
     val origin: DataOrigin = DataOrigin.BUNDLED,
     val lastError: SyncProblem? = null,
     val dataUpdated: String? = null,
+    val bundledFingerprint: String? = null,
 )
 
 class SyncMetaStore(private val store: DataStore<Preferences>) {
@@ -29,6 +30,7 @@ class SyncMetaStore(private val store: DataStore<Preferences>) {
         val ORIGIN = stringPreferencesKey("sync_origin")
         val ERROR = stringPreferencesKey("sync_error")
         val DATA_UPDATED = stringPreferencesKey("sync_data_updated")
+        val BUNDLED_FINGERPRINT = stringPreferencesKey("sync_bundled_fingerprint")
     }
 
     val meta: Flow<SyncMeta> = store.data
@@ -40,13 +42,15 @@ class SyncMetaStore(private val store: DataStore<Preferences>) {
                 origin = runCatching { DataOrigin.valueOf(p[Keys.ORIGIN].orEmpty()) }.getOrDefault(DataOrigin.BUNDLED),
                 lastError = SyncProblem.decode(p[Keys.ERROR]),
                 dataUpdated = p[Keys.DATA_UPDATED],
+                bundledFingerprint = p[Keys.BUNDLED_FINGERPRINT],
             )
         }
 
     suspend fun current(): SyncMeta = meta.first()
 
-    suspend fun recordSeed(dataUpdated: String?) = store.edit {
+    suspend fun recordSeed(dataUpdated: String?, fingerprint: String) = store.edit {
         it[Keys.ORIGIN] = DataOrigin.BUNDLED.name
+        it[Keys.BUNDLED_FINGERPRINT] = fingerprint
         it[Keys.LAST_SUCCESS] = 0L
         it.remove(Keys.ERROR)
         if (dataUpdated != null) it[Keys.DATA_UPDATED] = dataUpdated else it.remove(Keys.DATA_UPDATED)
@@ -73,5 +77,6 @@ class SyncMetaStore(private val store: DataStore<Preferences>) {
         it.remove(Keys.ORIGIN)
         it.remove(Keys.ERROR)
         it.remove(Keys.DATA_UPDATED)
+        it.remove(Keys.BUNDLED_FINGERPRINT)
     }
 }

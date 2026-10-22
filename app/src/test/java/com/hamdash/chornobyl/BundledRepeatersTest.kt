@@ -4,7 +4,8 @@ import com.hamdash.chornobyl.data.CatalogParser
 import com.hamdash.chornobyl.domain.DataOrigin
 import com.hamdash.chornobyl.domain.RadioMode
 import com.hamdash.chornobyl.domain.RepeaterStatus
-import com.hamdash.chornobyl.domain.bundledCatalogIsNewer
+import com.hamdash.chornobyl.domain.bundledCatalogChanged
+import com.hamdash.chornobyl.domain.catalogFingerprint
 import com.hamdash.chornobyl.domain.sideBySideAnchors
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -16,44 +17,46 @@ class BundledRepeatersTest {
     private val repeaters = CatalogParser.parse(File("src/main/assets/catalog.json").readText()).catalog.repeaters
 
     @Test
-    fun bundledRepeatersAreTheSevenFromTheEarlierApp() {
+    fun bundledRepeatersAreRealPublicListings() {
         assertEquals(
-            setOf("UR5EZ", "UT5EZ", "UR5EZC", "UR3EZS", "UT1EZ", "UR4EZ", "UR7EZ-10"),
+            setOf("UR0UUB", "UR0UUM", "UR0UUJ", "UR0UUO", "EU1A04R", "EU7A02R"),
             repeaters.map { it.callsign }.toSet(),
         )
-        assertEquals(7, repeaters.size)
+        assertEquals(6, repeaters.size)
+        assertTrue(repeaters.none { "DEMO" in it.source })
+        assertTrue(repeaters.all { it.source.startsWith("HearHam.live") || it.source.startsWith("BrandMeister") })
+        assertTrue(repeaters.all { "retrieved 2026-10-22" in it.source })
     }
 
     @Test
-    fun fictionalEntriesAreLabeledAsDemoData() {
-        assertTrue(repeaters.all { it.source.startsWith("DEMO DATA (fictional") })
+    fun listingsDoNotClaimToBeOnAir() {
         assertTrue(repeaters.all { it.status == RepeaterStatus.UNKNOWN })
     }
 
     @Test
-    fun keepsTheValuesFromTheEarlierApp() {
-        val fm = repeaters.first { it.callsign == "UR5EZ" }
-        assertEquals("Chornobyl Exclusion Zone North", fm.name)
-        assertEquals(RadioMode.FM, fm.mode)
-        assertEquals(145.6875, fm.rxMHz, 1e-9)
-        assertEquals(145.0875, fm.txMHz, 1e-9)
-        assertEquals(88.5, fm.ctcssHz!!, 1e-9)
-        val dmr = repeaters.first { it.callsign == "UT5EZ" }
-        assertEquals(1, dmr.colorCode)
-        assertEquals(2, dmr.timeslot)
-        assertEquals(listOf(91), dmr.talkgroupIds)
-        assertEquals(RadioMode.OTHER, repeaters.first { it.callsign == "UR7EZ-10" }.mode)
+    fun keepsTheValuesFromTheSources() {
+        val kyiv = repeaters.first { it.callsign == "UR0UUJ" }
+        assertEquals(RadioMode.DMR, kyiv.mode)
+        assertEquals(439.025, kyiv.rxMHz, 1e-9)
+        assertEquals(431.425, kyiv.txMHz, 1e-9)
+        assertEquals(1, kyiv.colorCode)
+        assertTrue("repeater ID 255016" in kyiv.source)
+        val both = repeaters.first { it.callsign == "EU7A02R" }
+        assertTrue(both.source.startsWith("BrandMeister") && "HearHam.live" in both.source)
+        assertEquals(438.85, repeaters.first { it.callsign == "UR0UUO" }.rxMHz, 1e-9)
     }
 
     @Test
-    fun newerBundledCatalogReplacesOnlyBundledData() {
-        assertTrue(bundledCatalogIsNewer(DataOrigin.BUNDLED, "2026-10-06", "2026-10-22"))
-        assertTrue(bundledCatalogIsNewer(DataOrigin.BUNDLED, null, "2026-10-22"))
-        assertFalse(bundledCatalogIsNewer(DataOrigin.BUNDLED, "2026-10-22", "2026-10-22"))
-        assertFalse(bundledCatalogIsNewer(DataOrigin.BUNDLED, "2026-11-01", "2026-10-22"))
-        assertFalse(bundledCatalogIsNewer(DataOrigin.REMOTE, "2026-10-06", "2026-10-22"))
-        assertFalse(bundledCatalogIsNewer(DataOrigin.BUNDLED, "2026-10-06", null))
-        assertFalse(bundledCatalogIsNewer(DataOrigin.BUNDLED, "2026-10-06", "not a date"))
+    fun changedBundledCatalogReplacesOnlyBundledData() {
+        val old = catalogFingerprint("""{"updated":"2026-10-22","repeaters":[]}""")
+        val new = catalogFingerprint("""{"updated":"2026-10-22","repeaters":[{}]}""")
+        assertTrue(old != new)
+        assertEquals(old, catalogFingerprint("""{"updated":"2026-10-22","repeaters":[]}"""))
+        assertTrue(bundledCatalogChanged(DataOrigin.BUNDLED, old, new))
+        assertTrue(bundledCatalogChanged(DataOrigin.BUNDLED, null, new))
+        assertFalse(bundledCatalogChanged(DataOrigin.BUNDLED, new, new))
+        assertFalse(bundledCatalogChanged(DataOrigin.REMOTE, old, new))
+        assertFalse(bundledCatalogChanged(DataOrigin.REMOTE, null, new))
     }
 
     @Test

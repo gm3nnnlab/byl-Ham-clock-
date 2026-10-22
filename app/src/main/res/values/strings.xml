@@ -212,7 +212,7 @@
     <string name="about_text">A dashboard for licensed radio amateurs working in the Chornobyl region: public repeater information, DMR parameters, band and digital mode references, UTC and local clocks, propagation data, weather and drone flight weather, and the history of the Exclusion Zone. It is not a navigator and is not intended for any military purpose.</string>
     <string name="about_sec_sources">DATA SOURCES</string>
     <string name="src_repeaters_title">Repeaters and talkgroups</string>
-    <string name="src_repeaters_body">Bundled demo catalog shipped with the app. Its repeaters are fictional test entries from the earlier HamDash app and are labeled DEMO DATA. Replace it with a real public source before relying on it.</string>
+    <string name="src_repeaters_body">Bundled catalog of real public listings: DMR repeaters within 300 km of Chornobyl from the HearHam.live repeater list and the BrandMeister DMR network. Every entry shows its source and the date it was retrieved. Being listed does not mean a repeater is on air.</string>
     <string name="src_remote_title">Optional remote catalog</string>
     <string name="src_remote_body">Any https JSON catalog you enter under Settings > Data source. Entries without a stated source are rejected. The app shows each entry\'s source.</string>
     <string name="src_reference_title">Band and digital mode reference</string>

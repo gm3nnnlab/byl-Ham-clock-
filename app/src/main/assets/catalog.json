@@ -3,57 +3,52 @@
   "updated": "2026-10-22",
   "repeaters": [
     {
-      "id": "rpt-001", "name": "Chornobyl Exclusion Zone North", "callsign": "UR5EZ",
-      "rxMHz": 145.6875, "txMHz": 145.0875, "mode": "FM",
-      "ctcssHz": 88.5,
-      "lat": 51.3894, "lon": 30.0995, "elevationM": 132,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-08-01", "status": "UNKNOWN"
+      "id": "hearham-4532", "name": "Kyiv, Ukraine", "callsign": "UR0UUB",
+      "rxMHz": 438.7000, "txMHz": 431.1000, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336, "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     },
     {
-      "id": "rpt-002", "name": "Ivankiv Repeater", "callsign": "UT5EZ",
-      "rxMHz": 439.2375, "txMHz": 431.6375, "mode": "DMR",
-      "colorCode": 1, "timeslot": 2, "talkgroups": [91],
-      "lat": 51.1672, "lon": 29.8967, "elevationM": 118,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-08-01", "status": "UNKNOWN"
+      "id": "hearham-4520", "name": "Kyiv, Ukraine", "callsign": "UR0UUM",
+      "rxMHz": 438.8000, "txMHz": 431.2000, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336, "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     },
     {
-      "id": "rpt-003", "name": "Chernihiv City Repeater", "callsign": "UR5EZC",
-      "rxMHz": 438.9125, "txMHz": 431.3125, "mode": "DMR",
-      "colorCode": 1, "timeslot": 1, "talkgroups": [9],
-      "lat": 51.4982, "lon": 31.2893, "elevationM": 108,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-07-20", "status": "UNKNOWN"
+      "id": "brandmeister-255016", "name": "Kyiv, Ukraine", "callsign": "UR0UUJ",
+      "rxMHz": 439.0250, "txMHz": 431.4250, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.42609, "lon": 30.49198,
+      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 255016, last seen on the network 2026-10-22, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     },
     {
-      "id": "rpt-004", "name": "Slavutych Link", "callsign": "UR3EZS",
-      "rxMHz": 145.7625, "txMHz": 145.1625, "mode": "D-STAR",
-      "lat": 51.5225, "lon": 30.7394, "elevationM": 121,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-06-15", "status": "UNKNOWN"
+      "id": "hearham-4515", "name": "Kiyv, Ukraine", "callsign": "UR0UUO",
+      "rxMHz": 438.8500, "txMHz": 431.2500, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4064923, "lon": 30.5195949,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     },
     {
-      "id": "rpt-005", "name": "Korosten Fusion", "callsign": "UT1EZ",
-      "rxMHz": 145.3625, "txMHz": 144.7625, "mode": "C4FM",
-      "lat": 50.9497, "lon": 28.6217, "elevationM": 187,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-05-30", "status": "UNKNOWN"
+      "id": "brandmeister-257002", "name": "Soligorsk, Belarus", "callsign": "EU1A04R",
+      "rxMHz": 438.7750, "txMHz": 431.1750, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 52.7877, "lon": 27.5098,
+      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 257002, last seen on the network 2026-10-22, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     },
     {
-      "id": "rpt-006", "name": "Kyiv Northern Gate", "callsign": "UR4EZ",
-      "rxMHz": 145.2125, "txMHz": 144.6125, "mode": "FM",
-      "ctcssHz": 94.8,
-      "lat": 50.5333, "lon": 30.4833, "elevationM": 165,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-07-05", "status": "UNKNOWN"
-    },
-    {
-      "id": "rpt-007", "name": "Polissya APRS Digipeater", "callsign": "UR7EZ-10",
-      "rxMHz": 144.8000, "txMHz": 144.8000, "mode": "OTHER",
-      "lat": 51.2708, "lon": 30.2192, "elevationM": 140,
-      "source": "DEMO DATA (fictional entry from the earlier HamDash mock dataset, not a real repeater)",
-      "lastUpdated": "2026-04-12", "status": "UNKNOWN"
+      "id": "brandmeister-257004", "name": "Mogilev, Belarus", "callsign": "EU7A02R",
+      "rxMHz": 438.5750, "txMHz": 430.9750, "mode": "DMR",
+      "colorCode": 1,
+      "lat": 53.8713, "lon": 30.3238,
+      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 257004, last seen on the network 2026-10-22, retrieved 2026-10-22; also listed as operational on HearHam.live",
+      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     }
   ],
   "talkgroups": [

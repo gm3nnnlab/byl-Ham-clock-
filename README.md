@@ -96,7 +96,7 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 
 | Data | Source |
 | --- | --- |
-| Repeaters, talkgroups | Bundled `catalog.json`. **The bundled repeaters are the seven fictional demo entries from the earlier HamDash app, marked `DEMO DATA`, with status unknown.** Replace them with a real public source. Talkgroups: BrandMeister public documentation. |
+| Repeaters, talkgroups | Bundled `catalog.json`. Repeaters: real public listings within 300 km of Chornobyl from the [HearHam.live](https://hearham.com) repeater list (entries listed as operational) and the [BrandMeister](https://brandmeister.network) DMR device list (registered repeater IDs only; personal hotspots are left out because their position is usually someone's home), retrieved 2026-10-22 with `tools/repeater_snapshot.py` through the "Snapshot public repeater lists" workflow. Status stays unknown: a listing does not prove a repeater is on air. Talkgroups: BrandMeister public documentation. |
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
 | Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
@@ -181,5 +181,5 @@ public, lawful amateur radio data and transmit only where your license allows it
 
 The pure Kotlin logic (domain, flight rating, repeater status, catalog, Zone and weather parsers, NOAA parsers) is
 covered by 60 JVM unit tests that run on every push. Version 0.3.1, the first release signed with the release key,
-has been installed and checked on a real Android phone. The repeater catalog holds fictional demo entries; real public
-data is still to come.
+has been installed and checked on a real Android phone. The repeater catalog holds real public listings (six DMR
+repeaters near Chornobyl); refresh it with the "Snapshot public repeater lists" workflow.
