@@ -12,14 +12,14 @@ RepoType: git
 Repo: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-
 
 Builds:
-  - versionName: 0.3.1
-    versionCode: 7
-    commit: 341236df9438a09c7af72f8860c887aa5717cd44
+  - versionName: 0.3.2
+    versionCode: 8
+    commit: 8cd1772c6138bcd9ff4776d93b8f105cdc312dc5
     subdir: app
     gradle:
       - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.3.1
-CurrentVersionCode: 7
+CurrentVersion: 0.3.2
+CurrentVersionCode: 8
