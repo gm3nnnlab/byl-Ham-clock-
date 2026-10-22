@@ -84,7 +84,7 @@ and calls no AI services. I am happy to answer questions about any part of the c
 
 * [x] Metadata is in `metadata/com.hamdash.chornobyl.yml`, valid YAML, LF line endings.
 * [x] Nothing that belongs upstream (summary, description, changelog, images) is added in this MR.
-* [x] Releases are tagged (`v0.3.2`) and auto update is enabled (`AutoUpdateMode: Version`, `UpdateCheckMode: Tags`).
+* [x] Releases are tagged (`v0.3.3`) and auto update is enabled (`AutoUpdateMode: Version`, `UpdateCheckMode: Tags`).
 * [x] Issue tracker and author contact: https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/issues, `AuthorName` set.
 * [x] No external repos, no submodules, no srclibs.
 * [ ] Reproducible builds are **not enabled** for the first inclusion. Reason: the release signed with the project's
@@ -93,8 +93,8 @@ and calls no AI services. I am happy to answer questions about any part of the c
   byte for byte. I would like to enable `Binaries` and `AllowedAPKSigningKeys` once that is checked; if it must be
   decided before inclusion, I am happy to try it in this MR.
 * [x] ABI split is not needed: the APK has no native libraries.
-* [x] Only the latest version (0.3.2, versionCode 8) is in the metadata, no disabled versions.
-* [x] The `commit` field is the full hash (`8cd1772c6138bcd9ff4776d93b8f105cdc312dc5`, the commit tagged `v0.3.2`).
+* [x] Only the latest version (0.3.3, versionCode 9) is in the metadata, no disabled versions.
+* [x] The `commit` field is the full hash (`924196de5fb7680a4880fa4dc448a56c838da3c1`, the commit tagged `v0.3.3`).
 
 ### Pipeline
 

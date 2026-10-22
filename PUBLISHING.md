@@ -36,7 +36,7 @@ IzzyOnDroid is not an option for this app, see its section below.
 
 ## F-Droid (official repository)
 
-The metadata is ready and passes `fdroid lint`: one build (0.3.2, versionCode 8) pinned to the full hash of the `v0.3.2`
+The metadata is ready and passes `fdroid lint`: one build (0.3.3, versionCode 9) pinned to the full hash of the `v0.3.3`
 commit, as the F-Droid merge request template requires. The text for the merge request is in
 `fdroid/MR_DESCRIPTION.md`.
 
