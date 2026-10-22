@@ -1,0 +1,75 @@
+{
+  "source": "https://hearham.com/api/repeaters/v1",
+  "retrieved": "2026-10-22",
+  "center": [
+    51.2763,
+    30.2219
+  ],
+  "radiusKm": 300.0,
+  "listed": 22871,
+  "skipped": {
+    "frequency outside the amateur bands": 1,
+    "no callsign": 82,
+    "no coordinates": 23,
+    "not listed as operational": 3454,
+    "outside the radius": 19307
+  },
+  "repeaters": [
+    {
+      "id": "hearham-4532",
+      "name": "Kyiv, Ukraine",
+      "callsign": "UR0UUB",
+      "rxMHz": 438.7,
+      "txMHz": 431.1,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336,
+      "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "hearham-4520",
+      "name": "Kyiv, Ukraine",
+      "callsign": "UR0UUM",
+      "rxMHz": 438.8,
+      "txMHz": 431.2,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336,
+      "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "hearham-4515",
+      "name": "Kiyv, Ukraine",
+      "callsign": "UR0UUO",
+      "rxMHz": 438.85,
+      "txMHz": 431.25,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4064923,
+      "lon": 30.5195949,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "hearham-12698",
+      "name": "Mogilyov, Belarus, All Regions",
+      "callsign": "EU7A02R",
+      "rxMHz": 438.575,
+      "txMHz": 430.975,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 53.8713,
+      "lon": 30.3238,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    }
+  ]
+}
