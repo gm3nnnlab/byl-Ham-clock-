@@ -1,0 +1,91 @@
+{
+  "retrieved": "2026-10-22",
+  "center": [
+    51.2763,
+    30.2219
+  ],
+  "radiusKm": 300.0,
+  "sources": {
+    "hearham": {
+      "url": "https://hearham.com/api/repeaters/v1",
+      "listed": 22871,
+      "kept": 3,
+      "skipped": {
+        "frequency outside the amateur bands": 1,
+        "no callsign": 82,
+        "not a Ukrainian station": 19328,
+        "not listed as operational": 3449,
+        "outside the radius": 8
+      }
+    },
+    "brandmeister": {
+      "url": "https://api.brandmeister.network/v2/device",
+      "listed": 32514,
+      "kept": 1,
+      "skipped": {
+        "hotspot or personal device, not a repeater ID": 29562,
+        "no coordinates": 5,
+        "not a Ukrainian station": 2939,
+        "outside the radius": 7
+      }
+    }
+  },
+  "repeaters": [
+    {
+      "id": "hearham-4532",
+      "name": "Kyiv, Ukraine",
+      "callsign": "UR0UUB",
+      "rxMHz": 438.7,
+      "txMHz": 431.1,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336,
+      "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "hearham-4520",
+      "name": "Kyiv, Ukraine",
+      "callsign": "UR0UUM",
+      "rxMHz": 438.8,
+      "txMHz": 431.2,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4500336,
+      "lon": 30.5241361,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "brandmeister-255016",
+      "name": "Kyiv, Ukraine",
+      "callsign": "UR0UUJ",
+      "rxMHz": 439.025,
+      "txMHz": 431.425,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.42609,
+      "lon": 30.49198,
+      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 255016, last seen on the network 2026-10-22, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "hearham-4515",
+      "name": "Kiyv, Ukraine",
+      "callsign": "UR0UUO",
+      "rxMHz": 438.85,
+      "txMHz": 431.25,
+      "mode": "DMR",
+      "colorCode": 1,
+      "lat": 50.4064923,
+      "lon": 30.5195949,
+      "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
+      "lastUpdated": "2026-10-22",
+      "status": "UNKNOWN"
+    }
+  ]
+}
