@@ -1,3 +1,3 @@
-* Real repeaters from the public HearHam.live directory replace the demo entries: DMR repeaters UR0UUO, UR0UUM, UR0UUB (Kyiv) and EU7A02R (Mogilyov), listed as operational on 2026-09-28. Their status is shown as unknown
-* They appear on the map; repeaters listed at the same spot sit side by side
+* The repeater list now holds the seven entries from the earlier HamDash app (Chornobyl Exclusion Zone North, Ivankiv, Chernihiv, Slavutych, Korosten, Kyiv Northern Gate, Polissya APRS). They are fictional demo entries, labeled DEMO DATA, and appear on the map
+* Repeaters at the same spot sit side by side on the map
 * Updating the app now refreshes the bundled list (a catalog from your own source is kept)

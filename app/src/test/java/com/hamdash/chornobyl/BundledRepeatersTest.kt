@@ -12,34 +12,37 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
-class RealRepeatersTest {
+class BundledRepeatersTest {
     private val repeaters = CatalogParser.parse(File("src/main/assets/catalog.json").readText()).catalog.repeaters
 
     @Test
-    fun bundledRepeatersAreTheHearHamEntries() {
+    fun bundledRepeatersAreTheSevenFromTheEarlierApp() {
         assertEquals(
-            setOf("hearham-4515", "hearham-4520", "hearham-4532", "hearham-12698"),
-            repeaters.map { it.id }.toSet(),
+            setOf("UR5EZ", "UT5EZ", "UR5EZC", "UR3EZS", "UT1EZ", "UR4EZ", "UR7EZ-10"),
+            repeaters.map { it.callsign }.toSet(),
         )
-        assertTrue(repeaters.all { it.source.startsWith("HearHam.live repeater list") })
-        assertTrue(repeaters.none { it.source.contains("DEMO", ignoreCase = true) })
-        assertTrue(repeaters.all { it.lastUpdated == "2026-09-28" })
+        assertEquals(7, repeaters.size)
     }
 
     @Test
-    fun hearHamListingDoesNotProveARepeaterIsOnAir() {
+    fun fictionalEntriesAreLabeledAsDemoData() {
+        assertTrue(repeaters.all { it.source.startsWith("DEMO DATA (fictional") })
         assertTrue(repeaters.all { it.status == RepeaterStatus.UNKNOWN })
     }
 
     @Test
-    fun keepsTheListedFrequencies() {
-        val r = repeaters.first { it.callsign == "UR0UUO" }
-        assertEquals(RadioMode.DMR, r.mode)
-        assertEquals(438.85, r.rxMHz, 1e-9)
-        assertEquals(431.25, r.txMHz, 1e-9)
-        assertEquals(1, r.colorCode)
-        assertEquals(null, r.timeslot)
-        assertTrue(r.talkgroupIds.isEmpty())
+    fun keepsTheValuesFromTheEarlierApp() {
+        val fm = repeaters.first { it.callsign == "UR5EZ" }
+        assertEquals("Chornobyl Exclusion Zone North", fm.name)
+        assertEquals(RadioMode.FM, fm.mode)
+        assertEquals(145.6875, fm.rxMHz, 1e-9)
+        assertEquals(145.0875, fm.txMHz, 1e-9)
+        assertEquals(88.5, fm.ctcssHz!!, 1e-9)
+        val dmr = repeaters.first { it.callsign == "UT5EZ" }
+        assertEquals(1, dmr.colorCode)
+        assertEquals(2, dmr.timeslot)
+        assertEquals(listOf(91), dmr.talkgroupIds)
+        assertEquals(RadioMode.OTHER, repeaters.first { it.callsign == "UR7EZ-10" }.mode)
     }
 
     @Test
@@ -61,13 +64,5 @@ class RealRepeatersTest {
         assertEquals(0.5f, (anchors[0] + anchors[2]) / 2, 1e-6f)
         assertEquals(listOf(0.5f), sideBySideAnchors(listOf(51.0 to 30.0)))
         assertTrue(sideBySideAnchors(emptyList()).isEmpty())
-    }
-
-    @Test
-    fun bundledKyivRepeatersDoNotHideEachOther() {
-        val anchors = sideBySideAnchors(repeaters.map { it.latitude to it.longitude })
-        val atKyivCentre = repeaters.indices.filter { repeaters[it].callsign in setOf("UR0UUM", "UR0UUB") }
-        assertEquals(2, atKyivCentre.size)
-        assertTrue(anchors[atKyivCentre[0]] != anchors[atKyivCentre[1]])
     }
 }

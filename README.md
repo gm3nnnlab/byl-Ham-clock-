@@ -95,7 +95,7 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 
 | Data | Source |
 | --- | --- |
-| Repeaters, talkgroups | Bundled `catalog.json`. Repeaters: a snapshot of the public [HearHam.live](https://hearham.com) directory taken on 2026-09-28 (entries listed as operational within 300 km of Chornobyl and inside the IARU Region 1 amateur bands), shown with status unknown because a listing does not prove a repeater is on air. Talkgroups: BrandMeister public documentation. |
+| Repeaters, talkgroups | Bundled `catalog.json`. **The bundled repeaters are the seven fictional demo entries from the earlier HamDash app, marked `DEMO DATA`, with status unknown.** Replace them with a real public source. Talkgroups: BrandMeister public documentation. |
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
 | Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
@@ -180,5 +180,5 @@ public, lawful amateur radio data and transmit only where your license allows it
 
 The pure Kotlin logic (domain, flight rating, repeater status, catalog, Zone and weather parsers, NOAA parsers) is
 covered by 60 JVM unit tests that run on every push. Version 0.3.1, the first release signed with the release key,
-has been installed and checked on a real Android phone. The repeater list is a dated HearHam.live snapshot; a live
-refresh from HearHam is not built in yet.
+has been installed and checked on a real Android phone. The repeater catalog holds fictional demo entries; real public
+data is still to come.

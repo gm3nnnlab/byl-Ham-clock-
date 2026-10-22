@@ -16,6 +16,6 @@ Features:
 
 Privacy: your position is used on the device to show you on the map, sort distances and compute sun times. It is uploaded only if you choose "My location" for the weather, and then rounded to about 10 km. There is no analytics, advertising or tracking.
 
-Data: repeaters come from the public HearHam.live directory (DMR repeaters in Kyiv and Mogilyov listed as operational, snapshot of 2026-09-28); a listing does not prove a repeater is on air. Band ranges are a general IARU Region 1 reference; always check your national allocation plan.
+Data: the bundled repeater catalog contains fictional demo entries labeled DEMO DATA. Replace them with a real public source. Band ranges are a general IARU Region 1 reference; always check your national allocation plan.
 
 Safety: for civilian amateur radio use only. The app has no function to intercept or decode private communications, search for military frequencies, locate military sites or track people.
