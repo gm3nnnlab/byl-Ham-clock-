@@ -15,7 +15,7 @@ It is not a navigator and is not intended for military use. See "Safety limits" 
 
 ## Download
 
-The current version is **0.3.1**. Get `chornobyl-hamdash-v0.3.1.apk` from the
+The current version is **0.3.2**. Get `chornobyl-hamdash-v0.3.2.apk` from the
 [latest release](https://github.com/gm3nnnlab/Chernobyl-Ham-clock-/releases/latest), allow installs from unknown
 sources and open the file. To get updates automatically, add this repository to
 [Obtainium](https://github.com/ImranR98/Obtainium) and pick the asset without `-debug`. Store listings (F-Droid,
@@ -38,6 +38,7 @@ those stores and also update only from the same store.
 
 | Version | Changes |
 | --- | --- |
+| 0.3.2 | Repeater list replaced with the seven entries from the earlier HamDash app (fictional, marked DEMO DATA), shown on the map; markers at the same spot sit side by side; an app update refreshes the bundled list |
 | 0.3.1 | Radiation background layer and screen from Safecast open data (volunteer readings, grouped into 2 km cells, no safety verdict). First release signed with the release key |
 | 0.3.0 | Targets Android 16 (API 36), signed release APK and App Bundle for stores, privacy policy |
 | 0.2.3 | All builds signed with one fixed key, so updates install over each other (uninstall 0.2.2 or older once) |
