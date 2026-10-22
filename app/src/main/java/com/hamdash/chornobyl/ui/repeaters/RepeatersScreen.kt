@@ -55,7 +55,6 @@ import com.hamdash.chornobyl.ui.common.FilterChipRow
 import com.hamdash.chornobyl.ui.common.LoadingView
 import com.hamdash.chornobyl.ui.common.ModeChip
 import com.hamdash.chornobyl.ui.common.RepeaterStatusBadge
-import com.hamdash.chornobyl.ui.common.TransmitBanNotice
 import com.hamdash.chornobyl.ui.common.RepeaterDetailSheet
 import com.hamdash.chornobyl.ui.common.ScreenScaffold
 import com.hamdash.chornobyl.ui.common.StatusChip
@@ -81,7 +80,6 @@ fun RepeatersScreen(viewModel: RepeatersViewModel = viewModel(factory = AppViewM
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            TransmitBanNotice(Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
             state.message?.let { messageText ->
                 Surface(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),

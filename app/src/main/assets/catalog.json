@@ -33,22 +33,6 @@
       "lat": 50.4064923, "lon": 30.5195949,
       "source": "HearHam.live repeater list (hearham.com), listed as operational, retrieved 2026-10-22",
       "lastUpdated": "2026-10-22", "status": "UNKNOWN"
-    },
-    {
-      "id": "brandmeister-257002", "name": "Soligorsk, Belarus", "callsign": "EU1A04R",
-      "rxMHz": 438.7750, "txMHz": 431.1750, "mode": "DMR",
-      "colorCode": 1,
-      "lat": 52.7877, "lon": 27.5098,
-      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 257002, last seen on the network 2026-10-22, retrieved 2026-10-22",
-      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
-    },
-    {
-      "id": "brandmeister-257004", "name": "Mogilev, Belarus", "callsign": "EU7A02R",
-      "rxMHz": 438.5750, "txMHz": 430.9750, "mode": "DMR",
-      "colorCode": 1,
-      "lat": 53.8713, "lon": 30.3238,
-      "source": "BrandMeister DMR network device list (brandmeister.network), repeater ID 257004, last seen on the network 2026-10-22, retrieved 2026-10-22; also listed as operational on HearHam.live",
-      "lastUpdated": "2026-10-22", "status": "UNKNOWN"
     }
   ],
   "talkgroups": [

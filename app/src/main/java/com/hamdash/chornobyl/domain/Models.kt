@@ -23,7 +23,7 @@ enum class RadioMode(val label: String) {
 
 /**
  * Whether a repeater is on the air, as stated by the catalog source. UNKNOWN is the default: the app never
- * assumes a repeater works. Under martial law in Ukraine amateur transmitters are banned, so OFF_AIR is common.
+ * assumes a repeater works.
  */
 enum class RepeaterStatus {
     ACTIVE, OFF_AIR, UNKNOWN;

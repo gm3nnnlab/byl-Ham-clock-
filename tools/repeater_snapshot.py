@@ -8,8 +8,8 @@ Two public sources are read:
   with a 6-digit repeater ID are kept. Hotspots and other personal devices carry a longer ID and are
   dropped: their coordinates are usually someone's home.
 
-Kept entries need a callsign and coordinates within RADIUS_KM of Chornobyl, and both frequencies inside
-IARU Region 1 amateur bands. A repeater listed by both sources appears once. The output uses the app's
+Kept entries need a Ukrainian callsign, coordinates within RADIUS_KM of Chornobyl, and both frequencies
+inside IARU Region 1 amateur bands. A repeater listed by both sources appears once. The output uses the app's
 catalog repeater format, with status UNKNOWN: a directory listing does not prove a repeater is on air.
 
 Usage: repeater_snapshot.py OUTPUT.json [--hearham saved.json] [--brandmeister saved.json]
@@ -28,6 +28,8 @@ CENTER_LAT, CENTER_LON = 51.2763, 30.2219
 RADIUS_KM = 300.0
 AMATEUR_BANDS_MHZ = [(28.0, 29.7), (50.0, 54.0), (144.0, 146.0), (430.0, 440.0), (1240.0, 1300.0)]
 COLOR_CODE = re.compile(r"CC\s*(\d+)", re.IGNORECASE)
+# ITU prefixes allocated to Ukraine: EM-EO and UR-UZ.
+UKRAINIAN_CALLSIGN = re.compile(r"^(E[M-O]|U[R-Z])\d", re.IGNORECASE)
 LOCATOR = re.compile(r"^[A-R]{2}\d{2}([A-X]{2}(\d{2})?)?$", re.IGNORECASE)
 # DMR IDs start with the ITU mobile country code.
 COUNTRY_BY_MCC = {"250": "Russia", "255": "Ukraine", "257": "Belarus", "259": "Moldova", "260": "Poland"}
@@ -47,6 +49,8 @@ def in_band(mhz):
 def place_problem(callsign, lat, lon):
     if not callsign:
         return "no callsign"
+    if not UKRAINIAN_CALLSIGN.match(callsign):
+        return "not a Ukrainian station"
     if lat is None or lon is None or (lat == 0 and lon == 0):
         return "no coordinates"
     if distance_km(lat, lon) > RADIUS_KM:

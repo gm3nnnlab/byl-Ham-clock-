@@ -19,10 +19,11 @@ class BundledRepeatersTest {
     @Test
     fun bundledRepeatersAreRealPublicListings() {
         assertEquals(
-            setOf("UR0UUB", "UR0UUM", "UR0UUJ", "UR0UUO", "EU1A04R", "EU7A02R"),
+            setOf("UR0UUB", "UR0UUM", "UR0UUJ", "UR0UUO"),
             repeaters.map { it.callsign }.toSet(),
         )
-        assertEquals(6, repeaters.size)
+        assertEquals(4, repeaters.size)
+        assertTrue(repeaters.all { it.name.endsWith("Ukraine") })
         assertTrue(repeaters.none { "DEMO" in it.source })
         assertTrue(repeaters.all { it.source.startsWith("HearHam.live") || it.source.startsWith("BrandMeister") })
         assertTrue(repeaters.all { "retrieved 2026-10-22" in it.source })
@@ -41,8 +42,6 @@ class BundledRepeatersTest {
         assertEquals(431.425, kyiv.txMHz, 1e-9)
         assertEquals(1, kyiv.colorCode)
         assertTrue("repeater ID 255016" in kyiv.source)
-        val both = repeaters.first { it.callsign == "EU7A02R" }
-        assertTrue(both.source.startsWith("BrandMeister") && "HearHam.live" in both.source)
         assertEquals(438.85, repeaters.first { it.callsign == "UR0UUO" }.rxMHz, 1e-9)
     }
 

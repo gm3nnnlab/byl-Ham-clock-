@@ -34,9 +34,8 @@ Screenshots (also in `fastlane/metadata/android/en-US/images/phoneScreenshots/`)
 
 HamClock-style dashboards exist for desktops and for the web, and there are repeater directories, but this app puts a
 repeater list with status, space weather, a map, a flight weather rating for drones and local Zone history in one
-free, ad-free, offline-capable Android app. It is also explicit about the legal situation: amateur transmitting is
-banned in Ukraine under martial law (Presidential Decrees 133/2022, 259/2022, 341/2022), so every repeater list
-carries that notice and no repeater is shown as on air unless its source says so.
+free, ad-free, offline-capable Android app. Every repeater shows its public source and retrieval date, and no
+repeater is shown as on air unless its source says so.
 
 Safety limits are part of the design: no interception of communications, no decoding of protected systems, no search
 for military frequencies or sites, no tracking of people. The app is not a navigator and not intended for military use.

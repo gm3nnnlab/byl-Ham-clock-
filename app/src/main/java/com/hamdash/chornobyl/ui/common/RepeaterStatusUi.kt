@@ -1,8 +1,5 @@
 package com.hamdash.chornobyl.ui.common
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -42,30 +39,5 @@ fun RepeaterStatusBadge(status: RepeaterStatus, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
         )
-    }
-}
-
-/** Reminder that amateur transmitters are banned in Ukraine under martial law; shown wherever repeaters are listed. */
-@Composable
-fun TransmitBanNotice(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.errorContainer,
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-    ) {
-        Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
-            Text(
-                stringResource(R.string.ban_title),
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                style = MaterialTheme.typography.labelLarge,
-            )
-            Text(
-                stringResource(R.string.ban_text),
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
     }
 }

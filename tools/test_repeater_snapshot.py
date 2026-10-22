@@ -61,8 +61,15 @@ class BrandMeisterTest(unittest.TestCase):
         self.assertIn("repeater ID 255016, last seen on the network 2026-10-22", r["source"])
 
     def test_cleans_locators_out_of_the_place_name(self):
-        names = [repeaters(bm=[brandmeister(id=257002, city=c)])[0]["name"] for c in ("KO32SS, Soligorsk", "Mogilev, KO53DU89")]
-        self.assertEqual(["Soligorsk, Belarus", "Mogilev, Belarus"], names)
+        names = [repeaters(bm=[brandmeister(city=c)])[0]["name"] for c in ("KO50GK, Kyiv", "Zhytomyr, KO40HG")]
+        self.assertEqual(["Kyiv, Ukraine", "Zhytomyr, Ukraine"], names)
+
+    def test_keeps_only_ukrainian_stations(self):
+        kept = repeaters(
+            [hearham(id=8, callsign="EU7A02R"), hearham(id=9, callsign="EM1ABC"), hearham(id=10, callsign="RA3XYZ")],
+            [brandmeister(id=257002, callsign="EU1A04R"), brandmeister(id=255017, callsign="US5ZAQ")],
+        )
+        self.assertEqual({"EM1ABC", "US5ZAQ"}, {r["callsign"] for r in kept})
 
     def test_drops_hotspots_and_simplex_devices(self):
         result = snapshot([], [
@@ -75,8 +82,7 @@ class BrandMeisterTest(unittest.TestCase):
         self.assertEqual(4, sum(result["sources"]["brandmeister"]["skipped"].values()))
 
     def test_lists_a_repeater_from_both_sources_once(self):
-        both = repeaters([hearham(callsign="EU7A02R", frequency=438575000, offset=-7600000, latitude=53.87, longitude=30.32)],
-                         [brandmeister(id=257004, callsign="EU7A02R", tx="438.5750", rx="430.9750", lat=53.87, lng=30.32)])
+        both = repeaters([hearham(callsign="UR0UUJ", frequency=439025000, offset=-7600000)], [brandmeister()])
         self.assertEqual(1, len(both))
         self.assertTrue(both[0]["source"].endswith("also listed as operational on HearHam.live"))
 

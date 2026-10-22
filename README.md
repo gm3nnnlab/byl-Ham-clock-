@@ -96,7 +96,7 @@ The app never invents values. Missing data is shown as `NO DATA`, and every repe
 
 | Data | Source |
 | --- | --- |
-| Repeaters, talkgroups | Bundled `catalog.json`. Repeaters: real public listings within 300 km of Chornobyl from the [HearHam.live](https://hearham.com) repeater list (entries listed as operational) and the [BrandMeister](https://brandmeister.network) DMR device list (registered repeater IDs only; personal hotspots are left out because their position is usually someone's home), retrieved 2026-10-22 with `tools/repeater_snapshot.py` through the "Snapshot public repeater lists" workflow. Status stays unknown: a listing does not prove a repeater is on air. Talkgroups: BrandMeister public documentation. |
+| Repeaters, talkgroups | Bundled `catalog.json`. Repeaters: real public listings of Ukrainian stations within 300 km of Chornobyl from the [HearHam.live](https://hearham.com) repeater list (entries listed as operational) and the [BrandMeister](https://brandmeister.network) DMR device list (registered repeater IDs only; personal hotspots are left out because their position is usually someone's home), retrieved 2026-10-22 with `tools/repeater_snapshot.py` through the "Snapshot public repeater lists" workflow. Status stays unknown: a listing does not prove a repeater is on air. Talkgroups: BrandMeister public documentation. |
 | Bands, digital modes | Bundled general reference (IARU Region 1 overview, official project sites). Always check your national allocation plan. |
 | Propagation | NOAA SWPC public JSON (`services.swpc.noaa.gov`): 10.7 cm flux, planetary K and A index, latest X-ray flare. |
 | Weather | Open-Meteo forecast API (`api.open-meteo.com`, no key, CC BY 4.0): current conditions, 3-day hourly and daily forecast, wind at 10 m and 80 m. |
@@ -131,8 +131,7 @@ Catalog format (`schemaVersion` 1), see `app/src/main/assets/catalog.json` for a
 
 `rxMHz` is the frequency you listen on (repeater output), `txMHz` the frequency you transmit on (repeater input).
 `status` is `ACTIVE`, `OFF_AIR` or `UNKNOWN` (the default when the field is missing; the app never assumes a
-repeater works). Ukraine has banned amateur transmitters under martial law since 2022, so the app shows a transmit-ban
-notice next to every repeater list, and real entries should be marked `OFF_AIR` unless the source confirms otherwise.
+repeater works); mark an entry `OFF_AIR` when its source says it is not working.
 Invalid entries are skipped and reported; entries without a `source` are rejected. A section with no valid entries
 never replaces the stored one.
 
@@ -172,14 +171,13 @@ Not implemented on purpose: interception of private communications, decoding of 
 searching for military frequencies, detection of military sites, tracking of people, and sharing of the user's
 position without consent. The map shows only public civilian and historical landmarks. The radiation layer shows volunteer
 measurements with a "not a dosimeter" warning and no safety verdict, and never uses the user's position. The drone section rates the
-weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. Repeater
-lists carry a notice that amateur transmitting is banned in Ukraine under martial law (Presidential Decrees
-No. 133/2022, 259/2022 and 341/2022), and no repeater is shown as on air unless its source says so. Use only
-public, lawful amateur radio data and transmit only where your license allows it.
+weather only; it never says a flight is permitted and points to martial-law and Exclusion Zone access rules. No
+repeater is shown as on air unless its source says so. Use only public, lawful amateur radio data and transmit only
+where your license allows it.
 
 ## Status
 
 The pure Kotlin logic (domain, flight rating, repeater status, catalog, Zone and weather parsers, NOAA parsers) is
 covered by 60 JVM unit tests that run on every push. Version 0.3.1, the first release signed with the release key,
-has been installed and checked on a real Android phone. The repeater catalog holds real public listings (six DMR
-repeaters near Chornobyl); refresh it with the "Snapshot public repeater lists" workflow.
+has been installed and checked on a real Android phone. The repeater catalog holds real public listings (four DMR
+repeaters in Kyiv); refresh it with the "Snapshot public repeater lists" workflow.
