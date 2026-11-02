@@ -124,7 +124,7 @@ jobs:
         run: |
           if [ "$DEBUG_ONLY" = "true" ]; then
             cat > release-notes.md <<EOF
-          Chornobyl HamDash ${RELEASE_TAG}: test build.
+          Chornobyl HamDash ${RELEASE_TAG}: test build. Author: Yevhen "CUBE" Honchar (@gm3nnnlab).
 
           * \`chornobyl-hamdash-${RELEASE_TAG}-debug.apk\`: signed with the public debug key in \`keystore/debug.keystore\`. It installs over builds from 0.2.3 on and keeps your data.
 
@@ -132,7 +132,7 @@ jobs:
           EOF
           else
             cat > release-notes.md <<EOF
-          Chornobyl HamDash ${RELEASE_TAG}.
+          Chornobyl HamDash ${RELEASE_TAG} by Yevhen "CUBE" Honchar (@gm3nnnlab).
 
           * \`chornobyl-hamdash-${RELEASE_TAG}.apk\`: release build signed with the project's release key (use this one).
           * \`chornobyl-hamdash-${RELEASE_TAG}.aab\`: the same build as an Android App Bundle for Google Play.

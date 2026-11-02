@@ -1,11 +1,13 @@
 # Chornobyl HamDash
 
+By **Yevhen "CUBE" Honchar** ([@gm3nnnlab](https://github.com/gm3nnnlab)).
+
 Native Android dashboard for licensed radio amateurs working in the Chornobyl region, in the spirit of HamClock.
 It collects public amateur radio information in one place: repeaters (DMR, FM, D-STAR, C4FM), DMR parameters and
 talkgroups, a band reference, a digital mode reference, UTC and local clocks with sunrise and sunset, basic
 propagation data, a map, a weather forecast with a drone flight weather rating, an FPV reference (5.8 GHz video
 channels, control links, checklist, legal notice), and the history and public landmarks of the Exclusion Zone with
-clearly labeled S.T.A.L.K.E.R. game references. Every repeater shows whether it is on air.Everything saved works offline.
+clearly labeled S.T.A.L.K.E.R. game references. Every repeater shows whether it is on air. Everything saved works offline.
 
 It is not a navigator and is not intended for military use. See "Safety limits" below.
 
@@ -138,7 +140,8 @@ never replaces the stored one.
 
 ## Author
 
-Yevhen "CUBE" Honchar
+Yevhen "CUBE" Honchar, [@gm3nnnlab](https://github.com/gm3nnnlab) on GitHub. To cite the app, use "Cite this
+repository" on the GitHub page (from `CITATION.cff`).
 
 ## License
 

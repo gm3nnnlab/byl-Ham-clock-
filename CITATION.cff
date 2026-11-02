@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: If you refer to this app, please cite it as below.
+type: software
+title: Chornobyl HamDash
+abstract: Offline-first Android dashboard for licensed radio amateurs working in the Chornobyl region.
+authors:
+  - given-names: Yevhen
+    family-names: Honchar
+    alias: CUBE
+license: GPL-3.0-or-later
+repository-code: https://github.com/gm3nnnlab/byl-Ham-clock-
+version: 0.3.3
+date-released: 2026-10-22
