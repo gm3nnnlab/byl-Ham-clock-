@@ -122,26 +122,10 @@ jobs:
       - name: Write the release notes
         if: env.IS_RELEASE == 'true'
         run: |
-          if [ "$DEBUG_ONLY" = "true" ]; then
-            cat > release-notes.md <<EOF
-          Chornobyl HamDash ${RELEASE_TAG}: test build. Author: Yevhen "CUBE" Honchar (@gm3nnnlab).
-
-          * \`chornobyl-hamdash-${RELEASE_TAG}-debug.apk\`: signed with the public debug key in \`keystore/debug.keystore\`. It installs over builds from 0.2.3 on and keeps your data.
-
-          This release has no store-signed APK or App Bundle yet: it was published with the release key skipped. Do not submit this file to a store.
-          EOF
-          else
-            cat > release-notes.md <<EOF
-          Chornobyl HamDash ${RELEASE_TAG} by Yevhen "CUBE" Honchar (@gm3nnnlab).
-
-          * \`chornobyl-hamdash-${RELEASE_TAG}.apk\`: release build signed with the project's release key (use this one).
-          * \`chornobyl-hamdash-${RELEASE_TAG}.aab\`: the same build as an Android App Bundle for Google Play.
-          * \`chornobyl-hamdash-${RELEASE_TAG}-debug.apk\`: test build signed with the public debug key in \`keystore/debug.keystore\`.
-
-          The release and debug builds use different keys, so Android will not install one over the other.
-          Release key SHA-256: see \`keystore/release-cert-sha256.txt\`.
-          EOF
-          fi
+          flag=""
+          if [ "$DEBUG_ONLY" = "true" ]; then flag="--debug-only"; fi
+          python3 tools/release_notes.py "$RELEASE_TAG" $flag > release-notes.md
+          cat release-notes.md
       - name: Publish GitHub release
         if: env.IS_RELEASE == 'true'
         uses: softprops/action-gh-release@v2

@@ -1,0 +1,35 @@
+name: Update release notes
+
+# Rewrites the description of an existing GitHub release with tools/release_notes.py: author, what's new
+# (the Fastlane changelog of that version) and the attached files. The release files are left untouched.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag whose description to rewrite, for example v0.3.3
+        required: true
+
+jobs:
+  notes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Unit tests
+        run: python3 tools/test_release_notes.py
+      - name: Rewrite the release description
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          flag=""
+          if ! gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qx "chornobyl-hamdash-$TAG.apk"; then
+            flag="--debug-only"
+          fi
+          python3 tools/release_notes.py "$TAG" --ref "refs/tags/$TAG" $flag > release-notes.md
+          cat release-notes.md
+          gh release edit "$TAG" --notes-file release-notes.md
